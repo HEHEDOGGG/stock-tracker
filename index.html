@@ -59,8 +59,27 @@ h3{font-size:16px;font-weight:500;margin:0}
 .banner:empty{display:none}
 
 .mbar{display:none}
-.grid{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);grid-template-rows:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"list quote" "detail notes";gap:10px;padding:10px}
-#p-list{grid-area:list}#p-detail{grid-area:detail}#p-quote{grid-area:quote}#p-notes{grid-area:notes}
+.grid{flex:1;min-height:0;display:flex;padding:10px}
+.col{display:flex;flex-direction:column;min-width:0;min-height:0}
+#colL{width:var(--cl,51%);flex:none;min-width:300px}
+#colR{flex:1;min-width:300px}
+#p-list{height:var(--lt,55%);flex:none;min-height:120px}
+#p-detail{flex:1;min-height:110px}
+#p-quote{height:var(--rt,55%);flex:none;min-height:180px}
+#p-notes{flex:1;min-height:110px}
+.split{flex:none;position:relative;touch-action:none;z-index:2}
+.split.v{width:10px;cursor:col-resize}
+.split.h{height:10px;cursor:row-resize}
+.split::after{content:'';position:absolute;border-radius:2px;background:var(--line2);opacity:0;transition:opacity .15s,background .15s}
+.split.v::after{left:4px;top:50%;width:2px;height:44px;margin-top:-22px}
+.split.h::after{top:4px;left:50%;height:2px;width:44px;margin-left:-22px}
+.split:hover::after{opacity:1}
+.split.on::after{opacity:1;background:var(--ac)}
+body.resizing,body.resizing *{user-select:none;-webkit-user-select:none}
+body.resizing.rv *{cursor:col-resize!important}
+body.resizing.rh *{cursor:row-resize!important}
+.panel{container-type:inline-size}
+@container (max-width:520px){td.hide-m,th.hide-m,.kbar .hide-m,.ph span.hide-m{display:none}}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .ph{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 12px;border-bottom:1px solid var(--line);flex:none;min-height:46px}
 .pb{flex:1;overflow:auto;padding:10px 12px;min-height:0}
@@ -183,7 +202,7 @@ body.dnd,body.dnd *{cursor:grabbing!important;user-select:none;-webkit-user-sele
 .pg-map{background:var(--panel2);border-radius:8px;padding:8px 10px 2px;margin:6px 0}
 .chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-bottom:12px;cursor:pointer}
 .chk input{margin-top:3px}
-dialog.mem{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;border-radius:0;padding:0;background:var(--bg)}
+dialog.mem{--bg:#04050C;--panel:#0B0F22;--panel2:#121935;--line:#1C2545;--line2:#2B3762;--tx:#E9EEFF;--tx2:#A3ADC9;--tx3:#6E7797;--ac:#7AB0FF;--acbg:rgba(122,176,255,.16);color:var(--tx);width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;border-radius:0;padding:0;background:var(--bg)}
 dialog.mem[open]{display:flex;flex-direction:column}
 .mem-top{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel);flex:none;padding-top:max(10px,env(safe-area-inset-top))}
 .mem-top b{font-weight:500;font-size:15px}
@@ -193,7 +212,21 @@ dialog.mem[open]{display:flex;flex-direction:column}
 .mem-stage{position:relative;flex:1;min-width:0;overflow:hidden}
 .mem-cv{position:absolute;left:0;top:0;cursor:grab;display:block}
 .mem-legend{position:absolute;left:12px;bottom:10px;display:flex;gap:12px;font-size:12px;color:var(--tx2);pointer-events:none;z-index:1;flex-wrap:wrap}
-.mem-side{width:330px;flex:none;border-left:1px solid var(--line);background:var(--panel);overflow:auto;padding:14px}
+.mem-side{width:var(--ms,380px);flex:none;background:var(--panel);overflow:auto;padding:14px;border-left:1px solid var(--line)}
+.mem-body>.split.v{background:var(--panel);margin-right:-1px}
+.mem-fab{position:absolute;right:14px;bottom:12px;display:flex;gap:8px;z-index:2}
+.mem-fab .tog{background:rgba(11,15,34,.75);backdrop-filter:blur(4px);padding:4px 12px;font-size:13px}
+.mem-fab .tog.on{background:rgba(122,176,255,.22)}
+.mem-legend .dotc{box-shadow:0 0 6px currentColor}
+.mem-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.mem-fold{margin-left:auto}
+.ms-h{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;margin:16px 0 6px;cursor:pointer;color:var(--tx)}
+.ms-h:hover{color:var(--ac)}
+.mn{border:1px solid var(--line);border-radius:10px;padding:7px 10px 9px;margin-bottom:8px;cursor:pointer;background:var(--panel2);transition:border-color .15s,box-shadow .15s}
+.mn:hover{border-color:var(--line2)}
+.mn.on{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac),0 0 22px rgba(122,176,255,.28)}
+.mn-body{font-size:13px;color:var(--tx2);margin-top:3px;white-space:pre-wrap;line-height:1.6}
+.mn-src{font-size:12px;color:var(--tx3);margin-top:4px}
 .mem-h{font-size:16px;font-weight:500;margin:2px 0 4px;display:flex;align-items:center}
 .mem-stance{display:flex;gap:14px;font-size:13px}
 .mem-it{display:block;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px dashed var(--line);padding:7px 2px;cursor:pointer;font-size:13px;color:var(--tx)}
@@ -232,6 +265,9 @@ dialog.mem[open]{display:flex;flex-direction:column}
   .brand{order:1}.acts{order:2;margin-left:auto}.st{order:3;width:100%}.sum{order:4;width:100%}
   .st{justify-content:flex-start}
   .grid{display:block;padding:8px}
+  .col{display:block;width:auto!important;min-width:0!important}
+  #p-list,#p-quote,#p-detail,#p-notes{height:auto!important;min-height:0}
+  .split{display:none}
   .panel{margin-bottom:8px;overflow:visible}
   .pb{overflow:visible}
   .t th{position:static}
@@ -276,11 +312,18 @@ dialog.mem[open]{display:flex;flex-direction:column}
 <div id="banner" class="banner"></div>
 <div class="mbar" id="mbar"></div>
 
-<main class="grid">
-  <section class="panel" id="p-list"></section>
-  <section class="panel" id="p-quote"></section>
-  <section class="panel" id="p-detail"></section>
-  <section class="panel" id="p-notes"></section>
+<main class="grid" id="grid">
+  <div class="col" id="colL">
+    <section class="panel" id="p-list"></section>
+    <div class="split h" data-split="lt" title="拖拉調整高度，雙擊還原"></div>
+    <section class="panel" id="p-detail"></section>
+  </div>
+  <div class="split v" data-split="cl" title="拖拉調整寬度，雙擊還原"></div>
+  <div class="col" id="colR">
+    <section class="panel" id="p-quote"></section>
+    <div class="split h" data-split="rt" title="拖拉調整高度，雙擊還原"></div>
+    <section class="panel" id="p-notes"></section>
+  </div>
 </main>
 
 <dialog id="dlg"></dialog>
@@ -317,14 +360,14 @@ function normalize(d) {
 let data = normalize(load(LS.data));
 let conf = Object.assign({ theme: 'dark', token: '', repo: '', dirty: false, syncedAt: 0 }, load(LS.conf) || {});
 let quotes = Object.assign({ tw: {}, us: {}, fx: null, time: 0 }, load(LS.quotes) || {});
-let ui = Object.assign({ tab: 'hold', sel: null, kInt: '1d', kTrades: true, kNotes: true, noteTopic: '' }, load(LS.ui) || {});
+let ui = Object.assign({ tab: 'hold', sel: null, kInt: '1d', kTrades: true, kNotes: true, noteTopic: '', memFold: false, memSpin: false }, load(LS.ui) || {});
 ui.noteHl = new Set(); ui.noteOpen = new Set();
 let qState = { status: 'idle', msg: '' };
 let syncState = { status: conf.token ? 'idle' : 'off', msg: '', at: 0 };
 
 function saveData() { store(LS.data, data); }
 function saveConf() { store(LS.conf, conf); }
-function saveUi() { store(LS.ui, { tab: ui.tab, sel: ui.sel, kInt: ui.kInt, kTrades: ui.kTrades, kNotes: ui.kNotes, noteTopic: ui.noteTopic }); }
+function saveUi() { store(LS.ui, { tab: ui.tab, sel: ui.sel, kInt: ui.kInt, kTrades: ui.kTrades, kNotes: ui.kNotes, noteTopic: ui.noteTopic, memFold: ui.memFold, memSpin: ui.memSpin }); }
 
 function commit(markDirty = true) {
   data.updatedAt = Date.now();
@@ -1818,85 +1861,86 @@ function renderQuote(C) {
   kOverlay(st, c);
 }
 
-/* ========== Memory 3D 腦圖 ========== */
-// 主題用這組顏色（避開紅綠，紅綠留給偏多偏空）
-const TOPIC_COLORS = ['#8B5CF6', '#F59E0B', '#06B6D4', '#EC4899', '#F97316', '#6366F1', '#0EA5E9', '#A855F7', '#EAB308', '#64748B'];
+/* ========== Memory：銀河系 ========== */
+// 主題顏色（避開紅綠，紅綠留給偏多偏空）
+const TOPIC_COLORS = ['#A78BFA', '#FBBF24', '#22D3EE', '#F472B6', '#FB923C', '#818CF8', '#38BDF8', '#C084FC', '#FDE047', '#94A3B8'];
 function topicColor(topic) {
   const i = DEFAULT_TOPICS.indexOf(topic);
   if (i >= 0) return TOPIC_COLORS[i % TOPIC_COLORS.length];
   let h = 0; for (const ch of topic) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
   return TOPIC_COLORS[h % TOPIC_COLORS.length];
 }
-const MEM = { st: null, nodes: [], links: [], shell: [], yaw: 0.5, pitch: -0.22, zoom: 1, auto: true, sel: null, hover: null, end: '', dates: [],
-  raf: 0, last: 0, ptrs: new Map(), moved: false, pinch: null, play: 0, w: 0, h: 0, cv: null, ctx: null, ro: null };
+const MEM = { st: null, nodes: [], links: [], dust: [], stars: [], bg: null, yaw: 0.5, pitch: 0.95, zoom: 1, spin: false, sel: null, hover: null, panel: null,
+  open: new Set(), t0: 0, raf: 0, ptrs: new Map(), moved: false, pinch: null, w: 0, h: 0, cv: null, ctx: null, ro: null, targetYaw: null };
+const ARM_B = 1.15;                                     // 旋臂捲曲程度
+const spiral = (a0, r) => a0 + ARM_B * Math.log(r / 55);
+const onDisk = (r, a, y) => [r * Math.cos(a), y, r * Math.sin(a)];
 
 function memBuild(st) {
-  const notes = data.notes.filter(n => n.stockId === st.id).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+  const notes = data.notes.filter(n => n.stockId === st.id);
   const tree = topicTree(st, false);
+  let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const gauss = () => Math.sqrt(-2 * Math.log(rnd() + 1e-9)) * Math.cos(2 * Math.PI * rnd());
   const nodes = [], links = [];
-  const root = { id: 'root', kind: 'root', label: `${st.code} ${st.name || ''}`, r: 24, pos: [0, 0, 0], first: notes.length ? notes[0].date : '' };
+  const root = { id: 'root', kind: 'root', label: `${st.code} ${st.name || ''}`, r: 20, pos: [0, 0, 0] };
   nodes.push(root);
-  const norm = v => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
-  const basis = d => { const a = Math.abs(d[1]) < 0.9 ? [0, 1, 0] : [1, 0, 0]; const u = norm([d[1] * a[2] - d[2] * a[1], d[2] * a[0] - d[0] * a[2], d[0] * a[1] - d[1] * a[0]]); return [u, [d[1] * u[2] - d[2] * u[1], d[2] * u[0] - d[0] * u[2], d[0] * u[1] - d[1] * u[0]]]; };
-  const around = (d, spread, ang) => { const [u, v] = basis(d); return norm([d[0] + spread * (Math.cos(ang) * u[0] + Math.sin(ang) * v[0]), d[1] + spread * (Math.cos(ang) * u[1] + Math.sin(ang) * v[1]), d[2] + spread * (Math.cos(ang) * u[2] + Math.sin(ang) * v[2])]); };
-  const brain = (d, R) => [d[0] * R * 1.22, d[1] * R * 0.9, d[2] * R];   // 橢球，比較像腦的形狀
-  const T = tree.length, golden = Math.PI * (3 - Math.sqrt(5));
+  const T = tree.length;
   tree.forEach((t, i) => {
-    const y = T === 1 ? 0 : 1 - (i / (T - 1)) * 2, rad = Math.sqrt(1 - y * y), th = golden * i;
-    const dir = norm([Math.cos(th) * rad, y * 0.85, Math.sin(th) * rad]);
-    const color = topicColor(t.topic);
-    const tn = { id: 't:' + t.topic, kind: 'topic', label: t.topic, topic: t.topic, color, r: 9 + Math.sqrt(t.count) * 3, pos: brain(dir, 150), parent: root, count: t.count, first: '9999' };
+    const a0 = (2 * Math.PI * i) / Math.max(1, T), color = topicColor(t.topic);
+    const rt = 132 + (i % 2) * 18;
+    const tn = { id: 't:' + t.topic, kind: 'topic', label: t.topic, topic: t.topic, color, r: 8 + Math.sqrt(t.count) * 2.6, pos: onDisk(rt, spiral(a0, rt), (rnd() - 0.5) * 10), parent: root, count: t.count };
     nodes.push(tn); links.push([root, tn]);
     const m = t.subs.length;
     t.subs.forEach((s, j) => {
-      const sd = m > 1 ? around(dir, 0.32 + Math.min(0.3, m * 0.04), (2 * Math.PI * j) / m + i) : dir;
-      const sn = { id: 's:' + t.topic + '||' + s.sub, kind: 'sub', label: s.sub, topic: t.topic, sub: s.sub, color, r: 6 + Math.sqrt(s.count) * 2, pos: brain(sd, 238), parent: tn, count: s.count, first: '9999' };
+      const off = m > 1 ? (j / (m - 1) - 0.5) * Math.min(0.95, 0.24 * m) : 0;
+      const rs = 212 + (j % 3) * 18;
+      const sn = { id: 's:' + t.topic + '||' + s.sub, kind: 'sub', label: s.sub, topic: t.topic, sub: s.sub, color, r: 5.5 + Math.sqrt(s.count) * 1.8, pos: onDisk(rs, spiral(a0, rs) + off, (rnd() - 0.5) * 16), parent: tn, count: s.count, off, a0, rs };
       nodes.push(sn); links.push([tn, sn]);
-      const ns = notes.filter(n => n.topic === t.topic && n.sub === s.sub), p = ns.length;
+      const ns = notes.filter(n => n.topic === t.topic && n.sub === s.sub).sort((a, b) => a.date < b.date ? -1 : 1), p = ns.length;
       ns.forEach((n, k) => {
-        const nd = p > 1 ? around(sd, 0.12 + Math.min(0.22, p * 0.025), (2 * Math.PI * k) / p + j) : sd;
-        const nn = { id: 'n:' + n.id, kind: 'note', label: n.title, note: n, color: stanceColor(n.stance, st.market), r: 4.2, pos: brain(nd, 300 + (k % 3) * 12), parent: sn, first: n.date };
+        const rn = rs + 52 + (k % 3) * 15;
+        const o2 = p > 1 ? (k / (p - 1) - 0.5) * Math.min(0.55, 0.1 * p) : 0;
+        const nn = { id: 'n:' + n.id, kind: 'note', label: n.title, note: n, color: stanceColor(n.stance, st.market), r: 3, pos: onDisk(rn, spiral(a0, rn) + off + o2, (rnd() - 0.5) * 20), parent: sn, tw: rnd() * 6.28 };
         nodes.push(nn); links.push([sn, nn]);
-        if (n.date < sn.first) sn.first = n.date;
-        if (n.date < tn.first) tn.first = n.date;
       });
     });
   });
-  // 外圍的點雲，讓整體看起來像一顆腦
-  let seed = 11; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-  const shell = [];
-  for (let k = 0; k < 420; k++) {
-    const z = rnd() * 2 - 1, a = rnd() * Math.PI * 2, rr = Math.sqrt(1 - z * z);
-    const d = [Math.cos(a) * rr, z, Math.sin(a) * rr];
-    if (Math.abs(d[0]) < 0.05) continue;                      // 中間留一道縫，像左右腦
-    shell.push(brain(d, 290 + rnd() * 40));
+  // 星塵：沿著旋臂分布，中心是暖色的核球
+  const A = Math.max(3, T), dust = [];
+  for (let k = 0; k < 2800; k++) {
+    const a0 = (2 * Math.PI * (k % A)) / A, r = 28 + Math.pow(rnd(), 0.75) * 390;
+    const a = spiral(a0, r) + gauss() * 0.19 * (0.5 + r / 420);
+    const c = r < 85 ? '#FFE3B3' : rnd() < 0.1 ? '#FF9FDC' : rnd() < 0.3 ? '#CDBBFF' : '#9EC6FF';
+    dust.push({ p: onDisk(r, a, gauss() * (5 + 9 * (1 - r / 420))), c, s: 0.6 + rnd() * 1.5, a: 0.3 + rnd() * 0.65 });
   }
-  MEM.nodes = nodes; MEM.links = links; MEM.shell = shell;
-  MEM.dates = [...new Set(notes.map(n => n.date))];
+  for (let k = 0; k < 320; k++) {
+    const r = Math.abs(gauss()) * 42, a = rnd() * Math.PI * 2;
+    dust.push({ p: onDisk(r, a, gauss() * 14), c: '#FFE9C2', s: 0.6 + rnd() * 1.2, a: 0.35 + rnd() * 0.55 });
+  }
+  const stars = [];
+  for (let k = 0; k < 360; k++) stars.push({ x: rnd(), y: rnd(), s: 0.4 + rnd() * 1.3, a: 0.25 + rnd() * 0.7, ph: rnd() * 6.28, sp: 0.6 + rnd() * 2.2 });
+  MEM.nodes = nodes; MEM.links = links; MEM.dust = dust; MEM.stars = stars;
 }
 
 function openMemory(st) {
   if (dlg.open) dlg.close();
-  MEM.st = st; MEM.sel = null; MEM.hover = null; MEM.end = ''; MEM.zoom = 1; MEM.yaw = 0.5; MEM.pitch = -0.22; MEM.auto = true;
+  Object.assign(MEM, { st, sel: null, hover: null, panel: null, zoom: 1, yaw: 0.5, pitch: 0.95, targetYaw: null, spin: !!ui.memSpin, open: new Set() });
   memBuild(st);
   const md = $('#mem');
-  const n = MEM.dates.length;
+  const nNotes = MEM.nodes.filter(x => x.kind === 'note').length;
   md.innerHTML = `<div class="mem-top">
-      <b class="mem-ttl">${stockLabel(st)}</b><span class="faint hide-m">Memory</span><span class="faint hide-m" id="memCount"></span><span class="sp"></span>
-      <button class="tog on" id="memAuto" type="button">自動旋轉</button>
-      <button class="ibtn sm" id="memReset" type="button" title="重設視角" aria-label="重設視角">${ic('latest')}</button>
-      <button class="ibtn" id="memClose" type="button" aria-label="關閉">${ic('x')}</button></div>
+      <b class="mem-ttl">${stockLabel(st)}</b><span class="faint hide-m">Memory</span>
+      <span class="faint hide-m">${MEM.nodes.filter(x => x.kind === 'topic').length} 主題・${MEM.nodes.filter(x => x.kind === 'sub').length} 子主題・${nNotes} 重點</span>
+      <span class="sp"></span><button class="ibtn" id="memClose" type="button" aria-label="關閉">${ic('x')}</button></div>
     <div class="mem-body">
       <div class="mem-stage" id="memStage">
-        <div class="mem-legend"><span><i class="dotc" style="background:${stanceColor('bull', st.market)}"></i>偏多</span><span><i class="dotc" style="background:${stanceColor('neutral', st.market)}"></i>中性</span><span><i class="dotc" style="background:${stanceColor('bear', st.market)}"></i>偏空</span><span class="hide-m faint">拖曳旋轉・滾輪縮放・點節點看內容</span></div>
-        ${n ? '' : '<div class="kmsg">這檔還沒有重點。先到「重點時間軸」匯入 ChatGPT 的整理，腦圖就會長出來。</div>'}
+        <div class="mem-legend"><span><i class="dotc" style="background:${stanceColor('bull', st.market)}"></i>偏多</span><span><i class="dotc" style="background:${stanceColor('neutral', st.market)}"></i>中性</span><span><i class="dotc" style="background:${stanceColor('bear', st.market)}"></i>偏空</span><span class="hide-m mem-hint">拖曳旋轉・滾輪縮放・點星星看內容</span></div>
+        <div class="mem-fab"><button class="tog ${MEM.spin ? 'on' : ''}" id="memSpin" type="button">⟳ 旋轉</button><button class="tog" id="memReset" type="button">重設視角</button></div>
+        ${nNotes ? '' : '<div class="kmsg">這檔還沒有重點。先到「重點時間軸」匯入 ChatGPT 的整理，星系就會長出來。</div>'}
       </div>
+      <div class="split v" data-split="ms" title="拖拉調整寬度，雙擊還原"></div>
       <aside class="mem-side" id="memSide"></aside>
-    </div>
-    <div class="mem-time">
-      <button class="btn" id="memPlay" type="button" ${n > 1 ? '' : 'disabled'}>▶ 播放</button>
-      <input type="range" id="memT" min="1" max="${Math.max(1, n)}" value="${Math.max(1, n)}" step="1" ${n > 1 ? '' : 'disabled'}>
-      <span class="faint" id="memTL"></span></div>`;
+    </div>`;
   const stage = $('#memStage');
   MEM.cv = document.createElement('canvas'); MEM.cv.className = 'mem-cv';
   stage.prepend(MEM.cv); MEM.ctx = MEM.cv.getContext('2d');
@@ -1904,147 +1948,211 @@ function openMemory(st) {
   MEM.ro = new ResizeObserver(memResize); MEM.ro.observe(stage);
   memBind();
   $('#memClose').onclick = () => md.close();
-  $('#memReset').onclick = () => { MEM.zoom = 1; MEM.yaw = 0.5; MEM.pitch = -0.22; MEM.sel = null; memSide(); };
-  $('#memAuto').onclick = () => { MEM.auto = !MEM.auto; $('#memAuto').classList.toggle('on', MEM.auto); };
-  $('#memT').oninput = () => { memStopPlay(); memSetEnd(+$('#memT').value); };
-  $('#memPlay').onclick = () => {
-    if (MEM.play) { memStopPlay(); return; }
-    let i = 1; memSetEnd(i); $('#memT').value = i; $('#memPlay').textContent = '❚❚ 暫停';
-    MEM.play = setInterval(() => { i++; if (i > n) { memStopPlay(); return; } $('#memT').value = i; memSetEnd(i); }, Math.max(120, Math.min(600, 6000 / n)));
-  };
-  md.onclose = () => { cancelAnimationFrame(MEM.raf); memStopPlay(); if (MEM.ro) MEM.ro.disconnect(); };
-  memSetEnd(n);
+  $('#memSpin').onclick = () => { MEM.spin = !MEM.spin; ui.memSpin = MEM.spin; saveUi(); $('#memSpin').classList.toggle('on', MEM.spin); };
+  $('#memReset').onclick = () => { MEM.zoom = 1; MEM.pitch = 0.95; MEM.targetYaw = 0.5; MEM.sel = null; MEM.panel = null; memSide(); };
+  md.onclose = () => { cancelAnimationFrame(MEM.raf); if (MEM.ro) MEM.ro.disconnect(); };
   md.showModal();
   memSide();
+  MEM.t0 = performance.now();
   cancelAnimationFrame(MEM.raf);
   MEM.raf = requestAnimationFrame(memLoop);
 }
-function memStopPlay() { if (MEM.play) { clearInterval(MEM.play); MEM.play = 0; const b = $('#memPlay'); if (b) b.textContent = '▶ 播放'; } }
-function memSetEnd(i) {
-  const n = MEM.dates.length;
-  MEM.end = n && i < n ? MEM.dates[i - 1] : '';
-  const shown = MEM.nodes.filter(x => x.kind === 'note' && memVis(x)).length;
-  const lbl = $('#memTL'); if (lbl) lbl.textContent = n ? (MEM.end ? `到 ${MEM.end}` : '全部') + `・${shown} 條重點` : '';
-  const cnt = $('#memCount');
-  if (cnt) cnt.textContent = `${MEM.nodes.filter(x => x.kind === 'topic' && memVis(x)).length} 主題・${MEM.nodes.filter(x => x.kind === 'sub' && memVis(x)).length} 子主題・${shown} 重點`;
-  if (MEM.sel && !memVis(MEM.sel)) { MEM.sel = null; memSide(); }
-}
-const memVis = n => n.kind === 'root' || !MEM.end || n.first <= MEM.end;
 function memResize() {
   const r = MEM.cv.parentElement.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
   MEM.w = r.width; MEM.h = r.height;
+  if (!r.width || !r.height) return;
   MEM.cv.width = Math.round(r.width * dpr); MEM.cv.height = Math.round(r.height * dpr);
   MEM.cv.style.width = r.width + 'px'; MEM.cv.style.height = r.height + 'px';
   MEM.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // 背景（深空與星雲）先畫好放著，每一格直接貼上
+  const bg = document.createElement('canvas'); bg.width = MEM.cv.width; bg.height = MEM.cv.height;
+  const g = bg.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const W = r.width, H = r.height;
+  const base = g.createRadialGradient(W * 0.5, H * 0.45, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.75);
+  base.addColorStop(0, '#0D1233'); base.addColorStop(0.55, '#070A1C'); base.addColorStop(1, '#020308');
+  g.fillStyle = base; g.fillRect(0, 0, W, H);
+  [[0.22, 0.28, 0.42, 'rgba(124,77,255,0.16)'], [0.8, 0.7, 0.4, 'rgba(56,120,255,0.13)'], [0.7, 0.18, 0.3, 'rgba(255,80,190,0.09)'], [0.3, 0.82, 0.35, 'rgba(40,200,255,0.07)']].forEach(([x, y, rr, c]) => {
+    const gr = g.createRadialGradient(W * x, H * y, 0, W * x, H * y, Math.max(W, H) * rr);
+    gr.addColorStop(0, c); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, W, H);
+  });
+  MEM.bg = bg;
 }
-function memLoop() {
+function memLoop(now) {
   if (!$('#mem').open) return;
-  if (MEM.auto && !MEM.ptrs.size && Date.now() - MEM.last > 2500) MEM.yaw += 0.0022;
-  memDraw();
+  if (MEM.targetYaw != null && !MEM.ptrs.size) {
+    let d = MEM.targetYaw - MEM.yaw; d = Math.atan2(Math.sin(d), Math.cos(d));
+    MEM.yaw += d * 0.08;
+    if (Math.abs(d) < 0.002) MEM.targetYaw = null;
+  } else if (MEM.spin && !MEM.ptrs.size) MEM.yaw += 0.0016;
+  memDraw(now || performance.now());
   MEM.raf = requestAnimationFrame(memLoop);
 }
-function memRelated(sel) {
-  const s = new Set([sel]);
-  for (let p = sel.parent; p; p = p.parent) s.add(p);
-  const walk = n => MEM.links.forEach(([a, b]) => { if (a === n) { s.add(b); walk(b); } });
-  walk(sel);
+function memRelated(n) {
+  const s = new Set([n]);
+  for (let p = n.parent; p; p = p.parent) s.add(p);
+  const walk = x => MEM.links.forEach(([a, b]) => { if (a === x) { s.add(b); walk(b); } });
+  walk(n);
   return s;
 }
-function memDraw() {
+function memPath(n) { const p = []; for (let x = n; x; x = x.parent) p.unshift(x); return p; }
+function memFocus(n) {
+  if (!n || n.kind === 'root') return;
+  MEM.targetYaw = Math.atan2(n.pos[0], n.pos[2]) - Math.PI;   // 轉到正面
+}
+function memDraw(now) {
   const ctx = MEM.ctx, W = MEM.w, H = MEM.h;
   if (!ctx || !W || !H) return;
-  const dark = conf.theme === 'dark';
-  ctx.clearRect(0, 0, W, H);
-  const cyw = Math.cos(MEM.yaw), syw = Math.sin(MEM.yaw), cp = Math.cos(MEM.pitch), sp = Math.sin(MEM.pitch);
-  const D = 900, F = Math.min(W, H) * 1.15 * MEM.zoom, cx = W / 2, cy = H / 2;
-  const proj = p => {
-    const x1 = p[0] * cyw - p[2] * syw, z1 = p[0] * syw + p[2] * cyw;
-    const y2 = p[1] * cp - z1 * sp, z2 = p[1] * sp + z1 * cp, s = F / (D + z2);
+  const t = (now - MEM.t0) / 1000;
+  const e = 1 - Math.pow(1 - Math.min(1, t / 1.5), 3);               // 展開進度
+  const swirl = (1 - e) * 1.6;                                        // 展開時順著旋臂轉進來
+  const yaw = MEM.yaw + swirl;
+  const cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(MEM.pitch), sp = Math.sin(MEM.pitch);
+  const D = 900, F = Math.min(W, H) * 1.18 * MEM.zoom, cx = W / 2, cy = H / 2 + H * 0.02;
+  const proj = (p, k = 1) => {
+    const x = p[0] * k, y = p[1] * k, z = p[2] * k;
+    const x1 = x * cyw - z * syw, z1 = x * syw + z * cyw;
+    const y2 = y * cp - z1 * sp, z2 = y * sp + z1 * cp, s = F / (D + z2);
     return { x: cx + x1 * s, y: cy + y2 * s, z: z2, s };
   };
-  const fade = z => Math.max(0.28, Math.min(1, 0.62 - z / 520));
-  // 點雲
-  ctx.fillStyle = dark ? '#8FA3C8' : '#7A8394';
-  for (const p of MEM.shell) {
-    const q = proj(p);
-    ctx.globalAlpha = (dark ? 0.34 : 0.26) * fade(q.z);
-    const r = Math.max(0.6, 1.3 * q.s * D / F * MEM.zoom ** 0.3);
+  // 深空背景＋閃爍的星星
+  if (MEM.bg) ctx.drawImage(MEM.bg, 0, 0, W, H); else { ctx.fillStyle = '#05060D'; ctx.fillRect(0, 0, W, H); }
+  ctx.fillStyle = '#FFFFFF';
+  for (const s of MEM.stars) {
+    const x = ((s.x * W + MEM.yaw * 26) % W + W) % W, y = ((s.y * H + MEM.pitch * 18) % H + H) % H;
+    ctx.globalAlpha = s.a * (0.55 + 0.45 * Math.sin(t * s.sp + s.ph));
+    ctx.fillRect(x, y, s.s, s.s);
+  }
+  // 星塵（加亮混色，看起來會發光）
+  ctx.globalCompositeOperation = 'lighter';
+  const ke = 0.35 + 0.65 * e;
+  for (const d of MEM.dust) {
+    const q = proj(d.p, ke); if (q.s <= 0) continue;
+    ctx.globalAlpha = d.a * Math.min(1, e * 1.4) * Math.max(0.35, Math.min(1, 0.75 - q.z / 700));
+    ctx.fillStyle = d.c;
+    const r = d.s * q.s * D / F * Math.pow(MEM.zoom, 0.4);
     ctx.fillRect(q.x - r / 2, q.y - r / 2, r, r);
   }
-  const vis = MEM.nodes.filter(memVis);
-  vis.forEach(n => { n.q = proj(n.pos); n.rr = Math.max(2, n.r * n.q.s); });
+  // 星系核心
+  const rootQ = proj([0, 0, 0]), coreR = 95 * rootQ.s;
+  const cg = ctx.createRadialGradient(rootQ.x, rootQ.y, 0, rootQ.x, rootQ.y, coreR);
+  cg.addColorStop(0, 'rgba(255,248,225,0.95)'); cg.addColorStop(0.12, 'rgba(255,226,170,0.55)'); cg.addColorStop(0.4, 'rgba(255,170,110,0.16)'); cg.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.globalAlpha = Math.min(1, 0.3 + e); ctx.fillStyle = cg;
+  ctx.beginPath(); ctx.arc(rootQ.x, rootQ.y, coreR, 0, Math.PI * 2); ctx.fill();
+  ctx.globalCompositeOperation = 'source-over';
+
+  MEM.nodes.forEach(n => { n.q = proj(n.pos, e); n.rr = Math.max(1.6, n.r * n.q.s); });
   const focus = MEM.sel || MEM.hover;
   const rel = focus ? memRelated(focus) : null;
-  const dim = n => rel && !rel.has(n) ? 0.18 : 1;
-  // 連線
+  const path = MEM.sel ? new Set(memPath(MEM.sel)) : null;
+  const fade = z => Math.max(0.4, Math.min(1, 0.72 - z / 650));
+  // 連線：平常很淡，選取的那條路徑發光
+  ctx.lineCap = 'round';
   for (const [a, b] of MEM.links) {
-    if (!memVis(b)) continue;
-    ctx.globalAlpha = Math.min(fade(a.q.z), fade(b.q.z)) * Math.min(dim(a), dim(b)) * (b.kind === 'note' ? 0.5 : 0.75);
-    ctx.strokeStyle = b.kind === 'note' ? b.parent.color : b.color || '#888';
-    ctx.lineWidth = b.kind === 'topic' ? 1.8 : b.kind === 'sub' ? 1.2 : 0.8;
+    const onPath = path && path.has(a) && path.has(b);
+    const inRel = rel && rel.has(a) && rel.has(b);
+    const col = b.kind === 'note' ? b.parent.color : b.color;
+    if (onPath) continue;                                  // 路徑最後畫，蓋在最上面
+    ctx.globalAlpha = (rel ? (inRel ? 0.55 : 0.06) : (b.kind === 'note' ? 0.16 : 0.26)) * Math.min(fade(a.q.z), fade(b.q.z)) * e;
+    ctx.strokeStyle = col;
+    ctx.lineWidth = inRel ? (b.kind === 'topic' ? 1.8 : 1.3) : (b.kind === 'topic' ? 1.2 : 0.8);
     ctx.beginPath(); ctx.moveTo(a.q.x, a.q.y); ctx.lineTo(b.q.x, b.q.y); ctx.stroke();
   }
-  // 節點（遠的先畫）
-  const order = vis.slice().sort((a, b) => b.q.z - a.q.z);
-  const rootCol = dark ? '#E6EDF3' : '#1A1D21';
-  for (const n of order) {
-    const a = fade(n.q.z) * dim(n), col = n.kind === 'root' ? rootCol : n.color, r = n.rr;
-    if (dark && n.kind !== 'note') {
-      ctx.globalAlpha = a * 0.55;
-      const g = ctx.createRadialGradient(n.q.x, n.q.y, r * 0.3, n.q.x, n.q.y, r * 2.6);
-      g.addColorStop(0, col); g.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n.q.x, n.q.y, r * 2.6, 0, Math.PI * 2); ctx.fill();
+  if (path && path.size > 1) {
+    const pts = memPath(MEM.sel);
+    const col = MEM.sel.kind === 'note' ? MEM.sel.color : MEM.sel.color || '#fff';
+    ctx.globalCompositeOperation = 'lighter';
+    for (let pass = 0; pass < 2; pass++) {
+      ctx.globalAlpha = pass ? 1 : 0.35;
+      ctx.lineWidth = pass ? 2.2 : 7;
+      ctx.shadowColor = col; ctx.shadowBlur = pass ? 14 : 0;
+      ctx.strokeStyle = pass ? '#FFFFFF' : col;
+      ctx.beginPath(); pts.forEach((n, i) => i ? ctx.lineTo(n.q.x, n.q.y) : ctx.moveTo(n.q.x, n.q.y)); ctx.stroke();
     }
-    ctx.globalAlpha = a;
-    ctx.fillStyle = col; ctx.beginPath(); ctx.arc(n.q.x, n.q.y, r, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+    // 沿著路徑流動的光點
+    const seg = []; let tot = 0;
+    for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i].q.x - pts[i - 1].q.x, pts[i].q.y - pts[i - 1].q.y); seg.push(l); tot += l; }
+    for (let k = 0; k < 2; k++) {
+      let d = ((t * 0.55 + k * 0.5) % 1) * tot, i = 0;
+      while (i < seg.length - 1 && d > seg[i]) { d -= seg[i]; i++; }
+      const f = seg[i] ? d / seg[i] : 0, A = pts[i].q, B = pts[i + 1].q;
+      const x = A.x + (B.x - A.x) * f, y = A.y + (B.y - A.y) * f;
+      const pg = ctx.createRadialGradient(x, y, 0, x, y, 12);
+      pg.addColorStop(0, 'rgba(255,255,255,1)'); pg.addColorStop(0.3, col); pg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.globalAlpha = 0.9; ctx.fillStyle = pg; ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+  }
+  // 星星（節點）：遠的先畫
+  const order = MEM.nodes.filter(n => n.kind !== 'root').sort((a, b) => b.q.z - a.q.z);
+  for (const n of order) {
+    const dim = rel && !rel.has(n) ? 0.3 : 1, a = fade(n.q.z) * dim * Math.min(1, e * 1.3), r = n.rr;
+    const twinkle = n.kind === 'note' ? 0.8 + 0.2 * Math.sin(t * 2.4 + n.tw) : 1;
+    ctx.globalCompositeOperation = 'lighter';
+    const hr = r * (n.kind === 'note' ? 4.2 : 3.2);
+    const g = ctx.createRadialGradient(n.q.x, n.q.y, 0, n.q.x, n.q.y, hr);
+    g.addColorStop(0, n.color); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.globalAlpha = a * 0.55 * twinkle; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n.q.x, n.q.y, hr, 0, Math.PI * 2); ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = a; ctx.fillStyle = n.color; ctx.beginPath(); ctx.arc(n.q.x, n.q.y, r, 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = a * 0.85; ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.arc(n.q.x, n.q.y, r * 0.38, 0, Math.PI * 2); ctx.fill();
     if (n === MEM.sel || n === MEM.hover) {
-      ctx.globalAlpha = 1; ctx.strokeStyle = dark ? '#fff' : '#1A1D21'; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(n.q.x, n.q.y, r + 3, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = 0.9; ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(n.q.x, n.q.y, r + 4 + (n === MEM.sel ? Math.sin(t * 4) * 1.5 : 0), 0, Math.PI * 2); ctx.stroke();
     }
   }
   // 文字
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
-  const bg = dark ? 'rgba(14,17,23,0.85)' : 'rgba(255,255,255,0.9)', fg = dark ? '#E6EDF3' : '#1A1D21';
-  for (const n of order) {
-    const show = n.kind === 'root' || n.kind === 'topic' || (n.kind === 'sub' && (MEM.zoom >= 1.25 || (rel && rel.has(n)))) ||
-      (n.kind === 'note' && (n === MEM.sel || n === MEM.hover || (MEM.zoom >= 2.2 && (!rel || rel.has(n))) || (MEM.sel && MEM.sel.kind === 'sub' && n.parent === MEM.sel)));
+  const small = W < 520 ? 1.5 : 0;
+  for (const n of [MEM.nodes[0]].concat(order.slice().reverse())) {
+    if (!n.q) continue;
+    const onRel = rel && rel.has(n);
+    const show = n.kind === 'root' || n.kind === 'topic' || (n.kind === 'sub' && (MEM.zoom >= 1.25 || onRel)) ||
+      (n.kind === 'note' && (n === MEM.sel || n === MEM.hover || (MEM.sel && MEM.sel.kind === 'sub' && n.parent === MEM.sel) || MEM.zoom >= 2.3));
     if (!show) continue;
-    const a = n.kind === 'root' ? 1 : fade(n.q.z) * dim(n);
-    if (a < 0.3) continue;
-    const size = (n.kind === 'root' ? 14 : n.kind === 'topic' ? 13 : 11.5) - (W < 520 ? 1.5 : 0);
+    const a = n.kind === 'root' ? 1 : fade(n.q.z) * (rel && !onRel ? 0.35 : 1) * e;
+    if (a < 0.25) continue;
+    const size = (n.kind === 'root' ? 15 : n.kind === 'topic' ? 13 : 11.5) - small;
     ctx.font = `${n.kind === 'root' || n.kind === 'topic' ? 500 : 400} ${size}px "Noto Sans TC", system-ui, sans-serif`;
     let text = n.label;
     if (n.kind === 'topic' || n.kind === 'sub') text += ` ${n.count}`;
     if (n.kind === 'note' && text.length > 16) text = text.slice(0, 15) + '…';
-    const y = n.q.y - n.rr - 9;
-    ctx.globalAlpha = a; ctx.strokeStyle = bg; ctx.lineWidth = 4; ctx.strokeText(text, n.q.x, y);
-    ctx.fillStyle = fg; ctx.fillText(text, n.q.x, y);
+    const y = n.kind === 'root' ? n.q.y + 26 : n.q.y - n.rr - 10;
+    ctx.globalAlpha = a; ctx.strokeStyle = 'rgba(3,5,14,0.85)'; ctx.lineWidth = 4; ctx.strokeText(text, n.q.x, y);
+    ctx.fillStyle = n.kind === 'root' ? '#FFF4DC' : '#E9EEFF'; ctx.fillText(text, n.q.x, y);
   }
   ctx.globalAlpha = 1;
 }
 function memHit(x, y) {
   let best = null, bz = Infinity;
   for (const n of MEM.nodes) {
-    if (!memVis(n) || !n.q) continue;
-    if (Math.hypot(n.q.x - x, n.q.y - y) <= n.rr + 7 && n.q.z < bz) { best = n; bz = n.q.z; }
+    if (!n.q) continue;
+    const rad = n.kind === 'root' ? 22 : n.rr + 8;
+    if (Math.hypot(n.q.x - x, n.q.y - y) <= rad && n.q.z < bz) { best = n; bz = n.q.z; }
   }
   return best;
+}
+function memSelect(n) {
+  if (!n || n.kind === 'root') { MEM.sel = null; MEM.panel = null; }
+  else if (n.kind === 'note') { MEM.sel = n; MEM.panel = n.parent; MEM.open.add(n.note.id); memFocus(n); }
+  else { MEM.sel = n; MEM.panel = n; memFocus(n); }
+  memSide();
 }
 function memBind() {
   const cv = MEM.cv;
   cv.style.touchAction = 'none';
   const pos = e => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
   cv.addEventListener('pointerdown', e => {
-    const p = pos(e); MEM.last = Date.now();
+    const p = pos(e);
     try { cv.setPointerCapture(e.pointerId); } catch (err) { /* 略過 */ }
     MEM.ptrs.set(e.pointerId, { x: p.x, y: p.y, sx: p.x, sy: p.y });
-    MEM.moved = false;
+    MEM.moved = false; MEM.targetYaw = null;
     if (MEM.ptrs.size === 2) { const [a, b] = [...MEM.ptrs.values()]; MEM.pinch = { d: Math.max(10, Math.hypot(a.x - b.x, a.y - b.y)), z: MEM.zoom }; MEM.moved = true; }
   });
   cv.addEventListener('pointermove', e => {
     const p = MEM.ptrs.get(e.pointerId), q = pos(e);
-    if (!p) { if (e.pointerType === 'mouse') { const h = memHit(q.x, q.y); MEM.hover = h; cv.style.cursor = h ? 'pointer' : 'grab'; } return; }
-    MEM.last = Date.now();
+    if (!p) { if (e.pointerType === 'mouse') { const h = memHit(q.x, q.y); MEM.hover = h && h.kind !== 'root' ? h : null; cv.style.cursor = h ? 'pointer' : 'grab'; } return; }
     if (MEM.ptrs.size === 2 && MEM.pinch) {
       p.x = q.x; p.y = q.y;
       const [a, b] = [...MEM.ptrs.values()];
@@ -2053,7 +2161,7 @@ function memBind() {
     }
     const dx = q.x - p.x, dy = q.y - p.y; p.x = q.x; p.y = q.y;
     if (Math.hypot(q.x - p.sx, q.y - p.sy) > 4) MEM.moved = true;
-    if (MEM.moved) { MEM.yaw += dx * 0.008; MEM.pitch = Math.max(-1.3, Math.min(1.3, MEM.pitch + dy * 0.008)); }
+    if (MEM.moved) { MEM.yaw += dx * 0.008; MEM.pitch = Math.max(0.1, Math.min(1.5, MEM.pitch + dy * 0.006)); }
   });
   const end = e => {
     const p = MEM.ptrs.get(e.pointerId);
@@ -2061,53 +2169,58 @@ function memBind() {
     if (MEM.ptrs.size < 2) MEM.pinch = null;
     if (p && !MEM.moved && e.type === 'pointerup' && !MEM.ptrs.size) {
       const q = pos(e), h = memHit(q.x, q.y);
-      MEM.sel = h && h.kind !== 'root' ? h : null;
       if (e.pointerType !== 'mouse') MEM.hover = null;
-      memSide();
+      if (h) memSelect(h); else if (MEM.sel) { MEM.sel = null; memSide(); }
     }
   };
   cv.addEventListener('pointerup', end);
   cv.addEventListener('pointercancel', end);
   cv.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') MEM.hover = null; });
-  cv.addEventListener('wheel', e => { e.preventDefault(); MEM.last = Date.now(); MEM.zoom = Math.max(0.5, Math.min(4, MEM.zoom * Math.exp(-e.deltaY * 0.0015))); }, { passive: false });
-  cv.addEventListener('dblclick', () => { MEM.zoom = 1; MEM.sel = null; memSide(); });
+  cv.addEventListener('wheel', e => { e.preventDefault(); MEM.zoom = Math.max(0.5, Math.min(4, MEM.zoom * Math.exp(-e.deltaY * 0.0015))); }, { passive: false });
+  cv.addEventListener('dblclick', () => { MEM.zoom = 1; });
+}
+// 側欄：主題、子主題底下直接列出重點內容
+function memCard(x, showSub) {
+  const m = MEM.st.market, on = MEM.sel && MEM.sel.note === x, fold = ui.memFold && !MEM.open.has(x.id);
+  return `<div class="mn ${on ? 'on' : ''}" data-memn="${x.id}">
+    <div class="nt-top"><span class="num">${x.date}</span><span class="pill" style="color:${stanceColor(x.stance, m)}">${STANCE[x.stance] || '中性'}</span>${showSub ? `<span class="tp">${esc(x.sub)}</span>` : '<span class="sp"></span>'}
+      <button type="button" class="ibtn sm" data-mem-k="${x.id}" title="在 K 線上看" aria-label="在 K 線上看">${ic('chart')}</button><button type="button" class="ibtn sm" data-mem-e="${x.id}" title="編輯" aria-label="編輯">${ic('edit')}</button></div>
+    <div class="nt-title">${esc(x.title)}</div>
+    ${!fold && x.body ? `<div class="mn-body">${esc(x.body)}</div>` : ''}
+    ${!fold && x.source ? `<div class="mn-src">來源：${esc(x.source)}</div>` : ''}</div>`;
 }
 function memSide() {
   const el = $('#memSide'); if (!el) return;
-  const st = MEM.st, n = MEM.sel, m = st.market;
-  const visNotes = MEM.nodes.filter(x => x.kind === 'note' && memVis(x)).map(x => x.note);
-  const noteRow = x => `<button type="button" class="mem-it" data-mem="n:${x.id}"><i class="dotc" style="background:${stanceColor(x.stance, m)}"></i><span class="num faint">${x.date}</span> ${esc(x.title)}</button>`;
-  if (!n) {
-    const c = { bull: 0, neutral: 0, bear: 0 }; visNotes.forEach(x => c[x.stance] = (c[x.stance] || 0) + 1);
-    const tops = MEM.nodes.filter(x => x.kind === 'topic' && memVis(x));
+  const st = MEM.st, m = st.market, P = MEM.panel;
+  const notesOf = sub => MEM.nodes.filter(x => x.kind === 'note' && x.parent === sub).map(x => x.note).sort((a, b) => a.date < b.date ? 1 : -1);
+  const foldBtn = `<button type="button" class="btn mem-fold" data-mem-fold>${ui.memFold ? '全部展開' : '全部收起'}</button>`;
+  if (!P) {
+    const all = MEM.nodes.filter(x => x.kind === 'note').map(x => x.note);
+    const c = { bull: 0, neutral: 0, bear: 0 }; all.forEach(x => c[x.stance] = (c[x.stance] || 0) + 1);
+    const tops = MEM.nodes.filter(x => x.kind === 'topic');
+    const latest = all.slice().sort((a, b) => a.date < b.date ? 1 : -1).slice(0, 6);
     el.innerHTML = `<div class="mem-h">${stockLabel(st)}</div>
       <div class="mem-stance"><span style="color:${stanceColor('bull', m)}">偏多 ${c.bull}</span><span style="color:${stanceColor('neutral', m)}">中性 ${c.neutral}</span><span style="color:${stanceColor('bear', m)}">偏空 ${c.bear}</span></div>
-      <div class="lbl" style="margin:12px 0 4px">主題</div>${tops.map(t => `<button type="button" class="mem-it" data-mem="${esc(t.id)}"><i class="dotc" style="background:${t.color}"></i>${esc(t.topic)} <span class="faint">${t.count}</span></button>`).join('') || '<div class="faint">還沒有重點</div>'}
-      <div class="lbl" style="margin:12px 0 4px">最新重點</div>${visNotes.slice(-6).reverse().map(noteRow).join('')}`;
-  } else if (n.kind === 'topic') {
-    const subs = MEM.nodes.filter(x => x.kind === 'sub' && x.parent === n && memVis(x));
-    el.innerHTML = `<div class="mem-back"><button type="button" class="btn" data-mem="">← 全部</button></div>
-      <div class="mem-h"><i class="dotc" style="background:${n.color}"></i>${esc(n.topic)}</div><div class="faint">${n.count} 條重點・${subs.length} 個子主題</div>
-      <div class="lbl" style="margin:12px 0 4px">子主題</div>${subs.map(s => `<button type="button" class="mem-it" data-mem="${esc(s.id)}">${esc(s.sub)} <span class="faint">${s.count}</span></button>`).join('')}`;
-  } else if (n.kind === 'sub') {
-    const ns = MEM.nodes.filter(x => x.kind === 'note' && x.parent === n && memVis(x)).map(x => x.note).sort((a, b) => a.date < b.date ? 1 : -1);
-    el.innerHTML = `<div class="mem-back"><button type="button" class="btn" data-mem="${esc(n.parent.id)}">← ${esc(n.topic)}</button></div>
-      <div class="mem-h"><i class="dotc" style="background:${n.color}"></i>${esc(n.topic)} › ${esc(n.sub)}</div><div class="faint">${ns.length} 條重點</div>
-      <div style="margin-top:10px">${ns.map(noteRow).join('')}</div>`;
+      <div class="lbl" style="margin:14px 0 4px">主題（點一下看裡面所有重點）</div>
+      ${tops.map(t => `<button type="button" class="mem-it" data-mem="${esc(t.id)}"><i class="dotc" style="background:${t.color}"></i>${esc(t.topic)} <span class="faint">${t.count}</span></button>`).join('') || '<div class="faint">還沒有重點</div>'}
+      ${latest.length ? `<div class="lbl" style="margin:14px 0 6px">最新重點</div>${latest.map(x => memCard(x, true)).join('')}` : ''}`;
+  } else if (P.kind === 'topic') {
+    const subs = MEM.nodes.filter(x => x.kind === 'sub' && x.parent === P);
+    el.innerHTML = `<div class="mem-bar"><button type="button" class="btn" data-mem="">← 全部</button>${foldBtn}</div>
+      <div class="mem-h"><i class="dotc" style="background:${P.color}"></i>${esc(P.topic)}</div><div class="faint">${P.count} 條重點・${subs.length} 個子主題</div>
+      ${subs.map(s => `<div class="ms-h" data-mem="${esc(s.id)}"><i class="dotc" style="background:${s.color}"></i>${esc(s.sub)} <span class="faint">${s.count}</span></div>${notesOf(s).map(x => memCard(x, false)).join('')}`).join('')}`;
   } else {
-    const x = n.note;
-    el.innerHTML = `<div class="mem-back"><button type="button" class="btn" data-mem="${esc(n.parent.id)}">← ${esc(x.sub)}</button></div>
-      <div class="nt-top" style="margin-top:6px"><span class="num">${x.date}</span><span class="pill" style="color:${stanceColor(x.stance, m)}">${STANCE[x.stance] || '中性'}</span><span class="tp">${esc(x.topic)} › ${esc(x.sub)}</span></div>
-      <div class="mem-h" style="margin-top:4px">${esc(x.title)}</div>
-      ${x.body ? `<div style="white-space:pre-wrap;color:var(--tx2);font-size:13px;margin-top:4px">${esc(x.body)}</div>` : ''}
-      ${x.source ? `<div class="faint" style="font-size:12px;margin-top:6px">來源：${esc(x.source)}</div>` : ''}
-      <div class="inl" style="margin-top:12px"><button type="button" class="btn pri" data-mem-k="${x.id}">${ic('chart')}在 K 線上看</button><button type="button" class="btn" data-mem-e="${x.id}">${ic('edit')}編輯</button></div>`;
+    const ns = notesOf(P);
+    el.innerHTML = `<div class="mem-bar"><button type="button" class="btn" data-mem="${esc(P.parent.id)}">← ${esc(P.topic)}</button>${foldBtn}</div>
+      <div class="mem-h"><i class="dotc" style="background:${P.color}"></i>${esc(P.topic)} › ${esc(P.sub)}</div><div class="faint" style="margin-bottom:10px">${ns.length} 條重點</div>
+      ${ns.map(x => memCard(x, false)).join('')}`;
   }
+  const on = el.querySelector('.mn.on');
+  if (on) on.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
-// 側欄點擊：選節點、跳 K 線、編輯
 document.addEventListener('click', e => {
-  if (!e.target.closest('#mem')) return;
-  const a = e.target.closest('[data-mem],[data-mem-k],[data-mem-e]');
+  if (!e.target.closest('#memSide')) return;
+  const a = e.target.closest('[data-mem-k],[data-mem-e],[data-mem-fold],[data-memn],[data-mem]');
   if (!a) return;
   if (a.dataset.memK || a.dataset.memE) {
     const id = a.dataset.memK || a.dataset.memE, n = data.notes.find(x => x.id === id), st = MEM.st;
@@ -2120,9 +2233,14 @@ document.addEventListener('click', e => {
     kFocusDate(n.date);
     return;
   }
+  if (a.hasAttribute('data-mem-fold')) { ui.memFold = !ui.memFold; MEM.open.clear(); saveUi(); memSide(); return; }
+  if (a.dataset.memn) {
+    const n = MEM.nodes.find(x => x.kind === 'note' && x.note.id === a.dataset.memn);
+    if (n) { MEM.sel = n; MEM.open.add(n.note.id); memFocus(n); memSide(); }
+    return;
+  }
   const key = a.dataset.mem;
-  MEM.sel = key ? MEM.nodes.find(x => x.id === key) || null : null;
-  memSide();
+  memSelect(key ? MEM.nodes.find(x => x.id === key) || null : null);
 });
 
 /* ========== 對話框 ========== */
@@ -2574,7 +2692,43 @@ document.addEventListener('visibilitychange', () => {
 });
 matchMedia('(max-width: 899px)').addEventListener('change', () => render());
 
+/* ========== 可調整大小的版面 ========== */
+const LAYOUT_DEF = { cl: 51, lt: 55, rt: 55, ms: 380 };
+let layout = Object.assign({}, LAYOUT_DEF, load('st.layout') || {});
+function applyLayout() {
+  const g = $('#grid');
+  g.style.setProperty('--cl', layout.cl + '%'); g.style.setProperty('--lt', layout.lt + '%'); g.style.setProperty('--rt', layout.rt + '%');
+  document.documentElement.style.setProperty('--ms', layout.ms + 'px');
+}
+let RS = null;
+document.addEventListener('pointerdown', e => {
+  const sp = e.target.closest('.split');
+  if (!sp || (e.pointerType === 'mouse' && e.button !== 0)) return;
+  e.preventDefault();
+  const k = sp.dataset.split;
+  const box = (k === 'cl' ? $('#grid') : k === 'ms' ? sp.parentElement : sp.parentElement).getBoundingClientRect();
+  RS = { k, box, el: sp };
+  sp.classList.add('on');
+  document.body.classList.add('resizing', k === 'cl' || k === 'ms' ? 'rv' : 'rh');
+});
+document.addEventListener('pointermove', e => {
+  if (!RS) return;
+  const b = RS.box, cl = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  if (RS.k === 'cl') layout.cl = cl((e.clientX - b.left - 10) / (b.width - 20) * 100, 25, 75);
+  else if (RS.k === 'ms') layout.ms = cl(b.right - e.clientX, 260, Math.max(300, b.width * 0.6));
+  else layout[RS.k] = cl((e.clientY - b.top) / b.height * 100, 15, 85);
+  applyLayout();
+});
+const rsEnd = () => { if (!RS) return; RS.el.classList.remove('on'); document.body.classList.remove('resizing', 'rv', 'rh'); RS = null; store('st.layout', layout); };
+document.addEventListener('pointerup', rsEnd);
+document.addEventListener('pointercancel', rsEnd);
+document.addEventListener('dblclick', e => {
+  const sp = e.target.closest('.split'); if (!sp) return;
+  layout[sp.dataset.split] = LAYOUT_DEF[sp.dataset.split]; applyLayout(); store('st.layout', layout);
+});
+
 /* ========== 啟動 ========== */
+applyLayout();
 if (conf.theme !== 'dark') document.querySelector('meta[name="theme-color"]').content = '#FFFFFF';
 if (!ui.sel && data.stocks.length) ui.sel = data.stocks[0].id;
 ui.view = 'list';
