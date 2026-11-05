@@ -271,6 +271,99 @@ span.rel{color:var(--tx2);cursor:default}
 .err:not(:empty){margin-top:8px}
 .gset{border:1px solid var(--line);border-radius:10px;padding:12px 12px 2px;margin-bottom:12px}
 .gset>.lbl{display:block;font-weight:500;color:var(--tx);font-size:13px;margin-bottom:10px}
+/* 新欄位標籤、依據連結 */
+.ctag.warn{color:var(--warn);border-color:rgba(227,160,8,.45);background:rgba(227,160,8,.08)}
+.ctag.ok{color:var(--green);border-color:rgba(46,189,133,.45);background:rgba(46,189,133,.08)}
+.ctag.old{color:var(--tx3);border-style:dashed}
+.nt.old{opacity:.62}
+.nt-links{font-size:12px;color:var(--tx2);margin-top:4px;display:none}
+.nt.open .nt-links{display:block}
+.mn .nt-links{display:block}
+.lnk{font:inherit;font-size:12px;background:transparent;border:0;padding:0 2px;color:var(--ac);cursor:pointer;text-align:left}
+.lnk:hover{text-decoration:underline}
+.adv{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:12px}
+.adv summary{cursor:pointer;font-size:13px;color:var(--tx2)}
+.adv[open] summary{margin-bottom:10px}
+.evl{display:flex;flex-direction:column;gap:4px;font-size:13px;margin-bottom:10px}
+.evl label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.qst{font:inherit;font-size:12px;color:var(--tx2);background:transparent;border:0;padding:0;cursor:pointer}
+.qst b{font-weight:500;color:var(--tx);margin-left:4px}
+.qst b.r{color:var(--red)}.qst b.g{color:var(--green)}
+.qst:hover{color:var(--tx)}
+/* 多空指標 */
+.sblk{border:1px solid var(--line);border-radius:10px;padding:7px 10px;margin:0 0 8px;font-size:12px}
+.sblk-h{display:flex;align-items:center;gap:8px;color:var(--tx2);margin-bottom:2px}
+.sblk-h b{color:var(--tx);font-weight:500}
+.sblk select,.mg-sum select{background:var(--panel2);border:1px solid var(--line2);border-radius:6px;padding:1px 4px;font-size:12px;color:var(--tx)}
+.srow{display:flex;align-items:center;gap:4px 10px;flex-wrap:wrap;padding:3px 0}
+.slab{width:76px;flex:none;color:var(--tx2)}
+.sbar{display:inline-flex;width:110px;height:7px;border-radius:4px;overflow:hidden;background:var(--line);flex:none}
+.sbar i{display:block;height:100%}
+.sbar.sm{width:54px;height:5px}
+.snum{color:var(--tx2);white-space:nowrap}
+.sratio{white-space:nowrap;color:var(--tx2)}
+.sratio b{color:var(--tx);font-weight:500}
+.mini{display:inline-flex;align-items:center;gap:6px;float:right;font-size:12px;color:var(--tx2)}
+.seg2{display:inline-flex;gap:2px;background:var(--panel2);border-radius:8px;padding:2px}
+.seg2 button{border:0;background:transparent;padding:2px 10px;border-radius:6px;cursor:pointer;color:var(--tx2);font-size:12px;white-space:nowrap}
+.seg2 button.on{background:var(--panel);color:var(--tx);box-shadow:0 0 0 1px var(--line)}
+.anl{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+.anl td{padding:3px 4px;border-bottom:1px dashed var(--line);white-space:nowrap}
+.anl td:first-child{white-space:normal}
+.anl td.anr{text-align:right;color:var(--tx2)}
+.toast.act{pointer-events:auto;display:flex;align-items:center;gap:12px}
+.toast .tact{font:inherit;font-size:13px;font-weight:500;background:transparent;border:0;color:var(--ac);cursor:pointer;padding:0}
+:root[data-theme="dark"] .toast .tact{color:#2563EB}
+/* 資料整理 */
+dialog.mgr{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;border-radius:0;padding:0;background:var(--bg)}
+dialog.mgr[open]{display:flex;flex-direction:column}
+.mg-top{display:flex;align-items:center;gap:12px;padding:8px 14px;background:var(--panel);border-bottom:1px solid var(--line);flex:none;flex-wrap:wrap;padding-top:max(8px,env(safe-area-inset-top))}
+.mg-top b{font-weight:500;font-size:15px}
+.mg-body{flex:1;min-height:0;display:flex;flex-direction:column;padding:10px 14px 0;gap:8px}
+.mg-fil{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;flex:none}
+.mg-fil select,.mg-fil input,.mg-tools select{background:var(--panel);border:1px solid var(--line2);border-radius:7px;padding:4px 8px;font-size:13px;color:var(--tx);max-width:200px;min-width:0}
+.mg-fil input[type=search]{width:200px}
+.mg-fil input[type=date]{width:140px}
+.mg-fil .chk{margin:0;font-size:12px}
+.mg-sum{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:13px;color:var(--tx2);flex:none}
+.mg-sum .sblk{margin:0;border:0;padding:0}
+.mg-sum .srow{padding:0}
+.mg-grid{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.mg-head,.mg-r{display:grid;grid-template-columns:30px 122px 86px minmax(130px,1.1fr) minmax(180px,2.4fr) 52px 52px minmax(70px,.6fr) 92px;align-items:center;column-gap:8px;padding:0 10px}
+.mg-head{font-size:12px;color:var(--tx2);border-bottom:1px solid var(--line);height:34px;flex:none}
+.mg-head [data-sort]{cursor:pointer;user-select:none}
+.mg-head [data-sort]:hover{color:var(--tx)}
+.mg-head .on{color:var(--ac)}
+.mg-vp{flex:1;overflow:auto;position:relative;min-height:0}
+.mg-sp{position:relative;width:100%}
+.mg-r{position:absolute;left:0;right:0;height:36px;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer}
+.mg-r:hover{background:var(--panel2)}
+.mg-r.on{background:var(--acbg)}
+.mg-r>*{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mg-r .tt{display:flex;align-items:center;gap:6px}
+.mg-r .tt span{overflow:hidden;text-overflow:ellipsis}
+.mg-r .ctag{flex:none}
+.mg-r .st2{display:flex;gap:4px}
+.mg-g{position:absolute;left:0;right:0;height:36px;display:flex;align-items:center;gap:10px;padding:0 10px;background:var(--panel2);font-size:12px;color:var(--tx2);border-bottom:1px solid var(--line)}
+.mg-g b{color:var(--tx);font-weight:500}
+.mg-act{display:none;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 0 10px;flex:none}
+.mg-act.on{display:flex}
+.mg-act b{font-weight:500;margin-right:4px}
+.mg-act select{background:var(--panel);border:1px solid var(--line2);border-radius:7px;padding:4px 8px;font-size:13px}
+.mg-foot{flex:none;height:10px}
+.mg-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--tx2);font-size:13px;padding:20px;text-align:center}
+.mg-scroll{flex:1;min-height:0;overflow:auto;padding-bottom:14px}
+.mg-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;flex:none;font-size:13px}
+.ct{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:10px}
+.ct-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:500;font-size:14px;padding:2px 0 6px}
+.ct-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:5px 0;border-top:1px dashed var(--line);font-size:13px}
+.ct-r label{display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0}
+.ct-r .faint{font-size:12px}
+.ih{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:13px}
+.ih .sp{min-width:8px}
+.ih.done{opacity:.6}
+.pk{max-height:46dvh;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:0 10px}
+.mg-ftog{display:none}
 
 @media (max-width:899px){
   body{height:auto;min-height:100dvh;display:block}
@@ -305,6 +398,23 @@ span.rel{color:var(--tx2);cursor:default}
   .klegend{right:66px;font-size:11.5px}
   .mbar .tabs{width:100%;margin-top:6px}
   .mbar .tabs button{flex:1}
+  .mg-body{padding:8px 8px 0}
+  .mg-top{padding-left:10px;padding-right:10px}
+  .mg-top .tabs{order:3;width:100%}
+  .mg-top .tabs button{flex:1;padding:4px 6px}
+  .mg-ftog{display:inline-flex}
+  .mg-fil{display:none}
+  .mg-fil.on{display:flex}
+  .mg-fil select,.mg-fil input,.mg-fil input[type=search]{max-width:none;flex:1 1 140px;font-size:16px}
+  .mg-head{display:none}
+  .mg-r{grid-template-columns:28px auto auto minmax(0,1fr) auto;grid-template-rows:26px 26px;height:58px;row-gap:0;column-gap:6px;padding:2px 8px}
+  .mg-r>.ck{grid-row:1/3}
+  .mg-r>.tt{grid-column:2/-1;grid-row:2;font-weight:500}
+  .mg-r>.cl,.mg-r>.an2,.mg-r>.st2{display:none}
+  .mg-r .dt,.mg-r .sk,.mg-r .tp2{font-size:12px;color:var(--tx2)}
+  .mg-g{height:58px;flex-wrap:wrap;row-gap:0;padding:4px 8px}
+  .mg-act{position:sticky;bottom:0;background:var(--bg)}
+  .sbar{width:84px}
 }
 </style>
 </head>
@@ -316,6 +426,7 @@ span.rel{color:var(--tx2);cursor:default}
   <div class="sp hide-m"></div>
   <div class="st" id="st"></div>
   <div class="acts">
+    <button class="ibtn" data-act="mgr" title="資料整理" aria-label="資料整理"><svg viewBox="0 0 24 24" class="ic"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17"/></svg></button>
     <button class="ibtn" data-act="refresh" title="重新抓取報價" aria-label="重新抓取報價"><svg viewBox="0 0 24 24" class="ic"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button>
     <button class="ibtn" id="syncBtn" data-act="sync" title="同步" aria-label="同步"><svg viewBox="0 0 24 24" class="ic"><path d="M7 18h10a4 4 0 0 0 .6-8A6 6 0 0 0 6.1 9.6 4.2 4.2 0 0 0 7 18z"/></svg></button>
     <button class="ibtn" id="themeBtn" data-act="theme" title="切換深色／淺色" aria-label="切換深色／淺色"></button>
@@ -341,6 +452,7 @@ span.rel{color:var(--tx2);cursor:default}
 
 <dialog id="dlg"></dialog>
 <dialog id="mem" class="mem"></dialog>
+<dialog id="mgr" class="mgr"></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="fileIn" accept="application/json,.json" hidden>
 
@@ -362,33 +474,44 @@ function defaultSettings() {
     usFee: 0, usSellRate: 0
   };
 }
-function emptyData() { return { version: 1, updatedAt: 0, settings: defaultSettings(), stocks: [], trades: [], dividends: [], notes: [], strategies: [] }; }
+const TRASH_DAYS = 30;                                   // 回收桶保留天數
+const DATA_ARRAYS = ['stocks', 'trades', 'dividends', 'notes', 'strategies', 'imports', 'trash', 'tombs', 'dupIgnore'];
+// imports：匯入紀錄；trash：回收桶；tombs：刪過的重點（再匯入時提醒）；dupIgnore：標為「不是重複」的組合
+function emptyData() { return { version: 1, updatedAt: 0, settings: defaultSettings(), stocks: [], trades: [], dividends: [], notes: [], strategies: [], imports: [], trash: [], tombs: [], dupIgnore: [] }; }
 function normalize(d) {
   const o = Object.assign(emptyData(), d || {});
   o.settings = Object.assign(defaultSettings(), (d && d.settings) || {});
-  ['stocks', 'trades', 'dividends', 'notes', 'strategies'].forEach(k => { if (!Array.isArray(o[k])) o[k] = []; });
+  DATA_ARRAYS.forEach(k => { if (!Array.isArray(o[k])) o[k] = []; });
   o.notes.forEach(n => { if (n.topic === '產品') n.topic = '產品業務'; });   // 舊版主題改名
+  const cut = Date.now() - TRASH_DAYS * 864e5;
+  o.trash = o.trash.filter(x => x && x.item && (x.at || 0) >= cut);
+  if (o.tombs.length > 8000) o.tombs = o.tombs.slice(-8000);
+  if (o.dupIgnore.length > 20000) o.dupIgnore = o.dupIgnore.slice(-20000);
+  if (o.imports.length > 300) o.imports = o.imports.slice(-300);
   return o;
 }
 
 let data = normalize(load(LS.data));
 let conf = Object.assign({ theme: 'dark', token: '', repo: '', dirty: false, syncedAt: 0 }, load(LS.conf) || {});
 let quotes = Object.assign({ tw: {}, us: {}, fx: null, time: 0 }, load(LS.quotes) || {});
-let ui = Object.assign({ tab: 'hold', sel: null, kInt: '1d', kTrades: true, kNotes: true, noteTopic: '', memFold: false, memSpin: false }, load(LS.ui) || {});
+let ui = Object.assign({ tab: 'hold', sel: null, kInt: '1d', kTrades: true, kNotes: true, noteTopic: '', memFold: false, memSpin: false, hiWin: 250, statRange: 0 }, load(LS.ui) || {});
 ui.noteHl = new Set(); ui.noteOpen = new Set();
 let qState = { status: 'idle', msg: '' };
 let syncState = { status: conf.token ? 'idle' : 'off', msg: '', at: 0 };
 
 function saveData() { store(LS.data, data); }
 function saveConf() { store(LS.conf, conf); }
-function saveUi() { store(LS.ui, { tab: ui.tab, sel: ui.sel, kInt: ui.kInt, kTrades: ui.kTrades, kNotes: ui.kNotes, noteTopic: ui.noteTopic, memFold: ui.memFold, memSpin: ui.memSpin }); }
+function saveUi() { store(LS.ui, { tab: ui.tab, sel: ui.sel, kInt: ui.kInt, kTrades: ui.kTrades, kNotes: ui.kNotes, noteTopic: ui.noteTopic, memFold: ui.memFold, memSpin: ui.memSpin, hiWin: ui.hiWin, statRange: ui.statRange }); }
 
 function commit(markDirty = true) {
   data.updatedAt = Date.now();
   saveData();
   if (markDirty && !data.demo) { conf.dirty = true; saveConf(); scheduleSync(); }
   render();
+  if (MG.open) mgRender();
 }
+// 資料整理畫面的狀態
+const MG = { open: false, tab: 'notes', f: {}, sort: { k: 'date', d: -1 }, sel: new Set(), list: [], rows: [], dup: false, groups: null, last: -1, catStock: '', catSel: new Set(), tsel: new Set(), showFil: false };
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 function today() { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
@@ -484,6 +607,10 @@ function loadDemo() {
   nn(a, '2026-08-05', '新聞事件', '重大公告', '海外新廠補助確定', 'neutral', '海外新廠的補助金額確定，但當地營運成本較高。');
   nn(c, '2025-05-28', '營收財報', '營收', '資料中心營收大幅成長', 'bull', '資料中心營收年增大幅超出市場預期。', { fiscal_period: '2026-Q1' });
   nn(c, '2026-03-18', '產品業務', '主要產品', '發表下一代 GPU 架構', 'bull', '新架構訓練效能大幅提升，主要雲端業者已表態採購。');
+  nn(a, '2025-06-10', '分析師看法', '投資論點', '示範投顧預估毛利率將下滑', 'bear', '當時預估匯率不利、毛利率會下滑；之後的財報顯示毛利率高於財測，這個判斷已過時。', { claim_type: 'forecast', analyst: '示範投顧', source_type: 'analyst', review_status: 'superseded' });
+  // AI 推論連回支持它的資料
+  const byT = t => data.notes.find(n => n.title === t), ai = data.notes.find(n => n.topic === 'AI research');
+  if (ai) Object.assign(ai, { evidence_ids: [byT('新台幣升值壓縮毛利').id, byT('關稅政策不確定性升高').id], related_topic: '風險', analysis_as_of: today() });
   data.updatedAt = Date.now();
   ui.sel = a.id; ui.tab = 'hold';
   saveData(); saveUi(); render();
@@ -669,6 +796,7 @@ const ICON = {
   x: '<path d="M6 6l12 12M18 6L6 18"/>',
   chart: '<path d="M4 4v16h16"/><path d="M8 15l3-4 3 2 5-6"/>',
   tag: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.3"/>',
+  list: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17"/>',
   latest: '<path d="M5 12h11M12 7l5 5-5 5M20 5v14"/>',
   brain: '<path d="M12 5a3 3 0 0 0-5.6-1.5A3 3 0 0 0 4 8a3 3 0 0 0 0 6 3 3 0 0 0 3 4 3 3 0 0 0 5 1z"/><path d="M12 5a3 3 0 0 1 5.6-1.5A3 3 0 0 1 20 8a3 3 0 0 1 0 6 3 3 0 0 1-3 4 3 3 0 0 1-5 1z"/><path d="M12 5v14"/>',
   moon: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
@@ -1424,7 +1552,7 @@ function kMarkers(st) {
   });
   data.notes.forEach(n => {
     if (n.stockId !== st.id) return;
-    const p = notePrec(n); if (p === 'unknown') return;          // 日期不明的不畫
+    const p = notePrec(n); if (p === 'unknown' || p === 'year' || isOld(n)) return;   // 日期不明、只知道年份、已過時的不畫
     const i = p === 'day' ? ch.indexAtOrBefore(n.date) : startIdx(n.date); if (i < 0) return;
     if (!K.noteIdx.has(i)) K.noteIdx.set(i, []);
     K.noteIdx.get(i).push(n);
@@ -1509,10 +1637,35 @@ const FIXED_SUBS = {
 const STANCE = { bull: '偏多', bear: '偏空', neutral: '中性' };
 const CLAIM = { fact: '事實', forecast: '預測', opinion: '觀點', hypothesis: '假設', self_report: '自述', scheduled: '預定' };
 const isAiNote = n => n.topic === 'AI research' || (n.source_type === 'assistant' && (n.claim_type === 'opinion' || n.claim_type === 'hypothesis'));
-function topicTree(st, withDefaults = true) {
+const GROUPS = ['公司基本面', '外部環境', '市場研究'];
+const REVIEW = { current: '目前', needs_review: '待檢視', superseded: '已過時' };
+const CAUSE = { confirmed: '原因已確認', reported: '原因有報導', hypothesis: '原因推測', unknown: '原因不明' };
+const SRC_TYPES = ['company', 'regulator', 'analyst', 'media', 'market', 'user', 'assistant', 'unknown'];
+// GPT 提議裡的寫法 → 規範的寫法
+const SRC_ALIAS = { ai_generated: 'assistant', ai: 'assistant', chatgpt: 'assistant', news_media: 'media', news: 'media', market_data: 'market', financial_report: 'company', filing: 'company' };
+const VER_ALIAS = { verified: 'not_reverified', attributed: 'not_reverified', unverified: 'not_reverified', not_applicable: null };
+const isOld = n => n.review_status === 'superseded';
+// 比對用：去掉空白和標點
+const normT = s => String(s || '').toLowerCase().replace(/[\s　，。、,.!！?？:：;；「」『』（）()【】[\]"'“”‘’《》〈〉~～\-—_/|]/g, '');
+const tombKey = n => `${n.stockId}|${normT(n.title)}${(n.date_precision || 'day') === 'day' ? '|' + n.date : ''}`;
+// 重點索引（依 id 找、反查哪些 AI 推論引用了它）
+const NIX = { ref: null, at: -1, len: -1, byId: new Map(), refs: new Map() };
+function noteIndex() {
+  if (NIX.ref !== data.notes || NIX.at !== data.updatedAt || NIX.len !== data.notes.length) {
+    NIX.byId = new Map(data.notes.map(n => [n.id, n])); NIX.refs = new Map();
+    data.notes.forEach(n => (n.evidence_ids || []).forEach(e => { if (!NIX.refs.has(e)) NIX.refs.set(e, []); NIX.refs.get(e).push(n); }));
+    NIX.ref = data.notes; NIX.at = data.updatedAt; NIX.len = data.notes.length;
+  }
+  return NIX;
+}
+const noteById = id => noteIndex().byId.get(id) || null;
+const evOf = n => (n.evidence_ids || []).map(noteById).filter(Boolean);
+const refsOf = n => noteIndex().refs.get(n.id) || [];
+const needsEvidence = n => isAiNote(n) && !evOf(n).length;
+function topicTree(st, withDefaults = true, list) {
   const map = new Map();
   if (withDefaults) DEFAULT_TOPICS.forEach(t => map.set(t, { topic: t, count: 0, subs: new Map() }));
-  data.notes.forEach(n => {
+  (list || data.notes).forEach(n => {
     if (n.stockId !== st.id) return;
     if (!map.has(n.topic)) map.set(n.topic, { topic: n.topic, count: 0, subs: new Map() });
     const t = map.get(n.topic); t.count++; t.subs.set(n.sub, (t.subs.get(n.sub) || 0) + 1);
@@ -1538,6 +1691,7 @@ function fmtNoteDate(n) {
   const p = notePrec(n);
   if (p === 'month') return `${n.date.slice(0, 7)}<span class="faint">（月）</span>`;
   if (p === 'quarter') return `${n.date.slice(0, 4)} Q${Math.floor((+n.date.slice(5, 7) - 1) / 3) + 1}<span class="faint">（季）</span>`;
+  if (p === 'year') return `${n.date.slice(0, 4)}<span class="faint">（年）</span>`;
   if (p === 'unknown') return `<span class="faint" title="日期不明，這是整理的日期">${n.date} 整理</span>`;
   return n.date;
 }
@@ -1550,7 +1704,7 @@ function buildPrompt() {
     const note = {
       '營收財報': '（季度或年度放 fiscal_period，例如 2026-Q3、2026-Q1~Q3）',
       '管理層': '（只放管理層本身的事；管理層「說的內容」依內容分類）',
-      '市場數據': '（只放跌停、漲停、爆量、創新高或新低、處置股等特殊事件；一般收盤價、盤中價、漲跌幅、試算跌幅一律不要）',
+      '市場數據': '（只放跌停、漲停、爆量、創新高或新低、處置股等特殊事件，原因不明也可以記；一般收盤價、盤中價、漲跌幅、試算跌幅、以當下股價算的本益比一律不要）',
       '估值': '（外部機構的 EPS 等預估；不要用當下股價算本益比）',
       '分析師看法': '（外部分析師、投顧、券商的觀點；名字放 analyst）',
       '風險': '依內容命名（外部來源提出的風險）',
@@ -1571,9 +1725,10 @@ ${list}
 【分類】topic 只能用下面這些；sub 優先用列出的子主題，真的放不進去才新增（2～6 個字）：
 ${fixed}
 ${extra ? '各標的已經用過的其他子主題（請沿用，名稱一字不差）：\n' + extra + '\n' : ''}
-分類依「內容」判斷，不依「誰說的」。例外：外部分析師的觀點放「分析師看法」；你自己的推論放「AI research」。你整理的背景事實（例如公司主要產品、某個財報數字）依內容放一般主題。
+分類依「內容」判斷，不依「誰說的」。例外：外部分析師的觀點放「分析師看法」；你自己的推論放「AI research」。你整理、摘要或翻譯的新聞、財報、公司說法和分析師言論，依內容放一般主題，不算 AI research。只是同意某位分析師的看法，不要另寫一條 AI research。
 
 【每一條】
+0. id：每條給一個編號，格式 YYYYMMDD-代號-序號（例如 20261105-2330-001），同一次輸出裡不可重複。
 1. 一條只講一件事、只屬於一檔股票；同一件事和別檔有關，用 related_stocks 填代號。
 2. title 不超過 20 個字；body 1～3 句，保留數字、單位和比較基準。
 3. claim_type：fact（已發生的事實）、forecast（預測）、opinion（觀點）、hypothesis（假設情境）、self_report（分析師自稱買進或持有）、scheduled（已排定但還沒發生）。
@@ -1583,16 +1738,22 @@ ${extra ? '各標的已經用過的其他子主題（請沿用，名稱一字不
    - 只知道月份或季度：event_period 填 2026-09 或 2026-Q3，event_date 填 null。
    - 財報數字的期間放 fiscal_period，不是 event_date。
    - 預測指向的期間放 target_period（例如 2027）。
-6. source 寫來源名稱；source_type 填 company、analyst、media、market、user、assistant 其中一個；有確定的原始連結才填 source_url。
+6. source 寫來源名稱；source_type 填 company、regulator（主管機關）、analyst、media、market、user、assistant 其中一個；有確定的原始連結才填 source_url。不要填「已查證」，查證由我自己在網頁上標記。
 7. 對話裡沒提到的事不要自己補充。
+8. AI research 的每一條：
+   - evidence_ids：填這次輸出裡支持它的重點 id，可以好幾個；找不到依據就填 []，不要編造。
+   - analysis_as_of：這次分析依據的資料截止日（YYYY-MM-DD）。
+   - related_topic：它實際在討論哪個主題（從上面的主題中選，例如「營運狀況」）。
+   - 先後發生不代表因果，推論要寫成推論，不要寫成已發生的事實。
+9. 市場數據 › 異常行情：記下觀察到的異常本身；cause_status 填 confirmed（已證實）、reported（有報導）、hypothesis（推測）或 unknown（不明）。不能因為新聞和下跌發生在同一天，就認定是下跌的原因。
 
 【個人資料】我的持股、成本、攤平試算不要放進 notes。對我持股的策略想法（觀察條件、加減碼構想）放在 strategy_notes。
 
-只輸出一個 JSON 程式碼區塊，不要任何其他文字，格式如下：
+只輸出一個 JSON 程式碼區塊，不要任何其他文字，格式如下（沒有的欄位填 null 或 []）：
 
 \`\`\`json
-{"schema_version":"2.1","notes":[
-  {"stock":"代號","name":"公司名稱","market":"TW","topic":"主題","sub":"子主題","title":"標題","body":"說明","stance":"neutral","claim_type":"fact","event_date":"YYYY-MM-DD","event_period":null,"fiscal_period":null,"target_period":null,"analyst":null,"source":"來源","source_type":"company","source_url":null,"related_stocks":[]}
+{"schema_version":"2.2","notes":[
+  {"id":"YYYYMMDD-代號-001","stock":"代號","name":"公司名稱","market":"TW","topic":"主題","sub":"子主題","title":"標題","body":"說明","stance":"neutral","claim_type":"fact","event_date":"YYYY-MM-DD","event_period":null,"fiscal_period":null,"target_period":null,"analyst":null,"source":"來源","source_type":"company","source_url":null,"related_stocks":[],"evidence_ids":[],"analysis_as_of":null,"related_topic":null,"cause_status":null}
 ],
 "strategy_notes":[
   {"stock":"代號","title":"標題","body":"說明"}
@@ -1641,34 +1802,63 @@ const strOrNull = v => { const s = String(v == null ? '' : v).trim(); return s &
 function normNote(n) {
   if (!n || typeof n !== 'object') return null;
   const clean = v => String(v == null ? '' : v).replace(/\s+/g, ' ').trim();
-  const body = String(n.body || n.content || n.detail || n.summary || '').trim();
+  let body = String(n.body || n.content || n.detail || n.summary || n.observed_event || '').trim();
   let title = clean(n.title || n.headline);
   if (!title && !body) return null;
-  if (!title) title = body.slice(0, 24);
+  if (!title) title = body.replace(/^【[^】]*】/, '').slice(0, 24).replace(/[，。、,.；;：:]+$/, '');
+  if (n.attributed_cause && !body.includes(String(n.attributed_cause))) body += (body ? '\n' : '') + '原因：' + String(n.attributed_cause).trim();
   const has = k => Object.prototype.hasOwnProperty.call(n, k);
   const ev = normDate(n.event_date), per = periodStart(n.event_period);
+  const pin = String(n.date_precision || '').trim().toLowerCase();
   let date, prec;
-  if (['day', 'month', 'quarter', 'unknown'].includes(n.date_precision)) { prec = n.date_precision; date = normDate(n.date) || ev || (per && per.date) || today(); }
+  if (['day', 'month', 'quarter', 'year', 'unknown'].includes(pin)) {
+    // 規範的寫法：date 搭配 date_precision（date 可以是 YYYY-MM-DD、YYYY-MM、YYYY-Q3 或 YYYY）
+    const raw = String(n.date == null ? '' : n.date).trim(), ps = periodStart(raw), y = raw.match(/^(\d{4})$/);
+    prec = pin;
+    if (prec === 'unknown') date = normDate(raw) || normDate(n.analysis_as_of) || today();
+    else {
+      date = normDate(raw) || (ps && ps.date) || (y && `${y[1]}-01-01`) || ev || (per && per.date);
+      if (prec === 'day' && !normDate(raw) && ps) prec = ps.prec;
+      if (!date) { date = normDate(n.analysis_as_of) || today(); prec = 'unknown'; }
+    }
+  }
   else if (ev) { date = ev; prec = 'day'; }
   else if (per) { date = per.date; prec = per.prec; }
   else if (has('event_date') || has('claim_type')) { date = normDate(n.date) || today(); prec = 'unknown'; }   // 新格式但沒有事件日
   else { date = normDate(n.date) || today(); prec = 'day'; }                                                    // 舊格式
-  let topic = clean(n.topic || n.category) || '其他';
+  let topic = clean(n.topic || n.category) || '其他', sub = clean(n.sub || n.subtopic || n.subTopic);
   if (topic === '產品') topic = '產品業務';
   if (/^ai\s*research$/i.test(topic)) topic = 'AI research';
-  const claim = String(n.claim_type || '').trim().toLowerCase();
+  if (GROUPS.includes(topic) && DEFAULT_TOPICS.includes(sub)) { topic = sub; sub = ''; }   // 分組寫在 topic、主題寫在 subtopic 的寫法
+  let claim = String(n.claim_type || '').trim().toLowerCase();
+  let srcType = strOrNull(n.source_type); if (srcType) { srcType = srcType.toLowerCase(); srcType = SRC_ALIAS[srcType] || srcType; }
+  let relTopic = strOrNull(n.related_topic);
+  const reason = String(n.reasoning_status || '').toLowerCase();
+  const stockF = { stock: normCodeAny(n.stock || n.code || n.ticker || n.symbol), name: clean(n.name || n.company || n.stockName), market: normMarket(n.market) };
+  if (claim === 'user_strategy' || topic === '我的策略') return Object.assign(stockF, { _strategy: true, ext_id: strOrNull(n.id), date: normDate(n.date) || today(), title, body, stance: 'neutral', source: clean(n.source || n.source_name) });
+  // GPT 提議的 claim_type 換算成規範的寫法
+  if (claim === 'ai_inference') {
+    claim = reason === 'hypothesis' || reason === 'conditional' ? 'hypothesis' : 'opinion'; srcType = 'assistant';
+    if (topic !== 'AI research') { if (!relTopic && DEFAULT_TOPICS.includes(topic)) relTopic = topic; topic = 'AI research'; if (!FIXED_SUBS['AI research'].includes(sub)) sub = '綜合判斷'; }
+  } else if (claim === 'ai_valuation_scenario') { claim = 'hypothesis'; srcType = 'assistant'; topic = 'AI research'; sub = '估值情境'; }
+  else if (claim === 'external_opinion') claim = 'opinion';
+  else if (claim === 'market_anomaly') { claim = 'fact'; if (topic !== '市場數據') { topic = '市場數據'; sub = '異常行情'; } }
   let stance = normStance(n.stance || n.view);
   if (claim === 'self_report') stance = 'neutral';
-  return {
-    stock: normCodeAny(n.stock || n.code || n.ticker || n.symbol), name: clean(n.name || n.company || n.stockName), market: normMarket(n.market),
-    ext_id: strOrNull(n.id), date, date_precision: prec, topic, sub: clean(n.sub || n.subtopic || n.subTopic) || '一般',
-    title, body, stance, source: clean(n.source),
-    claim_type: CLAIM[claim] ? claim : null, event_date: ev, event_period: strOrNull(n.event_period), fiscal_period: strOrNull(n.fiscal_period),
-    published_date: normDate(n.published_date), target_period: strOrNull(n.target_period), analyst: strOrNull(n.analyst),
-    source_type: strOrNull(n.source_type), source_url: /^https?:\/\//.test(String(n.source_url || '')) ? String(n.source_url) : null,
+  let ver = strOrNull(n.verification_status); if (ver) { const k = ver.toLowerCase(); ver = k in VER_ALIAS ? VER_ALIAS[k] : k; }
+  const rs = String(n.review_status || '').toLowerCase(), cs = String(n.cause_status || '').toLowerCase();
+  return Object.assign(stockF, {
+    ext_id: strOrNull(n.id), date, date_precision: prec, topic, sub: sub || '一般',
+    title, body, stance, source: clean(n.source || n.source_name),
+    claim_type: CLAIM[claim] ? claim : null, event_date: ev || (prec === 'day' ? date : null), event_period: strOrNull(n.event_period), fiscal_period: strOrNull(n.fiscal_period),
+    published_date: normDate(n.published_date || n.source_published_at), target_period: strOrNull(n.target_period), analyst: strOrNull(n.analyst),
+    source_type: srcType, source_url: /^https?:\/\//.test(String(n.source_url || '')) ? String(n.source_url) : null,
     related_stocks: Array.isArray(n.related_stocks) ? n.related_stocks.map(normCodeAny).filter(Boolean) : [],
-    verification_status: strOrNull(n.verification_status)
-  };
+    verification_status: ver,
+    evidence_ids: Array.isArray(n.evidence_ids) ? [...new Set(n.evidence_ids.map(x => String(x).trim()).filter(Boolean))] : [],
+    event_id: strOrNull(n.event_id), review_status: REVIEW[rs] && rs !== 'current' ? rs : null,
+    analysis_as_of: normDate(n.analysis_as_of), related_topic: relTopic, cause_status: CAUSE[cs] ? cs : null
+  });
 }
 function normStrategy(s, def) {
   if (!s || typeof s !== 'object') return null;
@@ -1692,14 +1882,17 @@ function parseNotesText(text) {
   let obj;
   for (const c of cands) { obj = tryParse(c.s); if (obj === undefined) obj = tryParse(fix(c.s)); if (obj !== undefined) break; }
   if (Array.isArray(obj)) obj = { notes: obj };
-  else if (obj && !Array.isArray(obj.notes) && (obj.title || obj.body)) obj = { notes: [obj] };
+  else if (obj && !Array.isArray(obj.notes) && Array.isArray(obj.records)) obj = Object.assign({}, obj, { notes: obj.records });
+  else if (obj && !Array.isArray(obj.notes) && (obj.title || obj.body || obj.content)) obj = { notes: [obj] };
   const pi = (obj && obj.personal_investing) || {};
   const strat = (obj && (obj.strategy_notes || pi.strategy_notes)) || [];
   if (!obj || (!Array.isArray(obj.notes) && !Array.isArray(strat))) throw new Error('看不懂這段內容。請確認貼上的是 ChatGPT 依「整理指令」輸出的 JSON。');
   const defCode = normCodeAny(obj.stock || obj.code), defName = String(obj.name || '').trim(), defMkt = normMarket(obj.market);
-  const notes = (obj.notes || []).map(normNote).filter(Boolean).map(n => Object.assign(n, { stock: n.stock || defCode, name: n.name || defName, market: n.market || defMkt }));
+  const all = (obj.notes || []).map(normNote).filter(Boolean).map(n => Object.assign(n, { stock: n.stock || defCode, name: n.name || defName, market: n.market || defMkt }));
+  const notes = all.filter(n => !n._strategy);
   const watchlist = (Array.isArray(obj.watchlist) ? obj.watchlist : []).map(w => ({ code: normCodeAny(w.stock || w.code), name: String(w.name || '').trim(), market: normMarket(w.market), type: String(w.instrument_type || '').trim() })).filter(w => w.code);
-  const strategies = (Array.isArray(strat) ? strat : []).map(s => normStrategy(s, { code: defCode, name: defName, market: defMkt })).filter(Boolean);
+  const strategies = (Array.isArray(strat) ? strat : []).map(s => normStrategy(s, { code: defCode, name: defName, market: defMkt })).filter(Boolean)
+    .concat(all.filter(n => n._strategy).map(n => { delete n._strategy; return n; }));
   const personal = { positions: Array.isArray(pi.positions) ? pi.positions.length : 0, snapshot: !!pi.portfolio_snapshot, simulations: Array.isArray(pi.simulations) ? pi.simulations.length : 0 };
   return { stock: defCode, notes, watchlist, strategies, personal, schema: String(obj.schema_version || '') };
 }
@@ -1712,9 +1905,24 @@ async function copyText(text) {
   let ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
   ta.remove(); return ok;
 }
+// 提示要放在最上層：有開著的全螢幕畫面或對話框時，放進去才看得到、按得到
+function toastEl() {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.className = 'toast'; t.id = 'toast'; t.setAttribute('role', 'status'); t.setAttribute('aria-live', 'polite'); }
+  const host = ['#dlg', '#mgr', '#mem'].map(s => $(s)).find(d => d && d.open) || document.body;
+  if (t.parentElement !== host) host.appendChild(t);
+  return t;
+}
 function toast(msg) {
-  const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  const t = toastEl(); t.classList.remove('act'); t.textContent = msg; t.classList.add('on');
   clearTimeout(toast.tm); toast.tm = setTimeout(() => t.classList.remove('on'), 2600);
+}
+function toastAct(msg, label, fn, ms = 9000) {
+  const t = toastEl();
+  t.innerHTML = `<span>${esc(msg)}</span><button type="button" class="tact">${esc(label)}</button>`;
+  t.classList.add('on', 'act');
+  t.querySelector('.tact').onclick = () => { t.classList.remove('on', 'act'); clearTimeout(toast.tm); fn(); };
+  clearTimeout(toast.tm); toast.tm = setTimeout(() => t.classList.remove('on', 'act'), ms);
 }
 
 function openGpt() {
@@ -1751,11 +1959,12 @@ function openImport(fallback) {
     onOpen: f => {
       f.elements.raw.focus();
       $('#impPick').onclick = () => $('#impFile').click();
-      $('#impFile').onchange = async e => { const file = e.target.files[0]; if (file) { f.elements.raw.value = await file.text(); $('#dlgErr').textContent = ''; } };
+      $('#impFile').onchange = async e => { const file = e.target.files[0]; if (file) { f.elements.raw.value = await file.text(); f.dataset.label = file.name; $('#dlgErr').textContent = ''; } };
     },
     onOk: f => {
       let parsed;
       try { parsed = parseNotesText(fv(f, 'raw')); } catch (e) { return e.message; }
+      parsed.label = f.dataset.label || '貼上 ChatGPT 回覆';
       if (!parsed.notes.length && !parsed.strategies.length && !parsed.watchlist.length) return '沒有找到任何重點';
       setTimeout(() => openPreview(parsed, fallback), 0);
     }
@@ -1785,19 +1994,37 @@ function groupNotes(parsed, fallback) {
   });
   return [...groups.values()];
 }
-function noteTags(n, market) {
+function noteTags(n, market, preview) {
   let h = '';
+  if (n.review_status === 'superseded') h += '<span class="ctag old">已過時</span>';
+  else if (n.review_status === 'needs_review') h += '<span class="ctag warn">待檢視</span>';
   if (n.claim_type) h += `<span class="ctag">${CLAIM[n.claim_type]}</span>`;
   if (isAiNote(n)) h += '<span class="ctag ai">AI</span>';
+  if (isAiNote(n) && (preview ? !(n.evidence_ids || []).length : needsEvidence(n))) h += '<span class="ctag warn" title="這條 AI 推論還沒有連到支持它的資料">待補證據</span>';
+  if (n.verification_status === 'verified') h += '<span class="ctag ok">已查證</span>';
   if (n.verification_status === 'user_provided') h += '<span class="ctag">使用者提供</span>';
   if (n.verification_status === 'calculated') h += '<span class="ctag">試算</span>';
+  if (n.cause_status) h += `<span class="ctag">${CAUSE[n.cause_status]}</span>`;
   return h;
+}
+// 依據 ⇄ 相關 AI 推論（mode：nt 時間軸、mem 星系）
+function noteLinks(n, mode) {
+  const ev = evOf(n), refs = refsOf(n), miss = (n.evidence_missing || []).length;
+  if (!ev.length && !refs.length && !miss) return '';
+  const a = x => mode === 'mem' ? `<button type="button" class="lnk" data-mem-go="${x.id}">${esc(x.title)}</button>` : `<button type="button" class="lnk" data-act="note-go" data-id="${x.id}">${esc(x.title)}</button>`;
+  const rows = [];
+  if (ev.length) rows.push(`依據：${ev.map(a).join('、')}`);
+  if (miss) rows.push(`<span class="faint">另有 ${miss} 條依據沒有一起匯入</span>`);
+  if (refs.length) rows.push(`相關 AI 推論：${refs.map(a).join('、')}`);
+  return `<div class="nt-links">${rows.join('<br>')}</div>`;
 }
 function noteMeta(n, links = true) {
   const bits = [];
   if (n.analyst) bits.push(`<span class="an">${esc(n.analyst)}</span>`);
   if (n.fiscal_period) bits.push(`期間 ${esc(n.fiscal_period)}`);
   if (n.target_period) bits.push(`目標期間 ${esc(n.target_period)}`);
+  if (n.related_topic) bits.push(`相關主題 ${esc(n.related_topic)}`);
+  if (n.analysis_as_of) bits.push(`分析截至 ${n.analysis_as_of}`);
   if (n.published_date && n.published_date !== n.date) bits.push(`${n.published_date} 公開`);
   (n.related_stocks || []).forEach(c => {
     const s = data.stocks.find(x => x.code === c);
@@ -1808,8 +2035,11 @@ function noteMeta(n, links = true) {
 function openPreview(parsed, fallback) {
   const SEP = '\u0001';
   const groups = groupNotes(parsed, fallback);
-  const norm = s => s.replace(/\s/g, '');
-  let html = '', total = 0, dupTotal = 0, stratTotal = 0;
+  const norm = normT, tombs = new Set(data.tombs);
+  // 重複：標題相同，而且 id 相同、日期相同，或兩邊都是日期不明。
+  // 只有 id 相同不算：每次對話 ChatGPT 都會從 001 開始編號。
+  const sameNote = (x, n) => norm(x.title) === norm(n.title) && ((n.ext_id && x.ext_id === n.ext_id) || x.date === n.date || (notePrec(x) === 'unknown' && n.date_precision === 'unknown'));
+  let html = '', total = 0, dupTotal = 0, delTotal = 0, stratTotal = 0;
   groups.forEach((g, gi) => {
     total += g.notes.length; stratTotal += g.strategies.length;
     g.newT = []; g.newS = [];
@@ -1822,10 +2052,12 @@ function openPreview(parsed, fallback) {
       g.notes.forEach(n => {
         if (!exT.has(n.topic)) nt.set(n.topic, (nt.get(n.topic) || 0) + 1);
         else if (!exS.get(n.topic).includes(n.sub)) ns.set(n.topic + SEP + n.sub, (ns.get(n.topic + SEP + n.sub) || 0) + 1);
-        n._dup = data.notes.some(x => x.stockId === st.id && ((n.ext_id && x.ext_id === n.ext_id) || (x.date === n.date && norm(x.title) === norm(n.title))));
+        const hit = data.notes.find(x => x.stockId === st.id && sameNote(x, n));
+        n._dup = !!hit; n._dupOf = hit ? hit.id : null;
+        n._del = !hit && tombs.has(tombKey(Object.assign({}, n, { stockId: st.id })));
         n._nt = nt.has(n.topic); n._ns = ns.has(n.topic + SEP + n.sub);
       });
-      g.strategies.forEach(s => { s._dup = data.strategies.some(x => x.stockId === st.id && ((s.ext_id && x.ext_id === s.ext_id) || norm(x.title) === norm(s.title))); });
+      g.strategies.forEach(s => { s._dup = data.strategies.some(x => x.stockId === st.id && norm(x.title) === norm(s.title)); });
       g.newT = [...nt.keys()]; g.newS = [...ns.keys()];
       const optsT = [...exT].map(x => `<option value="${esc(x)}">併入「${esc(x)}」</option>`).join('');
       let map = '';
@@ -1841,15 +2073,15 @@ function openPreview(parsed, fallback) {
       const opts = (canAdd ? `<option value="add">新增到觀察（${g.market === 'TW' ? '台股' : '美股'}${/ETF/i.test(g.type || '') ? '・ETF' : ''}）</option>` : '') +
         data.stocks.map(s => `<option value="to:${s.id}" ${!canAdd && fallback && s.id === fallback.id ? 'selected' : ''}>歸到 ${esc(s.code)} ${esc(s.name || '')}</option>`).join('') +
         `<option value="skip" ${!canAdd && !fallback ? 'selected' : ''}>略過</option>`;
-      g.notes.forEach(n => { n._dup = false; n._nt = false; n._ns = false; });
+      g.notes.forEach(n => { n._dup = false; n._del = false; n._dupOf = null; n._nt = false; n._ns = false; });
       g.strategies.forEach(s => { s._dup = false; });
       head = `<div class="pg-h"><b>${label}</b><span class="newtag">不在清單裡</span><span class="faint">${g.notes.length ? g.notes.length + ' 條' : '清單標的'}${g.strategies.length ? `・策略 ${g.strategies.length} 條` : ''}</span><span class="sp"></span><select name="ga_${gi}">${opts}</select></div>`;
     }
     const m = g.kind === 'match' ? g.st.market : g.market || 'TW';
     const list = g.notes.map((n, i) => {
-      if (n._dup) dupTotal++;
-      return `<label class="imp"><input type="checkbox" name="inc_${gi}_${i}" ${n._dup ? '' : 'checked'}><div style="min-width:0">
-        <div class="nt-top wrap"><span class="num">${fmtNoteDate(n)}</span><span class="pill" style="color:${stanceColor(n.stance, m)}">${STANCE[n.stance]}</span>${noteTags(n)}<span>${esc(n.topic)} › ${esc(n.sub)}</span>${n._nt ? '<span class="newtag">新主題</span>' : n._ns ? '<span class="newtag">新子主題</span>' : ''}${n._dup ? '<span class="newtag">可能重複</span>' : ''}</div>
+      if (n._dup) dupTotal++; else if (n._del) delTotal++;
+      return `<label class="imp"><input type="checkbox" name="inc_${gi}_${i}" ${n._dup || n._del ? '' : 'checked'}><div style="min-width:0">
+        <div class="nt-top wrap"><span class="num">${fmtNoteDate(n)}</span><span class="pill" style="color:${stanceColor(n.stance, m)}">${STANCE[n.stance]}</span>${noteTags(n, m, true)}<span>${esc(n.topic)} › ${esc(n.sub)}</span>${n._nt ? '<span class="newtag">新主題</span>' : n._ns ? '<span class="newtag">新子主題</span>' : ''}${n._dup ? '<span class="newtag">可能重複</span>' : ''}${n._del ? '<span class="newtag">之前刪除過</span>' : ''}</div>
         <div class="nt-title">${esc(n.title)}</div>${noteMeta(n)}${n.body ? `<div class="nt-body" style="-webkit-line-clamp:3">${esc(n.body)}</div>` : ''}</div></label>`;
     }).join('');
     const slist = g.strategies.map((s, i) => `<label class="imp"><input type="checkbox" name="sinc_${gi}_${i}" ${s._dup ? '' : 'checked'}><div style="min-width:0">
@@ -1862,9 +2094,11 @@ function openPreview(parsed, fallback) {
   openDialog({
     title: '確認匯入', wide: true, okText: '匯入',
     body: `${skipped.length ? `<div class="banner warn" style="border-radius:8px;margin-bottom:10px;border:0">檔案裡的${skipped.join('、')}不會匯入。持倉請到交易紀錄手動新增，網站會用即時股價計算損益。</div>` : ''}
-      <div class="note" style="margin:0 0 10px">共 ${total} 條重點${stratTotal ? `、${stratTotal} 條策略` : ''}，分屬 ${groups.length} 檔標的${dupTotal ? `；其中 ${dupTotal} 條和已有的重點重複，預設不勾選` : ''}。內容沒有重新查證，匯入後一樣標示來源。</div>${html}`,
+      <div class="note" style="margin:0 0 10px">共 ${total} 條重點${stratTotal ? `、${stratTotal} 條策略` : ''}，分屬 ${groups.length} 檔標的${dupTotal || delTotal ? `；其中${[dupTotal ? ` ${dupTotal} 條和已有的重點重複` : '', delTotal ? ` ${delTotal} 條之前刪除過` : ''].filter(Boolean).join('、')}，預設不勾選` : ''}。匯入是新增，不會覆蓋已有的重點。內容沒有重新查證，匯入後一樣標示來源。</div>${html}`,
     onOk: f => {
       const now = Date.now(), done = new Map(); let added = 0, sAdded = 0, newStocks = 0;
+      const batch = { id: 'b' + uid(), ts: now, label: parsed.label || '匯入', notes: 0, strategies: 0, stocks: [] };
+      const extMap = new Map(), imported = [];        // ChatGPT 的 id → 網頁內部的 id（只在同一批裡對應）
       groups.forEach((g, gi) => {
         let st = g.st, tMap = {}, sMap = {};
         if (g.kind === 'new') {
@@ -1883,24 +2117,44 @@ function openPreview(parsed, fallback) {
         g.notes.forEach((n, i) => {
           const box = f.elements[`inc_${gi}_${i}`];
           if (!box || !box.checked) return;
-          const rec = Object.assign({}, n, { id: uid(), stockId: st.id, topic: tMap[n.topic] || n.topic, sub: sMap[n.topic + SEP + n.sub] || n.sub, from: 'chatgpt', ts: now + added });
-          ['stock', 'name', 'market', '_dup', '_nt', '_ns'].forEach(k => delete rec[k]);
-          data.notes.push(rec); added++; n0++;
+          const rec = Object.assign({}, n, { id: uid(), stockId: st.id, topic: tMap[n.topic] || n.topic, sub: sMap[n.topic + SEP + n.sub] || n.sub, from: 'chatgpt', batch: batch.id, ts: now + added });
+          rec._ev = rec.evidence_ids; delete rec.evidence_ids;
+          ['stock', 'name', 'market', '_dup', '_dupOf', '_del', '_nt', '_ns'].forEach(k => delete rec[k]);
+          Object.keys(rec).forEach(k => { if (rec[k] == null || (Array.isArray(rec[k]) && !rec[k].length && k !== '_ev')) delete rec[k]; });
+          if (n.ext_id && !extMap.has(n.ext_id)) extMap.set(n.ext_id, rec.id);
+          n._in = rec.id;
+          data.notes.push(rec); imported.push(rec); added++; n0++;
         });
         g.strategies.forEach((s, i) => {
           const box = f.elements[`sinc_${gi}_${i}`];
           if (!box || !box.checked) return;
-          data.strategies.push({ id: uid(), ext_id: s.ext_id, stockId: st.id, date: s.date, title: s.title, body: s.body, stance: s.stance, source: s.source, ts: now + sAdded });
+          data.strategies.push({ id: uid(), ext_id: s.ext_id, stockId: st.id, date: s.date, title: s.title, body: s.body, stance: s.stance, source: s.source, batch: batch.id, ts: now + sAdded });
           sAdded++;
         });
         if (n0) done.set(st.code, (done.get(st.code) || 0) + n0);
       });
       if (!added && !sAdded && !newStocks) return '沒有要匯入的內容（都沒勾選或都略過了）';
+      // 沒有匯入的重複項目：依據指向已經存在的那一條
+      groups.forEach(g => g.notes.forEach(n => { if (!n._in && n._dupOf && n.ext_id && !extMap.has(n.ext_id)) extMap.set(n.ext_id, n._dupOf); }));
+      imported.forEach(rec => {
+        const ev = rec._ev || []; delete rec._ev;
+        if (!ev.length) return;
+        const ok = [], miss = [];
+        ev.forEach(e => { const id = extMap.get(e); if (id && id !== rec.id) ok.push(id); else miss.push(e); });
+        if (ok.length) rec.evidence_ids = [...new Set(ok)];
+        if (miss.length) rec.evidence_missing = miss;
+      });
+      if (added || sAdded) {
+        batch.notes = added; batch.strategies = sAdded; batch.stocks = [...done.keys()];
+        data.imports.push(batch);
+        if (data.imports.length > 300) data.imports = data.imports.slice(-300);
+      }
       ui.noteTopic = ''; ui.noteHl = new Set();
       commit();
       if (newStocks) fetchQuotes();
       const parts = [...done].map(([k, v]) => `${k} ${v} 條`);
-      setTimeout(() => toast(`已匯入${parts.length ? '：' + parts.join('、') : ''}${sAdded ? `；策略 ${sAdded} 條` : ''}${newStocks ? `；新增 ${newStocks} 檔到觀察` : ''}`), 50);
+      const msg = `已匯入${parts.length ? '：' + parts.join('、') : ''}${sAdded ? `；策略 ${sAdded} 條` : ''}${newStocks ? `；新增 ${newStocks} 檔到觀察` : ''}`;
+      setTimeout(() => added ? toastAct(msg, '整理這批', () => openManager({ batch: batch.id })) : toast(msg), 50);
     }
   });
 }
@@ -1919,6 +2173,7 @@ function openNote(st, n) {
       ${fld('標題', inp('title', n.title, 'placeholder="一句話講重點，20 字以內"'))}
       ${fld('說明（選填）', `<textarea name="body" rows="4">${esc(n.body)}</textarea>`)}
       <div class="r2">${fld('分析師（選填）', inp('analyst', n.analyst || '', 'placeholder="例：花旗"'))}${fld('來源（選填）', inp('source', n.source, 'placeholder="例：法說會"'))}</div>
+      ${noteAdvanced(n)}
       <datalist id="dlSubs">${subs.map(s => `<option value="${esc(s)}">`).join('')}</datalist>`,
     extra: editing ? `<button type="button" class="btn danger" data-act="del-note" data-id="${n.id}">${ic('trash')}刪除</button>` : '',
     onOk: f => {
@@ -1930,11 +2185,61 @@ function openNote(st, n) {
         stance: claim === 'self_report' ? 'neutral' : fv(f, 'stance'), source: fv(f, 'source'), claim_type: claim, analyst: fv(f, 'analyst') || null,
         date_precision: f.elements.nodate.checked ? 'unknown' : (n.date_precision && n.date_precision !== 'unknown' && editing && n.date === date ? n.date_precision : 'day') };
       if (rec.date_precision === 'day') rec.event_date = date;
+      Object.assign(rec, readAdvanced(f, n));
       if (editing) Object.assign(n, rec);
       else data.notes.push(Object.assign({ id: uid(), stockId: st.id, from: 'manual', source_type: 'user', ts: Date.now() }, rec));
       commit();
     }
   });
+}
+// 編輯重點的「進階」區：狀態、查證、相關主題、分析日期、原因、依據
+function noteAdvanced(n) {
+  const ev = evOf(n), has = n.review_status || n.verification_status === 'verified' || n.related_topic || n.analysis_as_of || n.cause_status || ev.length;
+  const opt = (obj, v, none) => `<option value="">${none}</option>` + Object.entries(obj).filter(([k]) => k !== 'current').map(([k, l]) => `<option value="${k}" ${v === k ? 'selected' : ''}>${l}</option>`).join('');
+  return `<details class="adv" ${has ? 'open' : ''}><summary>進階：狀態、查證、依據</summary>
+    <div class="r2">${fld('狀態', `<select name="review_status">${opt(REVIEW, n.review_status, '目前')}</select>`, '已過時的判斷不會刪除，但預設不顯示、也不算進多空統計')}
+      ${fld('查證', `<label class="chk" style="margin:6px 0 0"><input type="checkbox" name="verified" ${n.verification_status === 'verified' ? 'checked' : ''}>我已查證過這條</label>`)}</div>
+    <div class="r2">${fld('相關主題（AI 推論用）', `<select name="related_topic"><option value="">（無）</option>${DEFAULT_TOPICS.filter(t => t !== 'AI research').map(t => `<option ${n.related_topic === t ? 'selected' : ''}>${t}</option>`).join('')}</select>`)}
+      ${fld('分析截至（AI 推論用）', inp('analysis_as_of', n.analysis_as_of || '', 'type="date"'))}</div>
+    ${fld('原因（異常行情用）', `<select name="cause_status">${opt(CAUSE, n.cause_status, '（不適用）')}</select>`)}
+    ${ev.length ? `<div class="lbl" style="margin-bottom:4px">依據（取消勾選就移除連結）</div><div class="evl">${ev.map(x => `<label><input type="checkbox" name="ev_${x.id}" checked><span>${x.date}　${esc(x.topic)} › ${esc(x.sub)}　${esc(x.title)}</span></label>`).join('')}</div>` : ''}
+    <div class="hint faint" style="font-size:12px">要連結新的依據，請到「資料整理」勾選這條，再按「連結依據」。</div></details>`;
+}
+function readAdvanced(f, n) {
+  const r = { review_status: fv(f, 'review_status') || null, related_topic: fv(f, 'related_topic') || null, analysis_as_of: fv(f, 'analysis_as_of') || null, cause_status: fv(f, 'cause_status') || null };
+  if (f.elements.verified.checked) r.verification_status = 'verified';
+  else if (n.verification_status === 'verified') r.verification_status = 'not_reverified';
+  const ev = (n.evidence_ids || []).filter(id => !f.elements['ev_' + id] || f.elements['ev_' + id].checked);
+  r.evidence_ids = ev.length ? ev : undefined;
+  return r;
+}
+// 刪除：放進回收桶，記住刪過（之後再匯入會提醒），並可以馬上復原
+function trashNotes(ids, reason = 'delete') {
+  const set = new Set(ids), at = Date.now(), snap = snapshot();
+  const keep = [], gone = [];
+  data.notes.forEach(n => (set.has(n.id) ? gone : keep).push(n));
+  if (!gone.length) return 0;
+  data.notes = keep;
+  gone.forEach(n => { data.trash.push({ kind: 'note', item: n, at, reason }); if (reason === 'delete') data.tombs.push(tombKey(n)); });
+  if (data.tombs.length > 8000) data.tombs = data.tombs.slice(-8000);
+  MG.sel.forEach(id => { if (set.has(id)) MG.sel.delete(id); });
+  commit();
+  toastAct(`已刪除 ${gone.length} 條，放在回收桶 ${TRASH_DAYS} 天`, '復原', () => restoreSnap(snap));
+  return gone.length;
+}
+// 復原用的快照：陣列先複製一份，被改的重點另外存原本的內容
+function snapshot(ids) {
+  const s = { data, notes: data.notes.slice(), strategies: data.strategies.slice(), trash: data.trash.slice(), tombs: data.tombs.slice(), dupIgnore: data.dupIgnore.slice(), imports: data.imports.map(x => Object.assign({}, x)), clones: new Map() };
+  (ids || []).forEach(id => { const n = noteById(id); if (n) s.clones.set(id, JSON.stringify(n)); });
+  return s;
+}
+function restoreSnap(s) {
+  if (s.data !== data) { toast('資料已經從雲端更新，沒辦法復原'); return; }
+  ['notes', 'strategies', 'trash', 'tombs', 'dupIgnore', 'imports'].forEach(k => { data[k] = s[k]; });
+  const by = s.clones.size ? new Map(data.notes.map(n => [n.id, n])) : null;
+  s.clones.forEach((json, id) => { const o = by.get(id); if (o) { Object.keys(o).forEach(k => delete o[k]); Object.assign(o, JSON.parse(json)); } });
+  MG.groups = null;
+  commit(); toast('已復原');
 }
 function openStrategy(st, s) {
   const editing = !!s;
@@ -1955,28 +2260,59 @@ function openStrategy(st, s) {
   });
 }
 
-function openTopics(st) {
-  const tree = topicTree(st, false);
-  if (!tree.length) { toast('這檔還沒有重點'); return; }
-  openDialog({
-    title: `管理分類　<span class="muted" style="font-size:14px">${stockLabel(st)}</span>`, wide: true,
-    body: `<div class="note" style="margin:0 0 10px">直接改名稱後按儲存。改成和另一個分類一樣的名字，兩個就會合併。</div>` +
-      tree.map((t, i) => `<div class="gset"><div class="fld"><label>主題（${t.count} 條）</label>${inp('t_' + i, t.topic)}</div>
-        <div class="r2">${t.subs.map((s, j) => fld(`子主題（${s.count} 條）`, inp(`s_${i}_${j}`, s.sub))).join('')}</div></div>`).join(''),
-    onOk: f => {
-      let changed = 0;
-      data.notes.forEach(n => {
-        if (n.stockId !== st.id) return;
-        const i = tree.findIndex(t => t.topic === n.topic); if (i < 0) return;
-        const j = tree[i].subs.findIndex(s => s.sub === n.sub);
-        const nt = fv(f, 't_' + i) || n.topic, ns = j >= 0 ? (fv(f, `s_${i}_${j}`) || n.sub) : n.sub;
-        if (nt !== n.topic || ns !== n.sub) { n.topic = nt; n.sub = ns; changed++; }
-      });
-      if (changed) { if (ui.noteTopic && !data.notes.some(n => n.stockId === st.id && n.topic === ui.noteTopic)) ui.noteTopic = ''; commit(); }
-    }
-  });
+/* ---- 多空指標：子主題、主題、標的都用同一套算法 ----
+   已過時的不算；外部資訊和 AI research 分開算；多空比 = 偏多條數 ÷ 偏空條數（中性不算） */
+const STAT_RANGES = [[0, '全部期間'], [90, '近 90 天'], [30, '近 30 天']];
+function dateAdd(d, days) { const x = new Date(d + 'T00:00:00Z'); x.setUTCDate(x.getUTCDate() + days); return x.toISOString().slice(0, 10); }
+function stanceStats(list) {
+  const r = +ui.statRange || 0, from = r ? dateAdd(today(), -r) : '';
+  const z = () => ({ bull: 0, neutral: 0, bear: 0, n: 0 }), s = { ext: z(), ai: z() };
+  for (const n of list) {
+    if (isOld(n) || (from && n.date < from)) continue;
+    const o = isAiNote(n) ? s.ai : s.ext; o[STANCE[n.stance] ? n.stance : 'neutral']++; o.n++;
+  }
+  return s;
+}
+const ratioTxt = o => o.bear ? (o.bull / o.bear).toFixed(1) : o.bull ? '無偏空' : '—';
+const pctTxt = (o, k) => o.n ? Math.round(o[k] / o.n * 100) + '%' : '—';
+function stanceBar(o, m, sm) {
+  const w = k => o.n ? (o[k] / o.n * 100).toFixed(1) + '%' : '0';
+  return `<span class="sbar ${sm ? 'sm' : ''}" title="偏多 ${o.bull}・中性 ${o.neutral}・偏空 ${o.bear}"><i style="width:${w('bull')};background:${stanceColor('bull', m)}"></i><i style="width:${w('neutral')};background:${stanceColor('neutral', m)}"></i><i style="width:${w('bear')};background:${stanceColor('bear', m)}"></i></span>`;
+}
+const rangeSel = () => `<select data-srange aria-label="統計期間">${STAT_RANGES.map(([v, l]) => `<option value="${v}" ${(+ui.statRange || 0) === v ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
+function statRow(lab, o, m) {
+  if (!o.n) return '';
+  return `<div class="srow"><span class="slab">${lab}</span>${stanceBar(o, m)}
+    <span class="snum"><span style="color:${stanceColor('bull', m)}">多 ${o.bull}（${pctTxt(o, 'bull')}）</span>・中 ${o.neutral}（${pctTxt(o, 'neutral')}）・<span style="color:${stanceColor('bear', m)}">空 ${o.bear}（${pctTxt(o, 'bear')}）</span></span>
+    <span class="sratio" title="多空比 = 偏多條數 ÷ 偏空條數，中性不算">多空比 <b>${ratioTxt(o)}</b></span>${o.n < 5 ? '<span class="faint">樣本少</span>' : ''}</div>`;
+}
+function statBlock(list, m, title) {
+  const s = stanceStats(list), body = statRow('外部資訊', s.ext, m) + statRow('AI research', s.ai, m);
+  return `<div class="sblk"><div class="sblk-h"><b>${title}</b><span class="sp"></span>${rangeSel()}</div>${body || '<div class="faint">這段期間沒有可以統計的重點</div>'}</div>`;
+}
+// 精簡版：放在主題、子主題名稱旁邊（外部資訊為主，沒有外部資訊才用 AI）
+function statMini(list, m) {
+  const s = stanceStats(list), o = s.ext.n ? s.ext : s.ai;
+  if (!o.n) return '';
+  return `<span class="mini" title="${s.ext.n ? '外部資訊' : 'AI research'}：偏多 ${o.bull}・中性 ${o.neutral}・偏空 ${o.bear}">${stanceBar(o, m, true)}<span>${ratioTxt(o)}</span></span>`;
+}
+// 分析師看法：依分析師分開列，看得出是一個人的看法還是多方共識
+function analystBlock(list, m) {
+  const r = +ui.statRange || 0, from = r ? dateAdd(today(), -r) : '', by = new Map();
+  list.forEach(n => { if (isOld(n) || (from && n.date < from) || isAiNote(n)) return; const a = n.analyst || '（未標明）'; if (!by.has(a)) by.set(a, { bull: 0, neutral: 0, bear: 0, n: 0 }); const o = by.get(a); o[STANCE[n.stance] ? n.stance : 'neutral']++; o.n++; });
+  if (by.size < 1) return '';
+  const tot = [...by.values()].reduce((a, o) => a + o.n, 0);
+  const rows = [...by.entries()].sort((a, b) => b[1].n - a[1].n);
+  const top = rows.slice(0, 8), rest = rows.slice(8);
+  return `<div class="sblk"><div class="sblk-h"><b>依分析師</b><span class="sp"></span><span class="faint">${by.size} 位・${tot} 條</span></div><table class="anl">${top.map(([a, o]) => `<tr><td>${esc(a)}</td><td>${stanceBar(o, m, true)}</td><td class="anr">多 ${o.bull}・中 ${o.neutral}・空 ${o.bear}</td><td class="anr">${Math.round(o.n / tot * 100)}%</td></tr>`).join('')}${rest.length ? `<tr><td class="faint" colspan="4">其他 ${rest.length} 位，共 ${rest.reduce((a, [, o]) => a + o.n, 0)} 條</td></tr>` : ''}</table></div>`;
+}
+// 主題裡的看法篩選：全部／偏多／中性／偏空
+function stanceSeg(cur, list, attr) {
+  const c = { bull: 0, neutral: 0, bear: 0 }; list.forEach(n => { if (!isOld(n)) c[STANCE[n.stance] ? n.stance : 'neutral']++; });
+  return `<div class="seg2" role="group" aria-label="依看法篩選">${[['', '全部', c.bull + c.neutral + c.bear], ['bull', '偏多', c.bull], ['neutral', '中性', c.neutral], ['bear', '偏空', c.bear]].map(([v, l, k]) => `<button type="button" class="${cur === v ? 'on' : ''}" ${attr}="${v}">${l} ${k}</button>`).join('')}</div>`;
 }
 
+const NOTE_PAGE = 150;
 function renderNotes() {
   const el = $('#p-notes'), st = selStock();
   if (!st) { el.innerHTML = `<div class="ph"><h2>重點時間軸</h2></div><div class="pb"><div class="empty">從列表選一檔標的</div></div>`; return; }
@@ -1986,7 +2322,7 @@ function renderNotes() {
   const head = `<div class="ph"><div class="tabs"><button class="${tab === 'notes' ? 'on' : ''}" data-act="ntab" data-tab="notes">重點<span class="n">${all.length}</span></button><button class="${tab === 'strategy' ? 'on' : ''}" data-act="ntab" data-tab="strategy">我的策略<span class="n">${strats.length}</span></button></div><span class="sp"></span>
     ${tab === 'notes' ? `<button class="btn" data-act="prompt"><span><span class="hide-m">複製</span>整理指令</span></button><button class="btn pri" data-act="import">貼上匯入</button>
     <button class="ibtn sm" data-act="add-note" title="手動新增重點" aria-label="手動新增重點">${ic('plus')}</button>
-    <button class="ibtn sm" data-act="topics" title="管理分類" aria-label="管理分類">${ic('tag')}</button>
+    <button class="ibtn sm" data-act="mgr-stock" title="資料整理：批次編輯、刪除、合併分類" aria-label="資料整理">${ic('list')}</button>
     <button class="ibtn sm hide-m" data-act="mem" title="Memory 星系" aria-label="Memory 星系">${ic('brain')}</button>` : `<button class="btn" data-act="add-strat">${ic('plus')}新增策略</button>`}</div>`;
   const pb = el.querySelector('.pb'), keep = pb ? pb.scrollTop : 0;
   if (tab === 'strategy') {
@@ -2006,34 +2342,46 @@ function renderNotes() {
       <div class="faint" style="margin-top:8px">重點會依日期排在這裡、標在 K 線上，並依主題 → 子主題分類，組成 Memory 星系。也可以按 + 手動新增。</div></div></div>`;
     return;
   }
-  const tree = topicTree(st, false);
+  const oldN = all.filter(isOld).length, showOld = !!ui.noteShowOld && oldN > 0;
+  const vis = showOld ? all : all.filter(n => !isOld(n));
+  const tree = topicTree(st, false, vis);
   const ft = ui.noteTopic && tree.some(t => t.topic === ui.noteTopic) ? ui.noteTopic : '';
+  const inTopic = ft ? vis.filter(n => n.topic === ft) : vis;
   const analysts = [...new Set(all.map(n => n.analyst).filter(Boolean))].sort();
   const fc = CLAIM[ui.noteClaim] ? ui.noteClaim : '', fa = analysts.includes(ui.noteAnalyst) ? ui.noteAnalyst : '';
-  const list = all.filter(n => (!ft || n.topic === ft) && (!fc || n.claim_type === fc) && (!fa || n.analyst === fa))
+  const fs = ft && STANCE[ui.noteStance] ? ui.noteStance : '';      // 看法篩選只在選了主題時有作用
+  const list = inTopic.filter(n => (!fc || n.claim_type === fc) && (!fa || n.analyst === fa) && (!fs || n.stance === fs))
     .sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : (b.ts || 0) - (a.ts || 0));
-  const chips = `<div class="chips"><button class="chip2 ${!ft ? 'on' : ''}" data-act="ntopic" data-topic="">全部 ${all.length}</button>` +
+  const chips = `<div class="chips"><button class="chip2 ${!ft ? 'on' : ''}" data-act="ntopic" data-topic="">全部 ${vis.length}</button>` +
     tree.map(t => `<button class="chip2 ${ft === t.topic ? 'on' : ''}" data-act="ntopic" data-topic="${esc(t.topic)}"><i class="dotc" style="background:${topicColor(t.topic)}"></i>${esc(t.topic)} ${t.count}</button>`).join('') + '</div>';
+  const stats = statBlock(inTopic, st.market, ft ? `${esc(ft)} 多空` : '整檔多空') + (ft === '分析師看法' ? analystBlock(inTopic, st.market) : '');
   const claims = [...new Set(all.map(n => n.claim_type).filter(Boolean))];
-  const filters = (claims.length || analysts.length) ? `<div class="nfil">${claims.length ? `<select data-nf="claim" aria-label="依類型篩選"><option value="">全部類型</option>${Object.entries(CLAIM).filter(([k]) => claims.includes(k)).map(([k, v]) => `<option value="${k}" ${fc === k ? 'selected' : ''}>${v}</option>`).join('')}</select>` : ''}
+  const filters = `<div class="nfil">${ft ? stanceSeg(fs, inTopic, 'data-nstance') : ''}${claims.length ? `<select data-nf="claim" aria-label="依類型篩選"><option value="">全部類型</option>${Object.entries(CLAIM).filter(([k]) => claims.includes(k)).map(([k, v]) => `<option value="${k}" ${fc === k ? 'selected' : ''}>${v}</option>`).join('')}</select>` : ''}
     ${analysts.length ? `<select data-nf="analyst" aria-label="依分析師篩選"><option value="">全部分析師</option>${analysts.map(a => `<option ${fa === a ? 'selected' : ''}>${esc(a)}</option>`).join('')}</select>` : ''}
-    ${(fc || fa || ft) ? `<span class="faint">${list.length} 條</span>` : ''}</div>` : '';
+    ${oldN ? `<label class="chk" style="margin:0;font-size:12px"><input type="checkbox" data-nold ${showOld ? 'checked' : ''}>顯示已過時 ${oldN}</label>` : ''}
+    ${(fc || fa || ft || fs) ? `<span class="faint">${list.length} 條</span>` : ''}</div>`;
   const hl = ui.noteHl || new Set(), open = ui.noteOpen || new Set();
+  // 資料多的時候一次只畫一部分；要看的那條（K 線點到、從依據跳過來）不在範圍內就自動展開
+  const fkey = [st.id, ft, fc, fa, fs, showOld].join('|');
+  if (ui.notePageKey !== fkey) { ui.notePageKey = fkey; ui.notePage = NOTE_PAGE; }
+  let lim = ui.notePage || NOTE_PAGE;
+  if (hl.size) { let last = -1; list.forEach((n, i) => { if (hl.has(n.id)) last = i; }); if (last >= lim) lim = ui.notePage = Math.ceil((last + 1) / NOTE_PAGE) * NOTE_PAGE; }
   let html = '', mon = '';
-  list.forEach(n => {
+  list.slice(0, lim).forEach(n => {
     const mm = n.date.slice(0, 7);
     if (mm !== mon) { mon = mm; html += `<div class="mon">${mm.slice(0, 4)} 年 ${+mm.slice(5, 7)} 月</div>`; }
     const sc = stanceColor(n.stance, st.market);
     const src = [n.source ? `來源：${esc(n.source)}` : '', n.verification_status === 'not_reverified' ? '未重新查證' : '', n.source_url ? `<a href="${esc(n.source_url)}" target="_blank" rel="noopener">原始連結</a>` : ''].filter(Boolean).join('・');
-    html += `<div class="nt ${hl.has(n.id) ? 'hl' : ''} ${open.has(n.id) ? 'open' : ''}" data-act="note-open" data-id="${n.id}">
+    html += `<div class="nt ${hl.has(n.id) ? 'hl' : ''} ${open.has(n.id) ? 'open' : ''} ${isOld(n) ? 'old' : ''}" data-act="note-open" data-id="${n.id}" data-nid="${n.id}">
       <div class="nt-top"><span class="num">${fmtNoteDate(n)}</span><span class="pill" style="color:${sc}">${STANCE[n.stance] || '中性'}</span>${noteTags(n)}<span class="tp">${esc(n.topic)} › ${esc(n.sub)}</span>
-        ${notePrec(n) !== 'unknown' ? `<button class="ibtn sm" data-act="note-k" data-id="${n.id}" title="在 K 線上看" aria-label="在 K 線上看">${ic('chart')}</button>` : ''}
+        ${!['unknown', 'year'].includes(notePrec(n)) ? `<button class="ibtn sm" data-act="note-k" data-id="${n.id}" title="在 K 線上看" aria-label="在 K 線上看">${ic('chart')}</button>` : ''}
         <button class="ibtn sm" data-act="edit-note" data-id="${n.id}" aria-label="編輯">${ic('edit')}</button></div>
       <div class="nt-title">${esc(n.title)}</div>${noteMeta(n)}
       ${n.body ? `<div class="nt-body">${esc(n.body)}</div>` : ''}
-      ${src ? `<div class="nt-src">${src}</div>` : ''}</div>`;
+      ${noteLinks(n, 'nt')}${src ? `<div class="nt-src">${src}</div>` : ''}</div>`;
   });
-  el.innerHTML = head + `<div class="pb">${chips}${filters}${html || '<div class="empty">沒有符合篩選的重點</div>'}</div>`;
+  const more = list.length > lim ? `<div class="empty" style="padding:12px"><button type="button" class="btn" data-act="note-more">再顯示 ${Math.min(NOTE_PAGE, list.length - lim)} 條</button><div class="faint" style="margin-top:6px">已顯示 ${lim} / ${list.length} 條；要找特定的重點，可以用上面的篩選或「資料整理」搜尋</div></div>` : '';
+  el.innerHTML = head + `<div class="pb">${chips}${stats}${filters}${html || '<div class="empty">沒有符合篩選的重點</div>'}${more}</div>`;
   if (keep) el.querySelector('.pb').scrollTop = keep;
 }
 // 依「估值 › 獲利預估」的 EPS 中位數，用即時股價算預估本益比
@@ -2041,7 +2389,7 @@ function estPE(st, price) {
   if (!isNum(price) || price <= 0) return [];
   const byYear = new Map();
   data.notes.forEach(n => {
-    if (n.stockId !== st.id || n.topic !== '估值' || n.sub !== '獲利預估') return;
+    if (n.stockId !== st.id || n.topic !== '估值' || n.sub !== '獲利預估' || isOld(n)) return;
     const y = String(n.target_period || '').match(/^(\d{4})$/); if (!y) return;
     const m = (n.title + ' ' + (n.body || '')).match(/EPS\s*(?:約|為)?\s*([\d,]+(?:\.\d+)?)/i); if (!m) return;
     const v = parseFloat(m[1].replace(/,/g, '')); if (!(v > 0)) return;
@@ -2054,13 +2402,25 @@ function estPE(st, price) {
     return { year: y, eps: med, n: arr.length, pe: price / med };
   });
 }
+// 距高點用固定的交易日區間（20／60／120／250 日），點一下切換
+const HI_WINS = [20, 60, 120, 250];
+const DB = { key: '', at: 0, bars: [] };
+function dailyBarsOf(st) {
+  if (K.st === st && K.int === '1d' && K.bars.length) return K.bars;
+  if (isDemoStock(st)) return demoBars(st, '1d');
+  const key = `st.h.${st.market}:${st.code}:1d`, c = HMEM[key] || load(key);
+  if (!c) return [];
+  if (DB.key !== key || DB.at !== c.at) { DB.key = key; DB.at = c.at; DB.bars = unpackBars(c.b); }
+  return DB.bars;
+}
 function extraStats(st, c) {
   let h = '';
-  if (K.st === st && K.bars.length && isNum(c.price)) {
-    const from = new Date(Date.now() - 365 * 864e5).toISOString().slice(0, 10);
-    let hi = c.price; K.bars.forEach(b => { if (b.time >= from && b.h > hi) hi = b.h; });
+  const bars = dailyBarsOf(st);
+  if (bars.length && isNum(c.price)) {
+    const w = HI_WINS.includes(+ui.hiWin) ? +ui.hiWin : 250;
+    let hi = c.price; bars.slice(-w).forEach(b => { if (b.h > hi) hi = b.h; });
     const off = c.price / hi - 1;
-    h += `<span title="以一年內最高價計算">距一年高<b class="${cls(off, st.market)}">${fmtPct(off)}</b></span>`;
+    h += `<button type="button" class="qst" data-act="hiwin" title="以最近 ${w} 個交易日的最高價計算；點一下切換 20／60／120／250 日">距 ${w} 日高<b class="${cls(off, st.market)}">${fmtPct(off)}</b></button>`;
   }
   const pes = estPE(st, c.price);
   if (pes.length) h += `<span title="用「估值 › 獲利預估」裡的 EPS（多筆取中位數）和即時股價計算">預估本益比<b>${pes.map(p => `${p.year.slice(2)}年 ${p.pe.toFixed(1)} 倍`).join('・')}</b></span>`;
@@ -2104,20 +2464,35 @@ function topicColor(topic) {
   return TOPIC_COLORS[h % TOPIC_COLORS.length];
 }
 const MEM = { st: null, nodes: [], links: [], dust: [], stars: [], bg: null, R: null, pan: { x: 0, y: 0 }, tpan: null, par: { x: 0, y: 0 }, frame: 0, zoom: 1, spin: false,
-  sel: null, hover: null, panel: null, open: new Set(), t0: 0, raf: 0, ptrs: new Map(), moved: false, pinch: null, w: 0, h: 0, cv: null, ctx: null, ro: null };
+  sel: null, hover: null, panel: null, open: new Set(), stance: '', t0: 0, raf: 0, ptrs: new Map(), moved: false, pinch: null, w: 0, h: 0, cv: null, ctx: null, ro: null };
 const ARM_B = 1.15;                                     // 旋臂捲曲程度
+const MEM_STAR_BUDGET = 900;                           // 重點星星的總數上限（資料很多時保持流暢）
+// 星星的光暈：每種顏色先畫好一張，之後直接貼上（比每顆星星都重畫漸層快很多）
+const GLOW = new Map();
+function glowSprite(color) {
+  let c = GLOW.get(color);
+  if (!c) {
+    c = document.createElement('canvas'); c.width = c.height = 64;
+    const g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, color); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, 64, 64); GLOW.set(color, c);
+  }
+  return c;
+}
 const spiral = (a0, r) => a0 + ARM_B * Math.log(r / 55);
 const onDisk = (r, a, y) => [r * Math.cos(a), y, r * Math.sin(a)];
 
 function memBuild(st) {
-  const notes = data.notes.filter(n => n.stockId === st.id);
-  const tree = topicTree(st, false);
+  const notes = data.notes.filter(n => n.stockId === st.id && !isOld(n));      // 已過時的不放進星系
+  const tree = topicTree(st, false, notes);
   let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
   const gauss = () => Math.sqrt(-2 * Math.log(rnd() + 1e-9)) * Math.cos(2 * Math.PI * rnd());
   const nodes = [], links = [];
   const root = { id: 'root', kind: 'root', label: `${st.code} ${st.name || ''}`, r: 20, pos: [0, 0, 0] };
   nodes.push(root);
-  const T = tree.length;
+  const T = tree.length, subN = tree.reduce((a, t) => a + t.subs.length, 0);
+  const cap = Math.max(12, Math.floor(MEM_STAR_BUDGET / Math.max(1, subN)));   // 每個子主題最多畫幾顆重點星星（最新的優先）
+  MEM.capped = 0;
   tree.forEach((t, i) => {
     const a0 = (2 * Math.PI * i) / Math.max(1, T), color = topicColor(t.topic);
     const rt = 132 + (i % 2) * 18;
@@ -2129,7 +2504,9 @@ function memBuild(st) {
       const rs = 212 + (j % 3) * 18;
       const sn = { id: 's:' + t.topic + '||' + s.sub, kind: 'sub', label: s.sub, topic: t.topic, sub: s.sub, color, r: 5.5 + Math.sqrt(s.count) * 1.8, pos: onDisk(rs, spiral(a0, rs) + off, (rnd() - 0.5) * 16), parent: tn, count: s.count, off, a0, rs };
       nodes.push(sn); links.push([tn, sn]);
-      const ns = notes.filter(n => n.topic === t.topic && n.sub === s.sub).sort((a, b) => a.date < b.date ? -1 : 1), p = ns.length;
+      let ns = notes.filter(n => n.topic === t.topic && n.sub === s.sub).sort((a, b) => a.date < b.date ? -1 : 1);
+      if (ns.length > cap) { MEM.capped += ns.length - cap; sn.hidden = ns.slice(0, ns.length - cap); ns = ns.slice(-cap); }
+      const p = ns.length;
       ns.forEach((n, k) => {
         const rn = rs + 52 + (k % 3) * 15;
         const o2 = p > 1 ? (k / (p - 1) - 0.5) * Math.min(0.55, 0.1 * p) : 0;
@@ -2152,12 +2529,13 @@ function memBuild(st) {
   }
   const stars = [];
   for (let k = 0; k < 360; k++) stars.push({ x: rnd(), y: rnd(), s: 0.4 + rnd() * 1.3, a: 0.25 + rnd() * 0.7, ph: rnd() * 6.28, sp: 0.6 + rnd() * 2.2 });
+  links.forEach(([a, b]) => (a.kids || (a.kids = [])).push(b));
   MEM.nodes = nodes; MEM.links = links; MEM.dust = dust; MEM.stars = stars;
 }
 
 function openMemory(st) {
   if (dlg.open) dlg.close();
-  Object.assign(MEM, { st, sel: null, hover: null, panel: null, zoom: 1, R: memInitR(), pan: { x: 0, y: 0 }, tpan: null, par: { x: 0, y: 0 }, frame: 0, spin: !!ui.memSpin, open: new Set() });
+  Object.assign(MEM, { st, sel: null, hover: null, panel: null, zoom: 1, R: memInitR(), pan: { x: 0, y: 0 }, tpan: null, par: { x: 0, y: 0 }, frame: 0, spin: !!ui.memSpin, open: new Set(), stance: '' });
   memBuild(st);
   const md = $('#mem');
   const nNotes = MEM.nodes.filter(x => x.kind === 'note').length;
@@ -2216,7 +2594,7 @@ function memResize() {
 function memRelated(n) {
   const s = new Set([n]);
   for (let p = n.parent; p; p = p.parent) s.add(p);
-  const walk = x => MEM.links.forEach(([a, b]) => { if (a === x) { s.add(b); walk(b); } });
+  const walk = x => (x.kids || []).forEach(b => { s.add(b); walk(b); });
   walk(n);
   return s;
 }
@@ -2268,16 +2646,23 @@ function memDraw(now) {
   const fade = z => Math.max(0.4, Math.min(1, 0.72 - z / 650));
   // 連線：平常很淡，選取的那條路徑發光
   ctx.lineCap = 'round';
+  const batch = new Map();                                 // 一般的重點連線：同一個子主題合併成一筆畫（資料多時比較順）
   for (const [a, b] of MEM.links) {
     const onPath = path && path.has(a) && path.has(b);
     const inRel = rel && rel.has(a) && rel.has(b);
     const col = b.kind === 'note' ? b.parent.color : b.color;
     if (onPath) continue;                                  // 路徑最後畫，蓋在最上面
+    if (b.kind === 'note' && !inRel) { let g = batch.get(a); if (!g) batch.set(a, g = []); g.push(b); continue; }
     ctx.globalAlpha = (rel ? (inRel ? 0.55 : 0.06) : (b.kind === 'note' ? 0.16 : 0.26)) * Math.min(fade(a.q.z), fade(b.q.z)) * e;
     ctx.strokeStyle = col;
     ctx.lineWidth = inRel ? (b.kind === 'topic' ? 1.8 : 1.3) : (b.kind === 'topic' ? 1.2 : 0.8);
     ctx.beginPath(); ctx.moveTo(a.q.x, a.q.y); ctx.lineTo(b.q.x, b.q.y); ctx.stroke();
   }
+  ctx.lineWidth = 0.8;
+  batch.forEach((list, a) => {
+    ctx.globalAlpha = (rel ? 0.06 : 0.16) * fade(a.q.z) * e; ctx.strokeStyle = a.color;
+    ctx.beginPath(); for (const b of list) { ctx.moveTo(a.q.x, a.q.y); ctx.lineTo(b.q.x, b.q.y); } ctx.stroke();
+  });
   if (path && path.size > 1) {
     const pts = memPath(MEM.sel);
     const col = MEM.sel.kind === 'note' ? MEM.sel.color : MEM.sel.color || '#fff';
@@ -2306,15 +2691,17 @@ function memDraw(now) {
   }
   // 星星（節點）：遠的先畫
   const order = MEM.nodes.filter(n => n.kind !== 'root').sort((a, b) => b.q.z - a.q.z);
+  // 先一次畫完所有光暈（加亮混色和順序無關），再由遠到近畫星星本體；不用每顆星星切換混色模式
+  const alphaOf = n => fade(n.q.z) * (rel && !rel.has(n) ? 0.3 : 1) * (memOff(n) ? 0.12 : 1) * Math.min(1, e * 1.3);
+  ctx.globalCompositeOperation = 'lighter';
   for (const n of order) {
-    const dim = rel && !rel.has(n) ? 0.3 : 1, a = fade(n.q.z) * dim * Math.min(1, e * 1.3), r = n.rr;
     const twinkle = n.kind === 'note' ? 0.8 + 0.2 * Math.sin(t * 2.4 + n.tw) : 1;
-    ctx.globalCompositeOperation = 'lighter';
-    const hr = r * (n.kind === 'note' ? 4.2 : 3.2);
-    const g = ctx.createRadialGradient(n.q.x, n.q.y, 0, n.q.x, n.q.y, hr);
-    g.addColorStop(0, n.color); g.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.globalAlpha = a * 0.55 * twinkle; ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n.q.x, n.q.y, hr, 0, Math.PI * 2); ctx.fill();
-    ctx.globalCompositeOperation = 'source-over';
+    const hr = n.rr * (n.kind === 'note' ? 4.2 : 3.2);
+    ctx.globalAlpha = alphaOf(n) * 0.55 * twinkle; ctx.drawImage(glowSprite(n.color), n.q.x - hr, n.q.y - hr, hr * 2, hr * 2);
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  for (const n of order) {
+    const a = alphaOf(n), r = n.rr;
     ctx.globalAlpha = a; ctx.fillStyle = n.color; ctx.beginPath(); ctx.arc(n.q.x, n.q.y, r, 0, Math.PI * 2); ctx.fill();
     ctx.globalAlpha = a * 0.85; ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.arc(n.q.x, n.q.y, r * 0.38, 0, Math.PI * 2); ctx.fill();
     if (n === MEM.sel || n === MEM.hover) {
@@ -2390,7 +2777,10 @@ function memLoop(now) {
   MEM.raf = requestAnimationFrame(memLoop);
 }
 function memSelect(n) {
-  if (!n || n.kind === 'root') { MEM.sel = null; MEM.panel = null; }
+  const t0 = MEM.panel && MEM.panel.topic;
+  const t1 = n && (n.topic || (n.note && n.note.topic));
+  if (n && n.kind !== 'root' && t1 !== t0) MEM.stance = '';      // 看法篩選屬於某個主題，換主題就清掉
+  if (!n || n.kind === 'root') { MEM.sel = null; MEM.panel = null; MEM.stance = ''; }
   else if (n.kind === 'note') { MEM.sel = n; MEM.panel = n.parent; MEM.open.add(n.note.id); memFocus(n); }
   else { MEM.sel = n; MEM.panel = n; memFocus(n); }
   memSide();
@@ -2456,10 +2846,12 @@ function memBind() {
   });
 }
 
+// 看法篩選：不符合的重點星星
+const memOff = n => !!MEM.stance && n.kind === 'note' && (n.note.stance || 'neutral') !== MEM.stance;
 function memHit(x, y) {
   let best = null, bz = Infinity;
   for (const n of MEM.nodes) {
-    if (!n.q) continue;
+    if (!n.q || memOff(n)) continue;
     const rad = n.kind === 'root' ? 22 : n.rr + 8;
     if (Math.hypot(n.q.x - x, n.q.y - y) <= rad && n.q.z < bz) { best = n; bz = n.q.z; }
   }
@@ -2473,41 +2865,55 @@ function memCard(x, showSub) {
       <button type="button" class="ibtn sm" data-mem-k="${x.id}" title="在 K 線上看" aria-label="在 K 線上看">${ic('chart')}</button><button type="button" class="ibtn sm" data-mem-e="${x.id}" title="編輯" aria-label="編輯">${ic('edit')}</button></div>
     <div class="nt-title">${esc(x.title)}</div>${noteMeta(x, false)}
     ${!fold && x.body ? `<div class="mn-body">${esc(x.body)}</div>` : ''}
+    ${!fold ? noteLinks(x, 'mem') : ''}
     ${!fold && x.source ? `<div class="mn-src">來源：${esc(x.source)}</div>` : ''}</div>`;
 }
 function memSide() {
   const el = $('#memSide'); if (!el) return;
   const st = MEM.st, m = st.market, P = MEM.panel;
-  const notesOf = sub => MEM.nodes.filter(x => x.kind === 'note' && x.parent === sub).map(x => x.note).sort((a, b) => a.date < b.date ? 1 : -1);
+  // 子主題的全部重點（包含太多時沒有畫成星星的較早重點）
+  const notesOf = sub => MEM.nodes.filter(x => x.kind === 'note' && x.parent === sub).map(x => x.note).concat(sub.hidden || []).sort((a, b) => a.date < b.date ? 1 : -1);
+  const SUB_CARDS = 20, ALL_CARDS = 300;
+  const pass = x => !MEM.stance || (x.stance || 'neutral') === MEM.stance;
   const foldBtn = `<button type="button" class="btn mem-fold" data-mem-fold>${ui.memFold ? '全部展開' : '全部收起'}</button>`;
   if (!P) {
     const all = MEM.nodes.filter(x => x.kind === 'note').map(x => x.note);
-    const c = { bull: 0, neutral: 0, bear: 0 }; all.forEach(x => c[x.stance] = (c[x.stance] || 0) + 1);
     const tops = MEM.nodes.filter(x => x.kind === 'topic');
     const latest = all.slice().sort((a, b) => a.date < b.date ? 1 : -1).slice(0, 6);
     el.innerHTML = `<div class="mem-h">${stockLabel(st)}</div>
-      <div class="mem-stance"><span style="color:${stanceColor('bull', m)}">偏多 ${c.bull}</span><span style="color:${stanceColor('neutral', m)}">中性 ${c.neutral}</span><span style="color:${stanceColor('bear', m)}">偏空 ${c.bear}</span></div>
-      <div class="lbl" style="margin:14px 0 4px">主題（點一下看裡面所有重點）</div>
-      ${tops.map(t => `<button type="button" class="mem-it" data-mem="${esc(t.id)}"><i class="dotc" style="background:${t.color}"></i>${esc(t.topic)} <span class="faint">${t.count}</span></button>`).join('') || '<div class="faint">還沒有重點</div>'}
+      ${statBlock(all, m, '整檔多空')}
+      <div class="lbl" style="margin:12px 0 4px">主題（點一下看裡面所有重點；右邊是多空比）</div>
+      ${tops.map(t => `<button type="button" class="mem-it" data-mem="${esc(t.id)}"><i class="dotc" style="background:${t.color}"></i>${esc(t.topic)} <span class="faint">${t.count}</span>${statMini(all.filter(x => x.topic === t.topic), m)}</button>`).join('') || '<div class="faint">還沒有重點</div>'}
       ${latest.length ? `<div class="lbl" style="margin:14px 0 6px">最新重點</div>${latest.map(x => memCard(x, true)).join('')}` : ''}`;
   } else if (P.kind === 'topic') {
     const subs = MEM.nodes.filter(x => x.kind === 'sub' && x.parent === P);
+    const tn = subs.flatMap(notesOf);
     el.innerHTML = `<div class="mem-bar"><button type="button" class="btn" data-mem="">← 全部</button>${foldBtn}</div>
-      <div class="mem-h"><i class="dotc" style="background:${P.color}"></i>${esc(P.topic)}</div><div class="faint">${P.count} 條重點・${subs.length} 個子主題</div>
-      ${subs.map(s => `<div class="ms-h" data-mem="${esc(s.id)}"><i class="dotc" style="background:${s.color}"></i>${esc(s.sub)} <span class="faint">${s.count}</span></div>${notesOf(s).map(x => memCard(x, false)).join('')}`).join('')}`;
+      <div class="mem-h"><i class="dotc" style="background:${P.color}"></i>${esc(P.topic)}</div><div class="faint" style="margin-bottom:8px">${P.count} 條重點・${subs.length} 個子主題</div>
+      ${statBlock(tn, m, '主題多空')}${P.topic === '分析師看法' ? analystBlock(tn, m) : ''}
+      <div style="margin:4px 0 2px">${stanceSeg(MEM.stance, tn, 'data-mem-stance')}</div>
+      ${subs.map(s => { const ns = notesOf(s), shown = ns.filter(pass); return `<div class="ms-h" data-mem="${esc(s.id)}"><i class="dotc" style="background:${s.color}"></i>${esc(s.sub)} <span class="faint">${MEM.stance ? shown.length + ' / ' : ''}${s.count}</span><span class="sp"></span>${statMini(ns, m)}</div>${shown.slice(0, SUB_CARDS).map(x => memCard(x, false)).join('')}${shown.length > SUB_CARDS ? `<button type="button" class="btn" data-mem="${esc(s.id)}" style="margin-bottom:8px">看全部 ${shown.length} 條</button>` : ''}`; }).join('')}`;
   } else {
-    const ns = notesOf(P);
+    const ns = notesOf(P), shown = ns.filter(pass);
     el.innerHTML = `<div class="mem-bar"><button type="button" class="btn" data-mem="${esc(P.parent.id)}">← ${esc(P.topic)}</button>${foldBtn}</div>
-      <div class="mem-h"><i class="dotc" style="background:${P.color}"></i>${esc(P.topic)} › ${esc(P.sub)}</div><div class="faint" style="margin-bottom:10px">${ns.length} 條重點</div>
-      ${ns.map(x => memCard(x, false)).join('')}`;
+      <div class="mem-h"><i class="dotc" style="background:${P.color}"></i>${esc(P.topic)} › ${esc(P.sub)}</div><div class="faint" style="margin-bottom:8px">${ns.length} 條重點</div>
+      ${statBlock(ns, m, '子主題多空')}${P.topic === '分析師看法' ? analystBlock(ns, m) : ''}
+      <div style="margin:4px 0 8px">${stanceSeg(MEM.stance, ns, 'data-mem-stance')}</div>
+      ${shown.slice(0, ALL_CARDS).map(x => memCard(x, false)).join('') || '<div class="faint">沒有符合的重點</div>'}${shown.length > ALL_CARDS ? `<div class="faint">只列出最新 ${ALL_CARDS} 條，共 ${shown.length} 條；其餘可以在「資料整理」查看</div>` : ''}${P.hidden ? `<div class="faint" style="margin-top:6px">這個子主題的重點很多，星系上只畫最新 ${ns.length - P.hidden.length} 顆星星</div>` : ''}`;
   }
   const on = el.querySelector('.mn.on');
   if (on) on.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 document.addEventListener('click', e => {
   if (!e.target.closest('#memSide')) return;
-  const a = e.target.closest('[data-mem-k],[data-mem-e],[data-mem-fold],[data-memn],[data-mem]');
+  const a = e.target.closest('[data-mem-k],[data-mem-e],[data-mem-fold],[data-mem-stance],[data-mem-go],[data-memn],[data-mem]');
   if (!a) return;
+  if (a.hasAttribute('data-mem-stance')) { MEM.stance = a.dataset.memStance; memSide(); return; }
+  if (a.dataset.memGo) {
+    const n = MEM.nodes.find(x => x.kind === 'note' && x.note.id === a.dataset.memGo);
+    if (n) { if (memOff(n)) MEM.stance = ''; MEM.open.add(n.note.id); memSelect(n); } else toast('那條重點已過時或不在這個星系裡');
+    return;
+  }
   if (a.dataset.memK || a.dataset.memE) {
     const id = a.dataset.memK || a.dataset.memE, n = data.notes.find(x => x.id === id), st = MEM.st;
     $('#mem').close();
@@ -2523,11 +2929,542 @@ document.addEventListener('click', e => {
   if (a.dataset.memn) {
     const n = MEM.nodes.find(x => x.kind === 'note' && x.note.id === a.dataset.memn);
     if (n) { MEM.sel = n; MEM.open.add(n.note.id); memFocus(n); memSide(); }
+    else { MEM.open.add(a.dataset.memn); memSide(); }          // 較早、沒有畫成星星的重點：只展開內容
     return;
   }
   const key = a.dataset.mem;
   memSelect(key ? MEM.nodes.find(x => x.id === key) || null : null);
 });
+
+/* ========== 資料整理（全螢幕、可跨標的、資料量大也順） ========== */
+const fmtDT = ms => { const d = new Date(ms); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 16).replace('T', ' '); };
+const mgDefaults = () => ({ stock: '', topic: '', sub: '', rel: false, stance: '', claim: '', src: '', analyst: '', status: '', batch: '', from: '', to: '', q: '' });
+const COLL = new Intl.Collator('zh-Hant');
+const subsOf = (topic, list) => [...new Set((FIXED_SUBS[topic] || []).concat((list || data.notes).filter(n => n.topic === topic).map(n => n.sub)))];
+function openManager(preset = {}) {
+  if (dlg.open) dlg.close();
+  if ($('#mem').open) $('#mem').close();
+  MG.f = mgDefaults();
+  ['stock', 'batch', 'topic', 'sub'].forEach(k => { if (preset[k]) MG.f[k] = preset[k]; });
+  MG.tab = preset.tab || 'notes';
+  MG.catStock = preset.tab === 'cats' ? (preset.stock || '') : (preset.stock || MG.catStock || '');
+  MG.sel = new Set(); MG.dup = false; MG.groups = null; MG.last = -1; MG.catSel = new Set(); MG.tsel = new Set(); MG.showFil = false;
+  const md = $('#mgr');
+  md.innerHTML = `<div class="mg-top"><b>資料整理</b><div class="tabs" id="mgTabs"></div><span class="sp"></span>
+      <span class="faint hide-m" style="font-size:12px">匯入是新增；刪除會先放進回收桶 ${TRASH_DAYS} 天</span>
+      <button class="ibtn" type="button" id="mgClose" aria-label="關閉">${ic('x')}</button></div>
+    <div class="mg-body" id="mgBody"></div>`;
+  $('#mgClose').onclick = () => md.close();
+  md.onclose = () => { MG.open = false; const t = document.getElementById('toast'); if (t && t.parentElement === md) document.body.appendChild(t); render(); };
+  MG.open = true;
+  md.showModal();
+  mgRender(true);
+}
+function mgRender(full) {
+  if (!MG.open) return;
+  const tabs = [['notes', '重點', data.notes.length], ['cats', '分類', ''], ['imports', '匯入紀錄', data.imports.length], ['trash', '回收桶', data.trash.length]];
+  $('#mgTabs').innerHTML = tabs.map(([k, l, n]) => `<button type="button" class="${MG.tab === k ? 'on' : ''}" data-mgtab="${k}">${l}${n !== '' ? `<span class="n">${n}</span>` : ''}</button>`).join('');
+  const body = $('#mgBody');
+  if (full || body.dataset.tab !== MG.tab) {
+    body.dataset.tab = MG.tab;
+    body.innerHTML = MG.tab === 'notes' ? `<div class="mg-fil ${MG.showFil ? 'on' : ''}" id="mgFil"></div><div class="mg-sum" id="mgSum"></div>
+        <div class="mg-grid"><div class="mg-head" id="mgHead"></div><div class="mg-vp" id="mgVp"><div class="mg-sp" id="mgSp"></div></div></div>
+        <div class="mg-act" id="mgAct"></div><div class="mg-foot"></div>`
+      : `<div class="mg-tools" id="mgTools"></div><div class="mg-scroll" id="mgList"></div>`;
+    if (MG.tab === 'notes') $('#mgVp').onscroll = () => { if (!MG.raf) MG.raf = requestAnimationFrame(() => { MG.raf = 0; mgRows(); }); };
+  }
+  if (MG.tab === 'notes') mgNotes();
+  else if (MG.tab === 'cats') mgCats();
+  else if (MG.tab === 'imports') mgImports();
+  else mgTrash();
+}
+
+/* ---- 重點列表 ---- */
+function mgFilterList() {
+  const f = MG.f, q = f.q.trim().toLowerCase();
+  return data.notes.filter(n => {
+    if (f.stock && n.stockId !== f.stock) return false;
+    if (f.topic && n.topic !== f.topic && !(f.rel && n.related_topic === f.topic)) return false;
+    if (f.sub && n.sub !== f.sub) return false;
+    if (f.stance && (n.stance || 'neutral') !== f.stance) return false;
+    if (f.claim && (f.claim === '_none' ? !!n.claim_type : n.claim_type !== f.claim)) return false;
+    if (f.src && (f.src === 'ai') !== isAiNote(n)) return false;
+    if (f.analyst && (f.analyst === '_none' ? !!n.analyst : n.analyst !== f.analyst)) return false;
+    if (f.status) {
+      const ok = { current: !n.review_status, needs_review: n.review_status === 'needs_review', superseded: isOld(n), noev: needsEvidence(n), verified: n.verification_status === 'verified' }[f.status];
+      if (!ok) return false;
+    }
+    if (f.batch && (f.batch === '_none' ? !!n.batch : n.batch !== f.batch)) return false;
+    if (f.from && n.date < f.from) return false;
+    if (f.to && n.date > f.to) return false;
+    if (q && !(n.title + ' ' + (n.body || '') + ' ' + (n.source || '') + ' ' + (n.analyst || '')).toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+function mgSorter() {
+  const k = MG.sort.k, d = MG.sort.d, code = new Map(data.stocks.map(s => [s.id, s.code]));
+  const rank = { bull: 0, neutral: 1, bear: 2 }, ck = Object.keys(CLAIM);
+  const st = n => isOld(n) ? 3 : n.review_status === 'needs_review' ? 2 : needsEvidence(n) ? 1 : 0;
+  const byDate = (a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : (a.ts || 0) - (b.ts || 0);
+  const tr = t => { const i = DEFAULT_TOPICS.indexOf(t); return i < 0 ? 99 : i; };
+  const f = {
+    date: byDate,
+    stock: (a, b) => COLL.compare(code.get(a.stockId) || '', code.get(b.stockId) || ''),
+    topic: (a, b) => (tr(a.topic) - tr(b.topic)) || COLL.compare(a.topic, b.topic) || COLL.compare(a.sub, b.sub),
+    title: (a, b) => COLL.compare(a.title, b.title),
+    stance: (a, b) => (rank[a.stance] ?? 1) - (rank[b.stance] ?? 1),
+    claim: (a, b) => ck.indexOf(a.claim_type) - ck.indexOf(b.claim_type),
+    analyst: (a, b) => COLL.compare(a.analyst || '', b.analyst || ''),
+    status: (a, b) => st(a) - st(b)
+  }[k] || byDate;
+  return (a, b) => (f(a, b) || byDate(a, b)) * d;
+}
+function mgNotes() {
+  const fil = $('#mgFil'), h = mgFilHtml();
+  if (fil.dataset.h !== h && !fil.contains(document.activeElement)) { fil.innerHTML = h; fil.dataset.h = h; }
+  const list = mgFilterList();
+  if (MG.dup) {
+    const key = data.updatedAt + '|' + data.notes.length + '|' + JSON.stringify(MG.f);
+    if (!MG.groups || MG.gkey !== key) { MG.groups = findDups(list); MG.gkey = key; }
+    MG.list = MG.groups.flat();
+    MG.rows = MG.groups.flatMap((g, k) => [{ t: 'g', g, k }].concat(g.map(n => ({ t: 'n', n }))));
+  } else {
+    MG.list = list.sort(mgSorter());
+    MG.rows = MG.list.map(n => ({ t: 'n', n }));
+  }
+  const vis = new Set(MG.list.map(n => n.id));
+  MG.sel.forEach(id => { if (!vis.has(id)) MG.sel.delete(id); });     // 看不到的不留在選取裡，避免誤刪
+  mgSum(); mgHead(); mgRows(); mgAct();
+}
+function mgActiveFilters() { const f = MG.f; return Object.keys(f).filter(k => k !== 'rel' && f[k]).length; }
+function mgFilHtml() {
+  const f = MG.f, sc = f.stock ? data.notes.filter(n => n.stockId === f.stock) : data.notes;
+  const sel = (k, label, opts) => `<select data-mgf="${k}" aria-label="${label}"><option value="">${label}</option>${opts.map(([v, l]) => `<option value="${esc(v)}" ${f[k] === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>`;
+  const used = new Set(sc.map(n => n.topic));
+  const grp = GROUPS.map(g => `<optgroup label="${g}">${DEFAULT_TOPICS.filter(t => TOPIC_GROUP[t] === g).map(t => `<option value="${esc(t)}" ${f.topic === t ? 'selected' : ''}>${esc(t)}</option>`).join('')}</optgroup>`).join('');
+  const custom = [...used].filter(t => !DEFAULT_TOPICS.includes(t));
+  const topicSel = `<select data-mgf="topic" aria-label="主題"><option value="">全部主題</option>${grp}${custom.length ? `<optgroup label="不在規範裡">${custom.map(t => `<option value="${esc(t)}" ${f.topic === t ? 'selected' : ''}>${esc(t)}</option>`).join('')}</optgroup>` : ''}</select>`;
+  const analysts = [...new Set(sc.map(n => n.analyst).filter(Boolean))].sort(COLL.compare);
+  const act = mgActiveFilters();
+  return [
+    sel('stock', '全部標的', data.stocks.map(s => [s.id, `${s.code} ${s.name || ''}`])),
+    topicSel,
+    f.topic ? sel('sub', '全部子主題', subsOf(f.topic, sc).map(x => [x, x])) : '',
+    f.topic && f.topic !== 'AI research' ? `<label class="chk"><input type="checkbox" data-mgf="rel" ${f.rel ? 'checked' : ''}>含相關的 AI 推論</label>` : '',
+    sel('stance', '全部看法', [['bull', '偏多'], ['neutral', '中性'], ['bear', '偏空']]),
+    sel('claim', '全部類型', Object.entries(CLAIM).concat([['_none', '未設類型']])),
+    sel('src', '全部來源', [['ext', '外部資訊'], ['ai', 'AI research']]),
+    analysts.length ? sel('analyst', '全部分析師', analysts.map(a => [a, a]).concat([['_none', '未標明分析師']])) : '',
+    sel('status', '全部狀態', [['current', '目前'], ['needs_review', '待檢視'], ['superseded', '已過時'], ['noev', '待補證據'], ['verified', '已查證']]),
+    sel('batch', '全部匯入批次', data.imports.slice().reverse().map(b => [b.id, `${fmtDT(b.ts)} ${b.label}`]).concat([['_none', '沒有匯入紀錄']])),
+    `<input type="date" data-mgf="from" value="${f.from}" aria-label="起日" title="起日"><span class="faint">～</span><input type="date" data-mgf="to" value="${f.to}" aria-label="迄日" title="迄日">`,
+    `<input type="search" data-mgf="q" value="${esc(f.q)}" placeholder="搜尋標題、內容、來源" aria-label="搜尋">`,
+    act ? `<button type="button" class="btn" data-mg="fclear">清除篩選</button>` : ''
+  ].join('');
+}
+function mgMarket(list) {
+  if (MG.f.stock) { const s = data.stocks.find(x => x.id === MG.f.stock); return s ? s.market : 'TW'; }
+  const us = new Set(data.stocks.filter(s => s.market === 'US').map(s => s.id));
+  return list.length && list.every(n => us.has(n.stockId)) ? 'US' : 'TW';
+}
+function mgSum() {
+  const n = MG.list.length, all = data.notes.length, m = mgMarket(MG.list), s = stanceStats(MG.list), act = mgActiveFilters();
+  const allSel = n > 0 && MG.sel.size >= n && MG.list.every(x => MG.sel.has(x.id));
+  $('#mgSum').innerHTML = `<button type="button" class="btn mg-ftog" data-mg="ftog">篩選${act ? `（${act}）` : ''}</button>
+    <span><b>${n}</b> 條${n !== all ? `<span class="faint">（共 ${all}）</span>` : ''}</span>
+    ${s.ext.n || s.ai.n ? `<div class="sblk">${statRow('外部資訊', s.ext, m)}${statRow('AI research', s.ai, m)}</div>${rangeSel()}` : ''}
+    <span class="sp"></span>
+    ${MG.dup ? `<span>疑似重複 <b>${MG.groups.length}</b> 組</span>${MG.groups.length ? '<button type="button" class="btn" data-mg="dupsel">每組保留一條，勾選其餘</button>' : ''}` : ''}
+    <button type="button" class="btn ${MG.dup ? 'pri' : ''}" data-mg="dup">${MG.dup ? '結束找重複' : '找疑似重複'}</button>
+    ${n ? `<button type="button" class="btn" data-mg="${allSel ? 'selnone' : 'selall'}">${allSel ? '取消全選' : `全選 ${n} 條`}</button>` : ''}`;
+}
+function mgHead() {
+  const n = MG.list.length, k = MG.list.reduce((a, x) => a + (MG.sel.has(x.id) ? 1 : 0), 0);
+  const h = (key, l) => `<span ${MG.dup ? '' : `data-sort="${key}"`} class="${!MG.dup && MG.sort.k === key ? 'on' : ''}">${l}${!MG.dup && MG.sort.k === key ? (MG.sort.d > 0 ? ' ↑' : ' ↓') : ''}</span>`;
+  const el = $('#mgHead');
+  el.innerHTML = `<span><input type="checkbox" data-mgall aria-label="全選" ${n && k === n ? 'checked' : ''}></span>${h('date', '日期')}${h('stock', '標的')}${h('topic', '主題 › 子主題')}${h('title', '標題')}${h('stance', '看法')}${h('claim', '類型')}${h('analyst', '分析師')}${h('status', '狀態')}`;
+  el.querySelector('[data-mgall]').indeterminate = k > 0 && k < n;
+}
+function mgStatusTags(n) {
+  let h = '';
+  if (isOld(n)) h += '<span class="ctag old">已過時</span>';
+  else if (n.review_status === 'needs_review') h += '<span class="ctag warn">待檢視</span>';
+  if (needsEvidence(n)) h += '<span class="ctag warn">待補證據</span>';
+  if (n.verification_status === 'verified') h += '<span class="ctag ok">已查證</span>';
+  return h;
+}
+function mgRows() {
+  const vp = $('#mgVp'), sp = $('#mgSp'); if (!vp || !sp) return;
+  const H = isMobile() ? 58 : 36, rows = MG.rows;
+  if (!rows.length) {
+    sp.style.height = '100%';
+    sp.innerHTML = `<div class="mg-empty">${MG.dup ? '沒有找到疑似重複的重點' : data.notes.length ? '沒有符合篩選的重點' : '還沒有任何重點'}</div>`;
+    return;
+  }
+  sp.style.height = rows.length * H + 'px';
+  const top = vp.scrollTop, vh = vp.clientHeight || 600;
+  const i0 = Math.max(0, Math.floor(top / H) - 8), i1 = Math.min(rows.length, Math.ceil((top + vh) / H) + 8);
+  const sm = new Map(data.stocks.map(s => [s.id, s]));
+  let h = '';
+  for (let i = i0; i < i1; i++) {
+    const r = rows[i], y = i * H;
+    if (r.t === 'g') { h += `<div class="mg-g" style="top:${y}px"><b>第 ${r.k + 1} 組</b><span>${r.g.length} 條相似</span><span class="sp"></span><button type="button" class="btn" data-mg="notdup" data-k="${r.k}">不是重複</button></div>`; continue; }
+    const n = r.n, st = sm.get(n.stockId), m = st ? st.market : 'TW', on = MG.sel.has(n.id);
+    h += `<div class="mg-r ${on ? 'on' : ''} ${isOld(n) ? 'old' : ''}" style="top:${y}px" data-mgid="${n.id}" data-i="${i}">
+      <span class="ck"><input type="checkbox" ${on ? 'checked' : ''} data-mgck="${i}" aria-label="選取"></span>
+      <span class="dt num">${fmtNoteDate(n)}</span>
+      <span class="sk">${st ? esc(st.code) + ' <span class="faint">' + esc(st.name || '') + '</span>' : '?'}</span>
+      <span class="tp2" title="${esc(n.topic)} › ${esc(n.sub)}"><i class="dotc" style="background:${topicColor(n.topic)}"></i>${esc(n.topic)} › ${esc(n.sub)}</span>
+      <span class="tt" title="${esc(n.body || n.title)}"><span>${esc(n.title)}</span>${isAiNote(n) ? '<span class="ctag ai">AI</span>' : ''}</span>
+      <span class="sn"><span class="pill" style="color:${stanceColor(n.stance, m)}">${STANCE[n.stance] || '中性'}</span></span>
+      <span class="cl">${n.claim_type ? CLAIM[n.claim_type] : '<span class="faint">—</span>'}</span>
+      <span class="an2">${esc(n.analyst || '')}</span>
+      <span class="st2">${mgStatusTags(n)}</span></div>`;
+  }
+  sp.innerHTML = h;
+}
+function mgAct() {
+  const el = $('#mgAct'); if (!el) return;
+  const k = MG.sel.size;
+  el.classList.toggle('on', k > 0);
+  el.innerHTML = k ? `<b>已選 ${k} 條</b>
+    <button type="button" class="btn danger" data-mg="del">${ic('trash')}刪除</button>
+    <button type="button" class="btn" data-mg="move">移動分類</button>
+    <button type="button" class="btn" data-mg="stance">改看法</button>
+    <button type="button" class="btn" data-mg="claim">改類型</button>
+    <button type="button" class="btn" data-mg="status">改狀態</button>
+    <button type="button" class="btn" data-mg="link">連結依據</button>
+    <select data-mg-more aria-label="更多動作"><option value="">更多動作…</option><option value="verify">標記已查證</option><option value="unverify">取消已查證</option><option value="analyst">設定分析師</option><option value="restock">改到別的標的</option><option value="unlink">移除依據連結</option></select>
+    <span class="sp"></span><button type="button" class="btn" data-mg="selnone">取消選取</button>` : '';
+}
+function mgSelRefresh() { mgSum(); mgHead(); mgRows(); mgAct(); }
+
+/* ---- 批次動作：每一個都可以馬上復原 ---- */
+function mgBulk(fn, msg) {
+  const ids = [...MG.sel], snap = snapshot(ids);
+  let k = 0; ids.forEach(id => { const n = noteById(id); if (n && fn(n) !== false) k++; });
+  if (!k) { toast('沒有需要修改的重點'); return; }
+  MG.groups = null;
+  commit();
+  setTimeout(() => toastAct(msg(k), '復原', () => restoreSnap(snap)), 0);
+}
+function mgSelNotes() { return [...MG.sel].map(noteById).filter(Boolean); }
+function mgMove() {
+  const ns = mgSelNotes(), same = ns.every(n => n.topic === ns[0].topic) ? ns[0].topic : '';
+  const topics = [...new Set(DEFAULT_TOPICS.concat(data.notes.map(n => n.topic)))];
+  openDialog({
+    title: `移動 ${ns.length} 條重點`, okText: '移動',
+    body: fld('主題', `<select name="topic">${topics.map(t => `<option ${t === same ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>`) +
+      fld('子主題', inp('sub', '', 'list="mgSubs" autocomplete="off" placeholder="留空就維持原本的子主題"'), '可以選規範裡的子主題，或輸入新的名稱') + '<datalist id="mgSubs"></datalist>',
+    onOpen: f => { const upd = () => { $('#mgSubs').innerHTML = subsOf(fv(f, 'topic')).map(s => `<option value="${esc(s)}">`).join(''); }; upd(); f.elements.topic.addEventListener('change', upd); },
+    onOk: f => {
+      const t = fv(f, 'topic'), sb = fv(f, 'sub');
+      mgBulk(n => { if (n.topic === t && (!sb || n.sub === sb)) return false; n.topic = t; if (sb) n.sub = sb; }, k => `已移動 ${k} 條到「${t}${sb ? ' › ' + sb : ''}」`);
+    }
+  });
+}
+function mgPick(title, body, apply) { openDialog({ title, body, okText: '套用', onOk: f => apply(f) }); }
+function mgMore(v) {
+  const k = MG.sel.size;
+  if (v === 'verify') mgBulk(n => { if (n.verification_status === 'verified') return false; n.verification_status = 'verified'; }, c => `已把 ${c} 條標記為已查證`);
+  else if (v === 'unverify') mgBulk(n => { if (n.verification_status !== 'verified') return false; n.verification_status = 'not_reverified'; }, c => `已取消 ${c} 條的已查證`);
+  else if (v === 'unlink') mgBulk(n => { if (!(n.evidence_ids || []).length && !(n.evidence_missing || []).length) return false; delete n.evidence_ids; delete n.evidence_missing; }, c => `已移除 ${c} 條的依據連結`);
+  else if (v === 'analyst') mgPick(`設定 ${k} 條的分析師`, fld('分析師', inp('analyst', '', 'placeholder="留空就清除"')), f => { const a = fv(f, 'analyst') || null; mgBulk(n => { if ((n.analyst || null) === a) return false; n.analyst = a; }, c => `已設定 ${c} 條的分析師`); });
+  else if (v === 'restock') mgPick(`把 ${k} 條改到別的標的`, fld('標的', `<select name="st">${data.stocks.map(s => `<option value="${s.id}">${esc(s.code)} ${esc(s.name || '')}</option>`).join('')}</select>`, '重點放錯標的時使用'),
+    f => { const sid = fv(f, 'st'), s = data.stocks.find(x => x.id === sid); mgBulk(n => { if (n.stockId === sid) return false; n.stockId = sid; }, c => `已把 ${c} 條改到 ${s ? s.code : ''}`); });
+}
+function mgLink() {
+  const ns = mgSelNotes(), sts = new Set(ns.map(n => n.stockId));
+  if (sts.size !== 1) { toast('連結依據時，請只選同一檔標的的重點'); return; }
+  const sid = [...sts][0], sel = new Set(ns.map(n => n.id)), chosen = new Set();
+  const cands = data.notes.filter(n => n.stockId === sid && !sel.has(n.id) && !isOld(n)).sort((a, b) => a.date < b.date ? 1 : -1);
+  openDialog({
+    title: `連結依據　<span class="muted" style="font-size:14px">${ns.length} 條</span>`, wide: true, okText: '連結',
+    body: `<div class="note" style="margin:0 0 8px">勾選支持${ns.length > 1 ? '這些' : '這條'}推論的資料（新聞、財報、公司說法、分析師看法）。依據只是連結，不會改動原本的重點。</div>
+      <div class="r2">${fld('搜尋', '<input type="search" name="q" placeholder="標題或內容">')}${fld('範圍', '<label class="chk" style="margin:6px 0 0"><input type="checkbox" name="withai">也列出其他 AI 推論</label>')}</div>
+      <div class="pk" id="mgPk"></div>`,
+    onOpen: f => {
+      const draw = () => {
+        const q = fv(f, 'q').toLowerCase(), ai = f.elements.withai.checked;
+        const hit = cands.filter(n => (ai || !isAiNote(n)) && (!q || (n.title + ' ' + (n.body || '')).toLowerCase().includes(q)));
+        $('#mgPk').innerHTML = hit.slice(0, 300).map(n => `<label class="imp"><input type="checkbox" data-pk="${n.id}" ${chosen.has(n.id) ? 'checked' : ''}><div style="min-width:0"><div class="nt-top wrap"><span class="num">${fmtNoteDate(n)}</span>${noteTags(n)}<span>${esc(n.topic)} › ${esc(n.sub)}</span></div><div class="nt-title">${esc(n.title)}</div></div></label>`).join('')
+          + (hit.length > 300 ? `<div class="faint" style="padding:8px 0">只列出前 300 條，請用搜尋縮小範圍</div>` : '') + (hit.length ? '' : '<div class="faint" style="padding:10px 0">沒有符合的重點</div>');
+      };
+      f.elements.q.addEventListener('input', draw); f.elements.withai.addEventListener('change', draw);
+      $('#mgPk').addEventListener('change', e => { const b = e.target.closest('[data-pk]'); if (b) b.checked ? chosen.add(b.dataset.pk) : chosen.delete(b.dataset.pk); });
+      draw();
+    },
+    onOk: () => {
+      if (!chosen.size) return '請至少勾選一條依據';
+      const picked = [...chosen];
+      mgBulk(n => { const s = new Set(n.evidence_ids || []), k0 = s.size; picked.forEach(p => s.add(p)); if (s.size === k0) return false; n.evidence_ids = [...s]; }, k => `已幫 ${k} 條連結 ${picked.length} 條依據`);
+    }
+  });
+}
+
+/* ---- 找疑似重複：同一檔、文字相近、日期相近；數字不同（例如不同季度）就不算 ---- */
+const bigr = s => { const g = new Set(); for (let i = 0; i < s.length - 1; i++) g.add(s.slice(i, i + 2)); if (s.length === 1) g.add(s); return g; };
+const dice = (a, b) => { if (!a.size || !b.size) return 0; let k = 0; for (const x of a) if (b.has(x)) k++; return 2 * k / (a.size + b.size); };
+const pairKey = (a, b) => a < b ? a + '|' + b : b + '|' + a;
+function findDups(list) {
+  const ign = new Set(data.dupIgnore), by = new Map(), groups = [];
+  list.forEach(n => { if (!by.has(n.stockId)) by.set(n.stockId, []); by.get(n.stockId).push(n); });
+  by.forEach(arr => {
+    if (arr.length < 2) return;
+    const info = arr.map(n => { const t = normT(n.title); return { n, bg: bigr(t), bb: bigr(t + normT(n.body).slice(0, 60)), num: (n.title.match(/\d+(?:\.\d+)?/g) || []).join('|'), day: (n.date_precision || 'day') === 'day' ? Date.parse(n.date) : null }; });
+    const idx = new Map();
+    info.forEach((x, i) => x.bg.forEach(g => { let p = idx.get(g); if (!p) idx.set(g, p = []); p.push(i); }));
+    const par = info.map((_, i) => i), find = i => { while (par[i] !== i) i = par[i] = par[par[i]]; return i; };
+    info.forEach((x, i) => {
+      const cand = new Map();
+      x.bg.forEach(g => { const p = idx.get(g); if (p.length > 400) return; for (const j of p) if (j > i) cand.set(j, (cand.get(j) || 0) + 1); });
+      cand.forEach((c, j) => {
+        const y = info[j];
+        if (c < Math.min(2, x.bg.size, y.bg.size)) return;
+        if (x.num && y.num && x.num !== y.num) return;
+        if (x.day != null && y.day != null && Math.abs(x.day - y.day) > 14 * 864e5) return;
+        if (Math.max(dice(x.bg, y.bg), dice(x.bb, y.bb)) < 0.6) return;
+        if (ign.has(pairKey(x.n.id, y.n.id))) return;
+        par[find(i)] = find(j);
+      });
+    });
+    const gm = new Map(); info.forEach((x, i) => { const r = find(i); if (!gm.has(r)) gm.set(r, []); gm.get(r).push(x.n); });
+    gm.forEach(g => { if (g.length > 1) groups.push(g.sort((a, b) => (a.ts || 0) - (b.ts || 0))); });
+  });
+  return groups.sort((a, b) => b.length - a.length);
+}
+// 每組留下資訊最完整的一條（內容長、有來源、有依據、已查證），一樣就留最早匯入的
+function mgDupKeepScore(n) { return (n.body || '').length + (n.source ? 30 : 0) + (n.analyst ? 10 : 0) + ((n.evidence_ids || []).length + refsOf(n).length) * 25 + (n.verification_status === 'verified' ? 60 : 0); }
+
+/* ---- 分類：合併同義的子主題、把不在規範裡的主題併進來 ---- */
+function mgSynonyms(subs, fixed) {
+  const out = new Map(), lev1 = (a, b) => {
+    if (Math.abs(a.length - b.length) > 1) return false;
+    let i = 0, j = 0, d = 0;
+    while (i < a.length && j < b.length) { if (a[i] === b[j]) { i++; j++; continue; } if (++d > 1) return false; if (a.length > b.length) i++; else if (b.length > a.length) j++; else { i++; j++; } }
+    return d + (a.length - i) + (b.length - j) <= 1;
+  };
+  for (let i = 0; i < subs.length; i++) for (let j = i + 1; j < subs.length; j++) {
+    const A = subs[i], B = subs[j]; if (fixed.includes(A) && fixed.includes(B)) continue;
+    const a = normT(A), b = normT(B); if (!a || !b) continue;
+    const s = (a.length >= 2 && b.length >= 2 && (a.includes(b) || b.includes(a))) || dice(bigr(a), bigr(b)) >= 0.5 || (Math.min(a.length, b.length) >= 3 && lev1(a, b));
+    if (!s) continue;
+    if (!out.has(A)) out.set(A, []); if (!out.has(B)) out.set(B, []);
+    out.get(A).push(B); out.get(B).push(A);
+  }
+  return out;
+}
+function mgCatNotes() { return MG.catStock ? data.notes.filter(n => n.stockId === MG.catStock) : data.notes; }
+function mgCats() {
+  const ns = mgCatNotes(), tree = new Map();
+  ns.forEach(n => { if (!tree.has(n.topic)) tree.set(n.topic, new Map()); const t = tree.get(n.topic); t.set(n.sub, (t.get(n.sub) || 0) + 1); });
+  const topics = [...tree.keys()].sort((a, b) => { const ia = DEFAULT_TOPICS.indexOf(a), ib = DEFAULT_TOPICS.indexOf(b); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || COLL.compare(a, b); });
+  const k = MG.catSel.size;
+  $('#mgTools').innerHTML = `<select data-mgcat aria-label="範圍"><option value="">全部標的</option>${data.stocks.map(s => `<option value="${s.id}" ${MG.catStock === s.id ? 'selected' : ''}>${esc(s.code)} ${esc(s.name || '')}</option>`).join('')}</select>
+    <span class="faint">勾選同一個主題下的子主題就能合併；名稱很像的會標「疑似同義」。</span><span class="sp"></span>
+    <button type="button" class="btn ${k > 1 ? 'pri' : ''}" data-mg="catmerge" ${k > 1 ? '' : 'disabled'}>合併勾選的子主題${k ? `（${k}）` : ''}</button>`;
+  if (!topics.length) { $('#mgList').innerHTML = '<div class="empty">這個範圍還沒有重點</div>'; return; }
+  $('#mgList').innerHTML = topics.map(t => {
+    const subs = [...tree.get(t).entries()].sort((a, b) => b[1] - a[1]), fixed = FIXED_SUBS[t] || [], syn = mgSynonyms(subs.map(s => s[0]), fixed);
+    const custom = !DEFAULT_TOPICS.includes(t), tot = subs.reduce((a, s) => a + s[1], 0);
+    return `<div class="ct"><div class="ct-h"><i class="dotc" style="background:${topicColor(t)}"></i>${esc(t)}<span class="faint" style="font-weight:400;font-size:12px">${tot} 條</span>
+        ${custom ? `<span class="newtag">不在規範裡</span><span class="sp"></span><button type="button" class="btn" data-mg="topicmerge" data-t="${esc(t)}">併入其他主題</button>` : ''}</div>
+      ${subs.map(([s, c]) => { const key = t + '\u0001' + s, isF = fixed.includes(s), sy = syn.get(s); return `<div class="ct-r"><label><input type="checkbox" data-catck="${esc(key)}" ${MG.catSel.has(key) ? 'checked' : ''}>${esc(s)}</label><span class="faint">${c} 條</span>${isF ? '<span class="ctag">固定</span>' : ''}${sy ? `<span class="newtag">疑似同義：${sy.map(esc).join('、')}</span>` : ''}<span class="sp"></span>
+        <button type="button" class="btn" data-mg="catview" data-t="${esc(t)}" data-s="${esc(s)}">查看</button>${isF ? '' : `<button type="button" class="btn" data-mg="catren" data-t="${esc(t)}" data-s="${esc(s)}">改名／移動</button>`}</div>`; }).join('')}</div>`;
+  }).join('');
+}
+function mgCatApply(match, change, msg) {
+  const ns = mgCatNotes().filter(match), snap = snapshot(ns.map(n => n.id));
+  if (!ns.length) return;
+  ns.forEach(change);
+  MG.catSel = new Set(); MG.groups = null;
+  commit();
+  setTimeout(() => toastAct(msg(ns.length), '復原', () => restoreSnap(snap)), 0);
+}
+function mgCatMerge() {
+  const keys = [...MG.catSel].map(k => k.split('\u0001')), t = keys[0][0];
+  if (keys.some(k => k[0] !== t)) { toast('只能合併同一個主題下的子主題'); return; }
+  const names = keys.map(k => k[1]), fixed = FIXED_SUBS[t] || [];
+  const def = names.find(s => fixed.includes(s)) || names.map(s => [s, mgCatNotes().filter(n => n.topic === t && n.sub === s).length]).sort((a, b) => b[1] - a[1])[0][0];
+  openDialog({
+    title: `合併「${esc(t)}」的子主題`, okText: '合併',
+    body: `<div class="note" style="margin:0 0 10px">${MG.catStock ? '只影響這一檔標的。' : '會套用到所有標的。'}合併後，原本的子主題名稱會消失。</div>
+      <div class="lbl" style="margin-bottom:6px">合併成</div>${names.map(s => `<label class="chk"><input type="radio" name="to" value="${esc(s)}" ${s === def ? 'checked' : ''}>${esc(s)}${fixed.includes(s) ? '<span class="ctag" style="margin-left:6px">固定</span>' : ''}</label>`).join('')}
+      <label class="chk"><input type="radio" name="to" value="__new">其他名稱</label>${inp('newname', '', 'placeholder="新的子主題名稱" style="width:100%;background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:7px 10px"')}`,
+    onOk: f => {
+      let to = (f.querySelector('input[name=to]:checked') || {}).value;
+      if (to === '__new') to = fv(f, 'newname');
+      if (!to) return '請選擇或輸入合併後的名稱';
+      const set = new Set(names);
+      mgCatApply(n => n.topic === t && set.has(n.sub) && n.sub !== to, n => { n.sub = to; }, k => `已把 ${k} 條合併到「${t} › ${to}」`);
+    }
+  });
+}
+function mgCatRename(t, s) {
+  const topics = [...new Set(DEFAULT_TOPICS.concat(data.notes.map(n => n.topic)))];
+  openDialog({
+    title: `改名或移動「${esc(t)} › ${esc(s)}」`, okText: '套用',
+    body: `<div class="note" style="margin:0 0 10px">${MG.catStock ? '只影響這一檔標的。' : '會套用到所有標的。'}改成已有的名稱，就會合併。</div>
+      ${fld('主題', `<select name="topic">${topics.map(x => `<option ${x === t ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select>`)}${fld('子主題', inp('sub', s, 'list="mgSubs2" autocomplete="off"'))}<datalist id="mgSubs2"></datalist>`,
+    onOpen: f => { const upd = () => { $('#mgSubs2').innerHTML = subsOf(fv(f, 'topic')).map(x => `<option value="${esc(x)}">`).join(''); }; upd(); f.elements.topic.addEventListener('change', upd); },
+    onOk: f => {
+      const nt = fv(f, 'topic'), nsb = fv(f, 'sub');
+      if (!nsb) return '請輸入子主題名稱';
+      if (nt === t && nsb === s) return;
+      mgCatApply(n => n.topic === t && n.sub === s, n => { n.topic = nt; n.sub = nsb; }, k => `已把 ${k} 條改到「${nt} › ${nsb}」`);
+    }
+  });
+}
+function mgTopicMerge(t) {
+  openDialog({
+    title: `把「${esc(t)}」併入其他主題`, okText: '併入',
+    body: `<div class="note" style="margin:0 0 10px">子主題名稱會保留。${MG.catStock ? '只影響這一檔標的。' : '會套用到所有標的。'}</div>${fld('併入', `<select name="to">${DEFAULT_TOPICS.map(x => `<option>${x}</option>`).join('')}</select>`)}`,
+    onOk: f => { const to = fv(f, 'to'); mgCatApply(n => n.topic === t, n => { n.topic = to; }, k => `已把 ${k} 條併入「${to}」`); }
+  });
+}
+
+/* ---- 匯入紀錄：看某一批、整批復原 ---- */
+function mgImports() {
+  const cnt = new Map(), scnt = new Map();
+  data.notes.forEach(n => { if (n.batch) cnt.set(n.batch, (cnt.get(n.batch) || 0) + 1); });
+  data.strategies.forEach(s => { if (s.batch) scnt.set(s.batch, (scnt.get(s.batch) || 0) + 1); });
+  const none = data.notes.filter(n => !n.batch).length;
+  $('#mgTools').innerHTML = `<span class="faint">每次匯入都是新增。匯入錯了可以整批復原，復原的重點會放進回收桶。</span>`;
+  const rows = data.imports.slice().reverse().map(b => {
+    const left = cnt.get(b.id) || 0, sl = scnt.get(b.id) || 0;
+    return `<div class="ih ${left || sl ? '' : 'done'}"><div style="min-width:0"><b>${fmtDT(b.ts)}</b>　${esc(b.label || '')}
+      <div class="faint" style="font-size:12px">匯入 ${b.notes || 0} 條${b.strategies ? `、策略 ${b.strategies} 條` : ''}・目前還有 ${left} 條${sl ? `、策略 ${sl} 條` : ''}${(b.stocks || []).length ? '・' + b.stocks.map(esc).join('、') : ''}</div></div><span class="sp"></span>
+      <button type="button" class="btn" data-mg="ibview" data-b="${b.id}" ${left ? '' : 'disabled'}>查看這批</button><button type="button" class="btn danger" data-mg="ibundo" data-b="${b.id}" ${left || sl ? '' : 'disabled'}>復原這次匯入</button></div>`;
+  }).join('');
+  $('#mgList').innerHTML = (rows || '<div class="empty">還沒有匯入紀錄。之後每次匯入都會記在這裡。</div>') +
+    (none ? `<div class="ih"><div><b>沒有匯入紀錄的重點</b><div class="faint" style="font-size:12px">手動新增，或在有匯入紀錄之前匯入的，共 ${none} 條</div></div><span class="sp"></span><button type="button" class="btn" data-mg="ibview" data-b="_none">查看</button></div>` : '');
+}
+function mgUndoImport(bid) {
+  const b = data.imports.find(x => x.id === bid); if (!b) return;
+  const ns = data.notes.filter(n => n.batch === bid), ss = data.strategies.filter(s => s.batch === bid);
+  if (!confirm(`復原 ${fmtDT(b.ts)} 的匯入？\n\n${ns.length} 條重點${ss.length ? `、${ss.length} 條策略` : ''}會移到回收桶（之後再匯入不會被當成「刪除過」）。`)) return;
+  const snap = snapshot(), at = Date.now(), set = new Set(ns.map(n => n.id)), sset = new Set(ss.map(s => s.id));
+  data.notes = data.notes.filter(n => !set.has(n.id));
+  data.strategies = data.strategies.filter(s => !sset.has(s.id));
+  ns.forEach(n => data.trash.push({ kind: 'note', item: n, at, reason: 'import-undo' }));
+  ss.forEach(s => data.trash.push({ kind: 'strategy', item: s, at, reason: 'import-undo' }));
+  MG.sel = new Set(); MG.groups = null;
+  commit();
+  setTimeout(() => toastAct(`已復原這次匯入：${ns.length} 條移到回收桶`, '復原', () => restoreSnap(snap)), 0);
+}
+
+/* ---- 回收桶 ---- */
+function mgTrash() {
+  const items = data.trash.slice().sort((a, b) => b.at - a.at), sm = new Map(data.stocks.map(s => [s.id, s]));
+  const k = items.filter(x => MG.tsel.has(x.item.id)).length;
+  $('#mgTools').innerHTML = `<label class="chk" style="margin:0"><input type="checkbox" data-tall ${items.length && k === items.length ? 'checked' : ''}>全選</label>
+    <button type="button" class="btn" data-mg="trestore" ${k ? '' : 'disabled'}>還原${k ? `（${k}）` : ''}</button><button type="button" class="btn danger" data-mg="tpurge" ${k ? '' : 'disabled'}>永久刪除</button>
+    <span class="faint">刪除的重點會保留 ${TRASH_DAYS} 天。</span><span class="sp"></span><button type="button" class="btn" data-mg="tempty" ${items.length ? '' : 'disabled'}>清空回收桶</button>`;
+  if (!items.length) { $('#mgList').innerHTML = '<div class="empty">回收桶是空的</div>'; return; }
+  const shown = items.slice(0, 800);
+  $('#mgList').innerHTML = `<div class="ct">${shown.map(x => { const it = x.item, st = sm.get(it.stockId); return `<div class="ct-r"><label style="flex:1"><input type="checkbox" data-tck="${it.id}" ${MG.tsel.has(it.id) ? 'checked' : ''}>
+      <span style="min-width:0"><span class="faint">${fmtDT(x.at)}・${st ? esc(st.code) : '（標的已刪除）'}・${x.kind === 'strategy' ? '我的策略' : esc(it.topic) + ' › ' + esc(it.sub)}・${x.reason === 'import-undo' ? '復原匯入' : '刪除'}</span><br>${esc(it.title)}</span></label></div>`; }).join('')}</div>${items.length > 800 ? `<div class="faint">只列出最近 800 條，共 ${items.length} 條</div>` : ''}`;
+}
+function mgTrashRestore() {
+  const snap = snapshot(), set = MG.tsel, keep = [], stocks = new Set(data.stocks.map(s => s.id)), tombs = data.tombs.slice();
+  let k = 0, miss = 0;
+  data.trash.forEach(x => {
+    if (!set.has(x.item.id)) { keep.push(x); return; }
+    if (!stocks.has(x.item.stockId)) { miss++; keep.push(x); return; }
+    (x.kind === 'strategy' ? data.strategies : data.notes).push(x.item); k++;
+    if (x.kind !== 'strategy' && x.reason === 'delete') { const i = tombs.lastIndexOf(tombKey(x.item)); if (i >= 0) tombs.splice(i, 1); }
+  });
+  data.trash = keep; data.tombs = tombs; MG.tsel = new Set(); MG.groups = null;
+  commit();
+  setTimeout(() => toastAct(`已還原 ${k} 條${miss ? `；${miss} 條的標的已經刪除，無法還原` : ''}`, '復原', () => restoreSnap(snap)), 0);
+}
+
+/* ---- 事件 ---- */
+document.addEventListener('click', e => {
+  const md = $('#mgr'); if (!md.open || !md.contains(e.target)) return;
+  const t = e.target;
+  const tab = t.closest('[data-mgtab]');
+  if (tab) { MG.tab = tab.dataset.mgtab; mgRender(); return; }
+  const sort = t.closest('[data-sort]');
+  if (sort) { const k = sort.dataset.sort; MG.sort = { k, d: MG.sort.k === k ? -MG.sort.d : (k === 'date' ? -1 : 1) }; mgNotes(); return; }
+  if (t.matches('[data-mgall]')) { const all = t.checked; MG.list.forEach(n => all ? MG.sel.add(n.id) : MG.sel.delete(n.id)); mgSelRefresh(); return; }
+  const ck = t.closest('.mg-r .ck');
+  if (ck) {
+    const i = +ck.parentElement.dataset.i, r = MG.rows[i]; if (!r || r.t !== 'n') return;
+    const box = ck.querySelector('input'); if (t !== box) box.checked = !box.checked;
+    const on = box.checked;
+    if (e.shiftKey && MG.last >= 0) { const [a, b] = [Math.min(MG.last, i), Math.max(MG.last, i)]; for (let j = a; j <= b; j++) { const x = MG.rows[j]; if (x.t === 'n') on ? MG.sel.add(x.n.id) : MG.sel.delete(x.n.id); } }
+    else on ? MG.sel.add(r.n.id) : MG.sel.delete(r.n.id);
+    MG.last = i; mgSelRefresh(); return;
+  }
+  const row = t.closest('.mg-r');
+  if (row) { const n = noteById(row.dataset.mgid), st = n && data.stocks.find(s => s.id === n.stockId); if (n && st) openNote(st, n); return; }
+  const cc = t.closest('[data-catck]');
+  if (cc) { cc.checked ? MG.catSel.add(cc.dataset.catck) : MG.catSel.delete(cc.dataset.catck); mgCats(); return; }
+  const tc = t.closest('[data-tck]');
+  if (tc) { tc.checked ? MG.tsel.add(tc.dataset.tck) : MG.tsel.delete(tc.dataset.tck); mgTrash(); return; }
+  if (t.matches('[data-tall]')) { MG.tsel = t.checked ? new Set(data.trash.map(x => x.item.id)) : new Set(); mgTrash(); return; }
+  const b = t.closest('[data-mg]'); if (!b || b.disabled) return;
+  switch (b.dataset.mg) {
+    case 'ftog': MG.showFil = !MG.showFil; $('#mgFil').classList.toggle('on', MG.showFil); break;
+    case 'fclear': MG.f = mgDefaults(); mgNotes(); break;
+    case 'selall': MG.list.forEach(n => MG.sel.add(n.id)); mgSelRefresh(); break;
+    case 'selnone': MG.sel = new Set(); mgSelRefresh(); break;
+    case 'dup': MG.dup = !MG.dup; MG.groups = null; MG.sel = new Set(); $('#mgVp').scrollTop = 0; mgNotes(); break;
+    case 'dupsel':
+      MG.sel = new Set();
+      MG.groups.forEach(g => { const keep = g.slice().sort((x, y) => mgDupKeepScore(y) - mgDupKeepScore(x) || (x.ts || 0) - (y.ts || 0))[0]; g.forEach(n => { if (n !== keep) MG.sel.add(n.id); }); });
+      mgSelRefresh(); toast(`已勾選 ${MG.sel.size} 條，確認後按「刪除」`); break;
+    case 'notdup': {
+      const g = MG.groups[+b.dataset.k]; if (!g) break;
+      for (let i = 0; i < g.length; i++) for (let j = i + 1; j < g.length; j++) data.dupIgnore.push(pairKey(g[i].id, g[j].id));
+      MG.groups = null; commit(); toast('已標記，這組不會再列出'); break;
+    }
+    case 'del': trashNotes([...MG.sel]); break;
+    case 'move': mgMove(); break;
+    case 'stance': mgPick(`改 ${MG.sel.size} 條的看法`, radio('stance', [['bull', '偏多'], ['neutral', '中性'], ['bear', '偏空']], 'neutral') + '<div class="note" style="margin:0">「自述」類型（分析師自稱買進或持有）一律維持中性。</div>',
+      f => { const v = (f.querySelector('input[name=stance]:checked') || {}).value || 'neutral'; mgBulk(n => { if (n.stance === v || (n.claim_type === 'self_report' && v !== 'neutral')) return false; n.stance = v; }, k => `已把 ${k} 條改為${STANCE[v]}`); }); break;
+    case 'claim': mgPick(`改 ${MG.sel.size} 條的類型`, fld('類型', `<select name="claim">${Object.entries(CLAIM).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>`),
+      f => { const v = fv(f, 'claim'); mgBulk(n => { if (n.claim_type === v) return false; n.claim_type = v; if (v === 'self_report') n.stance = 'neutral'; }, k => `已把 ${k} 條改為${CLAIM[v]}`); }); break;
+    case 'status': mgPick(`改 ${MG.sel.size} 條的狀態`, radio('rs', Object.entries(REVIEW), 'current') + '<div class="note" style="margin:0">已過時：被新資訊推翻、但想保留當時判斷的重點。預設不顯示、不算進多空統計，也不畫在 K 線和星系上。</div>',
+      f => { const v = (f.querySelector('input[name=rs]:checked') || {}).value || 'current', val = v === 'current' ? null : v; mgBulk(n => { if ((n.review_status || null) === val) return false; n.review_status = val; }, k => `已把 ${k} 條改為「${REVIEW[v]}」`); }); break;
+    case 'link': mgLink(); break;
+    case 'catmerge': mgCatMerge(); break;
+    case 'catview': MG.f = Object.assign(mgDefaults(), { stock: MG.catStock, topic: b.dataset.t, sub: b.dataset.s }); MG.tab = 'notes'; mgRender(); break;
+    case 'catren': mgCatRename(b.dataset.t, b.dataset.s); break;
+    case 'topicmerge': mgTopicMerge(b.dataset.t); break;
+    case 'ibview': MG.f = Object.assign(mgDefaults(), { batch: b.dataset.b }); MG.tab = 'notes'; MG.dup = false; mgRender(); break;
+    case 'ibundo': mgUndoImport(b.dataset.b); break;
+    case 'trestore': mgTrashRestore(); break;
+    case 'tpurge': {
+      const k = MG.tsel.size;
+      if (!confirm(`永久刪除 ${k} 條？這個動作無法復原。`)) break;
+      data.trash = data.trash.filter(x => !MG.tsel.has(x.item.id)); MG.tsel = new Set(); commit(); toast(`已永久刪除 ${k} 條`); break;
+    }
+    case 'tempty': if (confirm(`清空回收桶（${data.trash.length} 條）？這個動作無法復原。`)) { data.trash = []; MG.tsel = new Set(); commit(); toast('回收桶已清空'); } break;
+  }
+});
+document.addEventListener('change', e => {
+  const md = $('#mgr'); if (!md.open || !md.contains(e.target)) return;
+  const t = e.target;
+  if (t.matches('[data-mgf]')) {
+    const k = t.dataset.mgf;
+    if (k === 'q') return;
+    MG.f[k] = t.type === 'checkbox' ? t.checked : t.value;
+    if (k === 'topic') { MG.f.sub = ''; if (!t.value) MG.f.rel = false; }
+    if (k === 'stock') { MG.f.analyst = ''; }
+    MG.last = -1; mgNotes(); return;
+  }
+  if (t.matches('[data-mg-more]')) { const v = t.value; t.value = ''; if (v) mgMore(v); return; }
+  if (t.matches('[data-mgcat]')) { MG.catStock = t.value; MG.catSel = new Set(); mgCats(); }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (!t.matches || !t.matches('#mgr [data-mgf=q]')) return;
+  clearTimeout(MG.qt);
+  MG.qt = setTimeout(() => { MG.f.q = t.value; MG.last = -1; mgNotes(); }, 160);
+});
+window.addEventListener('resize', () => { if (MG.open && MG.tab === 'notes') mgRows(); });
 
 /* ========== 對話框 ========== */
 const dlg = $('#dlg');
@@ -2884,7 +3821,7 @@ document.addEventListener('click', e => {
   switch (act) {
     case 'tab': ui.tab = a.dataset.tab; saveUi(); render(); break;
     case 'sel':
-      if (ui.sel !== id) { ui.noteHl = new Set(); ui.noteTopic = ''; ui.noteClaim = ''; ui.noteAnalyst = ''; }
+      if (ui.sel !== id) { ui.noteHl = new Set(); ui.noteTopic = ''; ui.noteClaim = ''; ui.noteAnalyst = ''; ui.noteStance = ''; }
       ui.sel = id; saveUi();
       if (isMobile()) { ui.view = 'detail'; ui.mtab = ui.mtab || 'quote'; window.scrollTo(0, 0); }
       render(); break;
@@ -2898,6 +3835,7 @@ document.addEventListener('click', e => {
         data.dividends = data.dividends.filter(x => x.stockId !== st.id);
         data.notes = data.notes.filter(x => x.stockId !== st.id);
         data.strategies = data.strategies.filter(x => x.stockId !== st.id);
+        data.trash = data.trash.filter(x => x.item.stockId !== st.id);
         data.stocks = data.stocks.filter(s => s.id !== st.id);
         ui.sel = null; ui.view = 'list'; saveUi();
         if (dlg.open) dlg.close();
@@ -2935,12 +3873,22 @@ document.addEventListener('click', e => {
     case 'unpark': if (st) { delete st.parked; ui.tab = 'hold'; saveUi(); commit(); toast('已移回持有'); } break;
     case 'add-note': if (st) openNote(st); break;
     case 'edit-note': { const n = data.notes.find(x => x.id === id); if (st && n) openNote(st, n); break; }
-    case 'del-note':
-      if (confirm('確定刪除這條重點？')) { data.notes = data.notes.filter(x => x.id !== id); if (dlg.open) dlg.close(); commit(); }
+    case 'del-note': if (dlg.open) dlg.close(); trashNotes([id]); break;      // 放進回收桶，可以馬上復原
+    case 'topics': openManager({ tab: 'cats', stock: st ? st.id : '' }); break;
+    case 'mgr': openManager({}); break;
+    case 'mgr-stock': openManager({ stock: st ? st.id : '' }); break;
+    case 'hiwin': { const i = HI_WINS.indexOf(+ui.hiWin); ui.hiWin = HI_WINS[(i + 1) % HI_WINS.length]; saveUi(); render(); break; }
+    case 'note-go': {
+      const n = noteById(id); if (!n) break;
+      if (n.stockId !== ui.sel) { ui.sel = n.stockId; ui.noteHl = new Set(); }
+      ui.noteTopic = ''; ui.noteClaim = ''; ui.noteAnalyst = ''; ui.noteStance = ''; if (isOld(n)) ui.noteShowOld = true;
+      ui.noteOpen.add(id); ui.noteHl = new Set([id]); saveUi(); render();
+      const el = document.querySelector(`#p-notes [data-nid="${id}"]`); if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
       break;
-    case 'topics': if (st) openTopics(st); break;
-    case 'ntopic': ui.noteTopic = a.dataset.topic; saveUi(); renderNotes(); break;
+    }
+    case 'ntopic': ui.noteTopic = a.dataset.topic; ui.noteStance = ''; saveUi(); renderNotes(); break;
     case 'ntab': ui.noteTab = a.dataset.tab; renderNotes(); break;
+    case 'note-more': ui.notePage = (ui.notePage || NOTE_PAGE) + NOTE_PAGE; renderNotes(); break;
     case 'add-strat': if (st) openStrategy(st); break;
     case 'edit-strat': { const x = data.strategies.find(v => v.id === id); if (st && x) openStrategy(st, x); break; }
     case 'del-strat': if (confirm('確定刪除這條策略？')) { data.strategies = data.strategies.filter(v => v.id !== id); if (dlg.open) dlg.close(); commit(); } break;
@@ -2977,10 +3925,24 @@ document.addEventListener('click', e => {
 });
 
 document.addEventListener('change', e => {
-  const sel = e.target.closest && e.target.closest('#p-notes select[data-nf]');
+  const t = e.target;
+  if (!t.closest) return;
+  if (t.matches('select[data-srange]')) {          // 多空統計的期間（時間軸、星系、資料整理共用）
+    ui.statRange = +t.value || 0; saveUi(); renderNotes();
+    if ($('#mem').open) memSide();
+    if (MG.open && MG.tab === 'notes') mgSum();
+    return;
+  }
+  if (t.matches('#p-notes input[data-nold]')) { ui.noteShowOld = t.checked; renderNotes(); return; }
+  const sel = t.closest('#p-notes select[data-nf]');
   if (!sel) return;
   if (sel.dataset.nf === 'claim') ui.noteClaim = sel.value; else ui.noteAnalyst = sel.value;
   renderNotes();
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('#p-notes [data-nstance]');
+  if (!b) return;
+  ui.noteStance = b.dataset.nstance; renderNotes();
 });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) return;
