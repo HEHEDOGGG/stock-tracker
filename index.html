@@ -59,10 +59,10 @@ h3{font-size:16px;font-weight:500;margin:0}
 .banner:empty{display:none}
 
 .mbar{display:none}
-.grid{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"list quote" "detail notes";gap:10px;padding:10px}
+.grid{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);grid-template-rows:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"list quote" "detail notes";gap:10px;padding:10px}
 #p-list{grid-area:list}#p-detail{grid-area:detail}#p-quote{grid-area:quote}#p-notes{grid-area:notes}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
-.ph{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);flex:none;min-height:46px}
+.ph{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 12px;border-bottom:1px solid var(--line);flex:none;min-height:46px}
 .pb{flex:1;overflow:auto;padding:10px 12px;min-height:0}
 
 .tabs{display:flex;gap:2px;background:var(--panel2);border-radius:8px;padding:2px}
@@ -102,7 +102,7 @@ table.t{width:100%;border-collapse:collapse}
 .tag{font-size:12px;padding:1px 7px;border-radius:5px;background:var(--panel2);color:var(--tx2);white-space:nowrap}
 .tag.ac{background:var(--acbg);color:var(--ac)}
 .qhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.big{font-size:32px;font-weight:500;line-height:1.15}
+.big{font-size:28px;font-weight:500;line-height:1.15}
 .qchg{font-size:15px}
 .src{font-size:12px;color:var(--tx3);margin-top:2px}
 .qgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 14px;margin-top:12px}
@@ -113,6 +113,56 @@ table.t{width:100%;border-collapse:collapse}
 
 dialog{background:var(--panel);color:var(--tx);border:1px solid var(--line2);border-radius:12px;padding:0;width:min(520px,94vw);max-height:90dvh}
 dialog::backdrop{background:var(--shade)}
+dialog.wide{width:min(720px,96vw)}
+.qb{display:flex;flex-direction:column;gap:8px}
+.qline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.qline .src{margin:0}
+.qstats{display:flex;flex-wrap:wrap;gap:2px 14px;font-size:12px;color:var(--tx2)}
+.qstats b{font-weight:500;color:var(--tx);margin-left:4px}
+.qstats b.r{color:var(--red)}.qstats b.g{color:var(--green)}
+.kbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tog{border:1px solid var(--line2);background:transparent;border-radius:999px;padding:2px 10px;font-size:12px;color:var(--tx2);cursor:pointer}
+.tog.on{border-color:var(--ac);color:var(--ac);background:var(--acbg)}
+.kwrap{position:relative;flex:1;min-height:230px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.kcv{position:absolute;left:0;top:0;display:block;cursor:crosshair}
+.klegend{position:absolute;left:8px;top:5px;right:70px;font-size:12px;line-height:1.55;pointer-events:none;z-index:1;color:var(--tx2)}
+.klegend b{font-weight:500;color:var(--tx)}.klegend b.r{color:var(--red)}.klegend b.g{color:var(--green)}
+.kmsg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--tx2);font-size:13px;pointer-events:none;z-index:1;padding:20px;text-align:center}
+.kmsg:empty{display:none}
+.kday{flex:none;font-size:13px}
+.kday:empty{display:none}
+.kd-h{display:flex;align-items:center;font-size:12px;color:var(--tx2);margin-bottom:4px}
+.kd-it{padding:3px 0;border-bottom:1px dashed var(--line)}
+.kd-sum{margin-left:10px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+.dotc{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.chip2{border:1px solid var(--line2);background:transparent;border-radius:999px;padding:2px 10px;font-size:12px;color:var(--tx2);cursor:pointer;white-space:nowrap}
+.chip2.on{border-color:var(--ac);color:var(--ac);background:var(--acbg)}
+.mon{font-size:12px;color:var(--tx3);margin:14px 0 6px}
+.nt{border:1px solid var(--line);border-radius:10px;padding:8px 11px;margin-bottom:8px;cursor:pointer;transition:border-color .15s}
+.nt:hover{border-color:var(--line2)}
+.nt.hl{border-color:var(--ac);background:var(--acbg)}
+.nt-top{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--tx2);min-height:26px}
+.nt-top .tp{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.imp .nt-top{flex-wrap:wrap}
+.pill{font-size:11px;padding:0 7px;border-radius:999px;border:1px solid currentColor;line-height:18px;white-space:nowrap}
+.nt-title{font-weight:500;margin-top:1px}
+.nt-body{font-size:13px;color:var(--tx2);margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap}
+.nt.open .nt-body{display:block}
+.nt-src{font-size:12px;color:var(--tx3);margin-top:4px;display:none}
+.nt.open .nt-src{display:block}
+.steps{border:1px dashed var(--line2);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--tx2)}
+.steps b{color:var(--tx);font-weight:500}
+.steps ol{margin:8px 0 0 18px;padding:0}
+.steps li{margin-bottom:4px}
+.prompt{width:100%;min-height:300px;font-size:12.5px;line-height:1.55;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:10px;color:var(--tx);resize:vertical}
+.map-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px;flex-wrap:wrap}
+.map-row select{background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:4px 8px}
+.imp{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer}
+.imp input{margin-top:5px;flex:none}
+.newtag{font-size:11px;color:var(--warn);border:1px solid var(--warn);border-radius:4px;padding:0 4px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,16px);background:var(--tx);color:var(--bg);padding:8px 16px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 .dlg{display:flex;flex-direction:column;max-height:90dvh}
 .dlg-h{display:flex;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
 .dlg-b{padding:14px;overflow:auto}
@@ -147,6 +197,7 @@ dialog::backdrop{background:var(--shade)}
   .t th{position:static}
   .hide-m{display:none}
   .only-m{display:block}
+  span.hide-m{display:none}
   .t.small td,.t.small th{padding:6px 4px}
   .t.small td{font-size:12.5px}
   .fld input,.fld select,.fld textarea{font-size:16px}
@@ -157,8 +208,9 @@ dialog::backdrop{background:var(--shade)}
   body[data-view="detail"][data-mtab="quote"] #p-detail,body[data-view="detail"][data-mtab="quote"] #p-notes{display:none}
   body[data-view="detail"][data-mtab="trade"] #p-quote,body[data-view="detail"][data-mtab="trade"] #p-notes{display:none}
   body[data-view="detail"][data-mtab="notes"] #p-quote,body[data-view="detail"][data-mtab="notes"] #p-detail{display:none}
-  .qgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .big{font-size:30px}
+  .kwrap{flex:none;height:min(58vh,380px)}
+  .big{font-size:28px}
+  .klegend{right:66px;font-size:11.5px}
   .mbar .tabs{width:100%;margin-top:6px}
   .mbar .tabs button{flex:1}
 }
@@ -189,6 +241,7 @@ dialog::backdrop{background:var(--shade)}
 </main>
 
 <dialog id="dlg"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="fileIn" accept="application/json,.json" hidden>
 
 <script>
@@ -209,24 +262,25 @@ function defaultSettings() {
     usFee: 0, usSellRate: 0
   };
 }
-function emptyData() { return { version: 1, updatedAt: 0, settings: defaultSettings(), stocks: [], trades: [], dividends: [] }; }
+function emptyData() { return { version: 1, updatedAt: 0, settings: defaultSettings(), stocks: [], trades: [], dividends: [], notes: [] }; }
 function normalize(d) {
   const o = Object.assign(emptyData(), d || {});
   o.settings = Object.assign(defaultSettings(), (d && d.settings) || {});
-  ['stocks', 'trades', 'dividends'].forEach(k => { if (!Array.isArray(o[k])) o[k] = []; });
+  ['stocks', 'trades', 'dividends', 'notes'].forEach(k => { if (!Array.isArray(o[k])) o[k] = []; });
   return o;
 }
 
 let data = normalize(load(LS.data));
 let conf = Object.assign({ theme: 'dark', token: '', repo: '', dirty: false, syncedAt: 0 }, load(LS.conf) || {});
 let quotes = Object.assign({ tw: {}, us: {}, fx: null, time: 0 }, load(LS.quotes) || {});
-let ui = Object.assign({ tab: 'hold', sel: null }, load(LS.ui) || {});
+let ui = Object.assign({ tab: 'hold', sel: null, kInt: '1d', kTrades: true, kNotes: true, noteTopic: '' }, load(LS.ui) || {});
+ui.noteHl = new Set(); ui.noteOpen = new Set();
 let qState = { status: 'idle', msg: '' };
 let syncState = { status: conf.token ? 'idle' : 'off', msg: '', at: 0 };
 
 function saveData() { store(LS.data, data); }
 function saveConf() { store(LS.conf, conf); }
-function saveUi() { store(LS.ui, { tab: ui.tab, sel: ui.sel }); }
+function saveUi() { store(LS.ui, { tab: ui.tab, sel: ui.sel, kInt: ui.kInt, kTrades: ui.kTrades, kNotes: ui.kNotes, noteTopic: ui.noteTopic }); }
 
 function commit(markDirty = true) {
   data.updatedAt = Date.now();
@@ -314,6 +368,18 @@ function loadDemo() {
   tr(c, '2025-04-21', 'buy', 30, 98.5, 1.5);
   dv(c, '2025-07-03', 'cash', 0.3, 0.09);
   add('US', 'AAPL', 'Apple', 210);
+  const nn = (st, date, topic, sub, title, stance, body) => data.notes.push({ id: uid(), stockId: st.id, date, topic, sub, title, body: '（示範資料）' + body, stance, source: '示範', from: 'chatgpt', ts: Date.now() + data.notes.length });
+  nn(a, '2025-04-17', '營收財報', '財測', '法說會維持全年成長目標', 'bull', '公司維持全年營收成長目標，並表示 AI 相關需求仍強。');
+  nn(a, '2025-07-17', '營收財報', '毛利率', '毛利率高於財測上緣', 'bull', '當季毛利率優於公司先前給的區間，主因產品組合改善。');
+  nn(a, '2025-08-20', '產品', '先進封裝', '先進封裝產能持續擴充', 'bull', '先進封裝產能規劃再上修，供不應求的情況預計延續到明年。');
+  nn(a, '2025-10-02', '風險', '匯率', '新台幣升值壓縮毛利', 'bear', '新台幣快速升值，每升值 1% 約影響毛利率 0.4 個百分點。');
+  nn(a, '2026-01-15', '管理層', '資本支出', '上調年度資本支出', 'neutral', '資本支出上調，短期壓抑自由現金流，長期擴大領先幅度。');
+  nn(a, '2026-02-10', '分析師看法', '目標價', '多家外資上調目標價', 'bull', '外資普遍上調目標價，理由是先進製程定價能力提升。');
+  nn(a, '2026-04-10', '產業與競爭', '競爭對手', '對手先進製程進度落後', 'bull', '主要競爭對手的新製程良率不如預期，量產時程延後。');
+  nn(a, '2026-08-05', '風險', '地緣政治', '關稅政策不確定性升高', 'bear', '關稅與出口管制的變數增加，客戶下單轉趨保守。');
+  nn(a, '2026-08-05', '新聞事件', '政策', '海外新廠補助確定', 'neutral', '海外新廠的補助金額確定，但當地營運成本較高。');
+  nn(c, '2025-05-28', '營收財報', '資料中心', '資料中心營收大幅成長', 'bull', '資料中心營收年增大幅超出市場預期。');
+  nn(c, '2026-03-18', '產品', '新架構', '發表下一代 GPU 架構', 'bull', '新架構訓練效能大幅提升，主要雲端業者已表態採購。');
   data.updatedAt = Date.now();
   ui.sel = a.id; ui.tab = 'hold';
   saveData(); saveUi(); render();
@@ -513,6 +579,9 @@ const ICON = {
   trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
   back: '<path d="M15 5l-7 7 7 7"/>',
   x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  chart: '<path d="M4 4v16h16"/><path d="M8 15l3-4 3 2 5-6"/>',
+  tag: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.3"/>',
+  latest: '<path d="M5 12h11M12 7l5 5-5 5M20 5v14"/>',
   moon: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'
 };
@@ -615,27 +684,6 @@ function renderList(C) {
     <div class="pb">${body}</div>`;
 }
 
-function renderQuote(C) {
-  const el = $('#p-quote'), st = selStock();
-  if (!st) { el.innerHTML = `<div class="ph"><h2>報價</h2></div><div class="pb"><div class="empty">從列表選一檔標的</div></div>`; return; }
-  const c = C[st.id], q = c.q, m = st.market, k = cls(c.chg, m);
-  const mkt = m === 'TW' ? '台股' + (st.exch === 'otc' ? '・上櫃' : st.exch === 'tse' ? '・上市' : '') : '美股';
-  let src = '尚無報價';
-  if (q) src = q.src === 'demo' ? '示範報價' : (q.src === 'twse' ? '證交所' : 'Yahoo') + (q.delayed ? '・可能延遲' : '') + (q.src === 'twse' && q.lastTrade === false ? '・這一刻無成交，顯示買賣價' : '') + '・' + fmtTime(q.time);
-  const cell = (label, v, colorBy) => `<div><span class="k">${label}</span><span class="${colorBy != null && c.prev != null ? cls(colorBy - c.prev, m) : ''}">${v}</span></div>`;
-  el.innerHTML = `<div class="ph"><h2>${esc(st.code)}</h2><span class="muted">${esc(st.name || '')}</span><span class="tag">${mkt}</span><span class="tag ${c.sh > 0 ? 'ac' : ''}">${c.sh > 0 ? '持有' : '觀察'}</span><span class="sp"></span>
-      <button class="ibtn sm" data-act="edit-stock" title="編輯標的" aria-label="編輯標的">${ic('edit')}</button></div>
-    <div class="pb">
-      <div class="qhead"><span class="big ${k}">${fmtPrice(c.price)}</span><span class="qchg ${k}">${arrow(c.chg)}${fmtSigned(c.chg, 'USD')}　${fmtPct(c.chgPct)}</span></div>
-      <div class="src">${esc(src)}</div>
-      <div class="qgrid">
-        ${cell('開盤', fmtPrice(q && q.open), q && q.open)}${cell('最高', fmtPrice(q && q.high), q && q.high)}${cell('最低', fmtPrice(q && q.low), q && q.low)}
-        ${cell('昨收', fmtPrice(c.prev))}${cell('成交量', fmtVol(q && q.vol, m))}${cell('目標價', fmtPrice(st.target))}
-      </div>
-      <div class="soon"><b>K 線（第二階段）</b>日／週／月 K 線，買進賣出點和 ChatGPT 整理的重點會標在對應的日期上。</div>
-    </div>`;
-}
-
 function renderDetail(C) {
   const el = $('#p-detail'), st = selStock();
   if (!st) { el.innerHTML = `<div class="ph"><h2>交易與損益</h2></div><div class="pb"><div class="empty">從列表選一檔標的</div></div>`; return; }
@@ -679,15 +727,6 @@ function renderDetail(C) {
     </div>`;
 }
 
-function renderNotes() {
-  const st = selStock();
-  $('#p-notes').innerHTML = `<div class="ph"><h2>重點時間軸</h2><span class="tag">第二階段</span>${st ? `<span class="muted hide-m">${stockLabel(st)}</span>` : ''}</div>
-    <div class="pb">
-      <div class="soon" style="margin-top:0"><b>ChatGPT 討論重點</b>把和 ChatGPT 討論後整理的重點貼進來，會依日期排成時間軸，並標在 K 線上。每條重點都有主題 → 子主題，之後組成 Memory 腦圖。</div>
-      <div class="soon"><b>Memory 腦圖（第三階段）</b>以標的為中心，依主題、子主題、重點三層展開的 3D 圖，可旋轉、縮放、拖時間軸。</div>
-    </div>`;
-}
-
 function renderMbar(C) {
   const st = selStock(), el = $('#mbar');
   if (!st) { el.innerHTML = ''; return; }
@@ -698,9 +737,824 @@ function renderMbar(C) {
     <div class="tabs"><button class="${t === 'quote' ? 'on' : ''}" data-act="mtab" data-tab="quote">報價</button><button class="${t === 'trade' ? 'on' : ''}" data-act="mtab" data-tab="trade">交易損益</button><button class="${t === 'notes' ? 'on' : ''}" data-act="mtab" data-tab="notes">重點</button></div>`;
 }
 
+/* ========== K 線圖（canvas） ========== */
+function niceStep(raw) {
+  if (!(raw > 0)) return 1;
+  const e = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / e;
+  return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * e;
+}
+class KChart {
+  constructor(host) {
+    this.host = host;
+    this.cv = document.createElement('canvas');
+    this.cv.className = 'kcv';
+    host.prepend(this.cv);
+    this.ctx = this.cv.getContext('2d');
+    this.bars = []; this.maDefs = []; this.ma = []; this.markers = []; this.lines = []; this.col = {};
+    this.n = 100; this.right = 0; this.hover = -1; this.my = null; this.sel = -1; this.unit = '1d'; this.topPad = 40;
+    this.w = 0; this.h = 0; this.ptrs = new Map(); this.moved = false; this.pinch = null;
+    this.onHover = null; this.onSelect = null;
+    this.ro = new ResizeObserver(() => this.resize());
+    this.ro.observe(host);
+    this.bind();
+  }
+  destroy() { this.ro.disconnect(); this.cv.remove(); }
+  resize() {
+    const r = this.host.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    this.w = r.width; this.h = r.height;
+    if (!this.w || !this.h) return;
+    this.cv.width = Math.round(this.w * dpr); this.cv.height = Math.round(this.h * dpr);
+    this.cv.style.width = this.w + 'px'; this.cv.style.height = this.h + 'px';
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.draw();
+  }
+  pw() { return Math.max(10, this.w - 62); }
+  bw() { return this.pw() / this.n; }
+  idxAt(x) {
+    if (!this.bars.length) return -1;
+    const i = Math.round(this.right + 0.5 - (this.pw() - x) / this.bw());
+    return i >= 0 && i < this.bars.length && x <= this.pw() ? i : -1;
+  }
+  indexAtOrBefore(date) {
+    const b = this.bars; let lo = 0, hi = b.length - 1, ans = -1;
+    while (lo <= hi) { const mid = (lo + hi) >> 1; if (b[mid].time <= date) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
+    return ans;
+  }
+  setData(bars, show, unit) {
+    this.bars = bars; this.unit = unit || '1d';
+    this.n = Math.min(show || 120, Math.max(20, bars.length + 6));
+    this.right = bars.length - 1 + 3; this.hover = -1; this.sel = -1;
+    this.refresh();
+  }
+  refresh() {
+    const c = this.bars.map(b => b.c);
+    this.ma = this.maDefs.map(d => {
+      const v = new Array(c.length).fill(null); let s = 0;
+      for (let i = 0; i < c.length; i++) { s += c[i]; if (i >= d.p) s -= c[i - d.p]; if (i >= d.p - 1) v[i] = s / d.p; }
+      return { p: d.p, color: d.color, v };
+    });
+    this.draw();
+  }
+  clamp() {
+    const n = this.bars.length;
+    const minR = Math.min(n - 1, this.n * 0.3), maxR = n - 1 + Math.max(3, this.n * 0.25);
+    this.right = Math.max(minR, Math.min(maxR, this.right));
+  }
+  zoomAt(newN, x) {
+    const n = this.bars.length; if (!n) return;
+    const i = this.right + 0.5 - (this.pw() - x) / this.bw();
+    this.n = Math.max(15, Math.min(Math.max(40, n + 10), newN));
+    this.right = i - 0.5 + (this.pw() - x) / this.bw();
+    this.clamp(); this.draw();
+  }
+  focusIndex(i) {
+    if (i < 0) return;
+    this.sel = i; this.hover = -1; this.my = null;
+    this.right = i + this.n * 0.3; this.clamp(); this.draw();
+  }
+  resetView() { this.right = this.bars.length - 1 + 3; this.clamp(); this.draw(); }
+  setHover(i, y) { this.hover = i; this.my = y; this.draw(); if (this.onHover) this.onHover(i); }
+  bind() {
+    const cv = this.cv;
+    cv.style.touchAction = 'pan-y';
+    const pos = e => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+    cv.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      const p = pos(e);
+      try { cv.setPointerCapture(e.pointerId); } catch (err) { /* 舊瀏覽器 */ }
+      this.ptrs.set(e.pointerId, { x: p.x, y: p.y, sx: p.x, sy: p.y, type: e.pointerType });
+      this.moved = false;
+      if (this.ptrs.size === 2) {
+        const [a, b] = [...this.ptrs.values()];
+        this.pinch = { d: Math.max(10, Math.abs(a.x - b.x)), n: this.n, right: this.right, cx: (a.x + b.x) / 2 };
+        this.moved = true;
+      }
+    });
+    cv.addEventListener('pointermove', e => {
+      const p = this.ptrs.get(e.pointerId), q = pos(e);
+      if (!p) { if (e.pointerType === 'mouse') this.setHover(this.idxAt(q.x), q.y); return; }
+      const dx = q.x - p.x; p.x = q.x; p.y = q.y;
+      if (this.ptrs.size === 2 && this.pinch) {
+        const [a, b] = [...this.ptrs.values()];
+        const d = Math.max(10, Math.abs(a.x - b.x));
+        this.n = this.pinch.n; this.right = this.pinch.right;
+        this.zoomAt(this.pinch.n * this.pinch.d / d, this.pinch.cx);
+        return;
+      }
+      if (Math.abs(q.x - p.sx) > 4 || Math.abs(q.y - p.sy) > 4) this.moved = true;
+      if (this.moved) {
+        this.right -= dx / this.bw(); this.clamp();
+        if (e.pointerType === 'mouse') this.setHover(this.idxAt(q.x), q.y); else this.draw();
+      }
+    });
+    const end = e => {
+      const p = this.ptrs.get(e.pointerId);
+      this.ptrs.delete(e.pointerId);
+      if (this.ptrs.size < 2) this.pinch = null;
+      if (p && !this.moved && e.type === 'pointerup' && !this.ptrs.size) {
+        const i = this.idxAt(pos(e).x);
+        if (i >= 0) {
+          this.sel = i;
+          if (e.pointerType !== 'mouse') { this.hover = i; this.my = null; }
+          this.draw();
+          if (this.onHover) this.onHover(i);
+          if (this.onSelect) this.onSelect(i);
+        }
+      }
+    };
+    cv.addEventListener('pointerup', end);
+    cv.addEventListener('pointercancel', end);
+    cv.addEventListener('pointerleave', e => {
+      if (e.pointerType === 'mouse' && !this.ptrs.size) { this.hover = -1; this.my = null; this.draw(); if (this.onHover) this.onHover(-1); }
+    });
+    cv.addEventListener('wheel', e => { e.preventDefault(); this.zoomAt(this.n * Math.exp(e.deltaY * 0.0015), pos(e).x); }, { passive: false });
+    cv.addEventListener('dblclick', () => this.resetView());
+  }
+  tag(y, text, bg) {
+    const ctx = this.ctx, x = this.pw();
+    ctx.fillStyle = bg; ctx.fillRect(x + 1, Math.round(y) - 8, 61, 16);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.fillText(text, x + 5, Math.round(y) + 0.5);
+  }
+  shape(k, x, y, s, col) {
+    const ctx = this.ctx; ctx.fillStyle = col; ctx.beginPath();
+    if (k === 'up') { ctx.moveTo(x, y - s); ctx.lineTo(x + s, y + s * 0.8); ctx.lineTo(x - s, y + s * 0.8); }
+    else if (k === 'down') { ctx.moveTo(x, y + s); ctx.lineTo(x + s, y - s * 0.8); ctx.lineTo(x - s, y - s * 0.8); }
+    else ctx.arc(x, y, s * 0.85, 0, Math.PI * 2);
+    ctx.closePath(); ctx.fill();
+  }
+  draw() {
+    const ctx = this.ctx, W = this.w, H = this.h, c = this.col;
+    if (!W || !H || !c.bg) return;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = c.bg; ctx.fillRect(0, 0, W, H);
+    const n = this.bars.length; if (!n) return;
+    const AX = 62, BX = 20, TOP = this.topPad, PW = W - AX, PH = H - BX - TOP;
+    if (PW < 40 || PH < 60) return;
+    const priceH = PH * 0.78, volTop = TOP + priceH + 4, volH = PH - priceH - 4;
+    const bw = PW / this.n, from = Math.max(0, Math.floor(this.right - this.n)), to = Math.min(n - 1, Math.ceil(this.right));
+    const X = i => PW - (this.right - i + 0.5) * bw;
+    let lo = Infinity, hi = -Infinity, vmax = 0;
+    for (let i = from; i <= to; i++) {
+      const b = this.bars[i];
+      if (b.l < lo) lo = b.l; if (b.h > hi) hi = b.h; if (b.v > vmax) vmax = b.v;
+      for (const m of this.ma) { const v = m.v[i]; if (v != null) { if (v < lo) lo = v; if (v > hi) hi = v; } }
+    }
+    if (!isFinite(lo)) return;
+    if (hi === lo) { hi += Math.abs(hi) * 0.01 || 1; lo -= Math.abs(lo) * 0.01 || 1; }
+    const pad = (hi - lo) * 0.06; hi += pad; lo -= pad;
+    const Y = p => TOP + (hi - p) / (hi - lo) * priceH;
+    ctx.font = '11px "Noto Sans TC", system-ui, sans-serif'; ctx.textBaseline = 'middle'; ctx.lineWidth = 1;
+    // 價格格線
+    const step = niceStep((hi - lo) / 5), dec = step >= 1 ? 0 : step >= 0.1 ? 1 : 2;
+    ctx.strokeStyle = c.grid; ctx.fillStyle = c.faint; ctx.textAlign = 'left';
+    for (let p = Math.ceil(lo / step) * step; p <= hi; p += step) {
+      const y = Math.round(Y(p)) + 0.5;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(PW, y); ctx.stroke();
+      ctx.fillText(nf(dec).format(p), PW + 6, y);
+    }
+    ctx.beginPath(); ctx.moveTo(PW + 0.5, 0); ctx.lineTo(PW + 0.5, H - BX); ctx.moveTo(0, H - BX + 0.5); ctx.lineTo(W, H - BX + 0.5); ctx.stroke();
+    // 時間刻度：日、週 K 在換月時標；月 K 在換年時標
+    let lastX = -1e9; ctx.textAlign = 'center';
+    for (let i = Math.max(from, 1); i <= to; i++) {
+      const a = this.bars[i - 1].time, b = this.bars[i].time;
+      const yr = a.slice(0, 4) !== b.slice(0, 4), mo = a.slice(0, 7) !== b.slice(0, 7);
+      if (!(this.unit === '1mo' ? yr : mo)) continue;
+      const x = X(i);
+      if (x < 16 || x > PW - 16 || x - lastX < 54) continue;
+      lastX = x;
+      ctx.strokeStyle = c.grid; ctx.beginPath(); ctx.moveTo(Math.round(x) + 0.5, TOP); ctx.lineTo(Math.round(x) + 0.5, TOP + PH); ctx.stroke();
+      ctx.fillStyle = yr ? c.text : c.faint;
+      ctx.fillText(yr ? b.slice(0, 4) : (+b.slice(5, 7)) + '月', x, H - BX / 2);
+    }
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, PW, H - BX); ctx.clip();
+    if (this.sel >= from && this.sel <= to) { ctx.fillStyle = c.acbg; ctx.fillRect(X(this.sel) - bw / 2, 0, bw, H - BX); }
+    // 成交量
+    const cw = Math.max(1, bw * 0.7);
+    if (vmax > 0) {
+      ctx.globalAlpha = 0.4;
+      for (let i = from; i <= to; i++) {
+        const b = this.bars[i], hgt = (b.v || 0) / vmax * volH;
+        ctx.fillStyle = b.c >= b.o ? c.up : c.dn;
+        ctx.fillRect(Math.round(X(i) - cw / 2), volTop + volH - hgt, Math.max(1, Math.round(cw)), hgt);
+      }
+      ctx.globalAlpha = 1;
+    }
+    // K 棒
+    for (let i = from; i <= to; i++) {
+      const b = this.bars[i], x = X(i);
+      ctx.fillStyle = b.c >= b.o ? c.up : c.dn;
+      ctx.fillRect(Math.round(x - 0.5), Y(b.h), 1, Math.max(1, Y(b.l) - Y(b.h)));
+      const yt = Y(Math.max(b.o, b.c)), yb = Y(Math.min(b.o, b.c));
+      ctx.fillRect(Math.round(x - cw / 2), Math.round(yt), Math.max(1, Math.round(cw)), Math.max(1, Math.round(yb - yt)));
+    }
+    // 均線
+    ctx.lineWidth = 1.2;
+    for (const m of this.ma) {
+      ctx.strokeStyle = m.color; ctx.beginPath(); let on = false;
+      for (let i = from; i <= to; i++) {
+        const v = m.v[i]; if (v == null) { on = false; continue; }
+        const x = X(i), y = Y(v);
+        if (!on) { ctx.moveTo(x, y); on = true; } else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+    ctx.lineWidth = 1;
+    this.drawMarkers(from, to, X, Y, bw);
+    ctx.restore();
+    // 成本線、目標價線
+    for (const L of this.lines) {
+      const y = Y(L.price);
+      ctx.fillStyle = L.color; ctx.textAlign = 'right';
+      if (y < TOP || y > TOP + priceH) {
+        const top = y < TOP;
+        ctx.fillText(`${L.label} ${nf(2).format(L.price)} ${top ? '↑' : '↓'}`, PW - 6, top ? TOP + 9 : TOP + priceH - 6);
+        continue;
+      }
+      ctx.strokeStyle = L.color; ctx.setLineDash([5, 4]);
+      ctx.beginPath(); ctx.moveTo(0, Math.round(y) + 0.5); ctx.lineTo(PW, Math.round(y) + 0.5); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillText(L.label, PW - 6, y - 8);
+      this.tag(y, nf(2).format(L.price), L.color);
+    }
+    // 最新價
+    const lb = this.bars[n - 1], pb = n > 1 ? this.bars[n - 2] : lb, ly = Y(lb.c);
+    if (ly >= TOP && ly <= TOP + priceH) this.tag(ly, nf(2).format(lb.c), lb.c >= pb.c ? c.up : c.dn);
+    // 十字線
+    if (this.hover >= from && this.hover <= to) {
+      const x = Math.round(X(this.hover)) + 0.5;
+      ctx.strokeStyle = c.faint; ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H - BX); ctx.stroke();
+      if (this.my != null && this.my >= TOP && this.my <= TOP + priceH) {
+        ctx.beginPath(); ctx.moveTo(0, Math.round(this.my) + 0.5); ctx.lineTo(PW, Math.round(this.my) + 0.5); ctx.stroke();
+        ctx.setLineDash([]);
+        this.tag(this.my, nf(2).format(hi - (this.my - TOP) / priceH * (hi - lo)), c.faint);
+      }
+      ctx.setLineDash([]);
+      const t = this.bars[this.hover].time, tw = 76, tx = Math.min(Math.max(x - tw / 2, 0), PW - tw);
+      ctx.fillStyle = c.faint; ctx.fillRect(tx, H - BX + 1, tw, BX - 1);
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.fillText(t, tx + tw / 2, H - BX / 2 + 0.5);
+    }
+  }
+  drawMarkers(from, to, X, Y, bw) {
+    const ctx = this.ctx, groups = new Map();
+    for (const m of this.markers) {
+      if (m.i < from || m.i > to) continue;
+      if (!groups.has(m.i)) groups.set(m.i, { above: [], below: [] });
+      groups.get(m.i)[m.pos === 'above' ? 'above' : 'below'].push(m);
+    }
+    const s = Math.max(3.5, Math.min(6, bw * 0.45)), showText = bw >= 7;
+    ctx.font = '10px "Noto Sans TC", system-ui, sans-serif'; ctx.textAlign = 'center';
+    for (const [i, g] of groups) {
+      const b = this.bars[i], x = X(i);
+      let y = Y(b.h) - 4;
+      for (const m of g.above) {
+        y -= s + 1; this.shape(m.shape, x, y, s, m.color); y -= s + 1;
+        if (showText && m.text) { y -= 6; ctx.fillStyle = m.color; ctx.fillText(m.text, x, y); y -= 6; }
+      }
+      y = Y(b.l) + 4;
+      for (const m of g.below) {
+        y += s + 1; this.shape(m.shape, x, y, s, m.color); y += s + 1;
+        if (showText && m.text) { y += 6; ctx.fillStyle = m.color; ctx.fillText(m.text, x, y); y += 6; }
+      }
+    }
+    ctx.font = '11px "Noto Sans TC", system-ui, sans-serif';
+  }
+}
+
+/* ========== K 線資料 ========== */
+const INT = { '1d': { range: '2y', label: '日K', show: 120 }, '1wk': { range: '10y', label: '週K', show: 104 }, '1mo': { range: 'max', label: '月K', show: 96 } };
+const MA_DEFS = [{ p: 5, color: '#D99A06' }, { p: 20, color: '#8B5CF6' }, { p: 60, color: '#14A3B8' }];
+const TZ = { TW: 'Asia/Taipei', US: 'America/New_York' };
+const DFMT = {};
+function dateIn(tz, ms) {
+  const f = DFMT[tz] || (DFMT[tz] = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }));
+  return f.format(new Date(ms));
+}
+const r4 = v => Math.round(v * 10000) / 10000;
+const packBars = bars => bars.map(b => [b.time, r4(b.o), r4(b.h), r4(b.l), r4(b.c), Math.round(b.v || 0)]);
+const unpackBars = a => a.map(x => ({ time: x[0], o: x[1], h: x[2], l: x[3], c: x[4], v: x[5] }));
+function toBars(raw, tz) {
+  const m = new Map();
+  raw.forEach(b => {
+    if (![b.o, b.h, b.l, b.c].every(isNum)) return;
+    const time = dateIn(tz, b.t);
+    m.set(time, { time, o: b.o, h: Math.max(b.h, b.o, b.c), l: Math.min(b.l, b.o, b.c), c: b.c, v: b.v || 0 });
+  });
+  return [...m.values()].sort((a, b) => a.time < b.time ? -1 : 1);
+}
+function storeHist(key, rec) {
+  try { localStorage.setItem(key, JSON.stringify(rec)); }
+  catch (e) {
+    Object.keys(localStorage).filter(k => k.startsWith('st.h.') && k !== key).forEach(k => localStorage.removeItem(k));
+    try { localStorage.setItem(key, JSON.stringify(rec)); } catch (e2) { /* 放不下就只留在記憶體 */ }
+  }
+}
+const HMEM = {};
+const isDemoStock = st => data.demo && !!(st.market === 'TW' ? DEMO_Q.tw : DEMO_Q.us)[st.code];
+async function loadHistory(st, int) {
+  if (isDemoStock(st)) return demoBars(st, int);
+  const key = `st.h.${st.market}:${st.code}:${int}`;
+  const maxAge = int === '1d' ? 15 * 60e3 : 12 * 3600e3;
+  const cached = HMEM[key] || load(key);
+  if (cached && Date.now() - cached.at < maxAge) { HMEM[key] = cached; return unpackBars(cached.b); }
+  const s = data.settings;
+  if (!s.apiUrl) { if (cached) return unpackBars(cached.b); throw new Error('還沒設定報價來源'); }
+  const syms = st.market === 'TW'
+    ? (st.exch === 'otc' ? ['.TWO'] : st.exch === 'tse' ? ['.TW'] : ['.TW', '.TWO']).map(x => st.code + x)
+    : [st.code];
+  let lastErr = '';
+  for (const sym of syms) {
+    try {
+      const u = new URL(s.apiUrl);
+      u.searchParams.set('action', 'history'); u.searchParams.set('symbol', sym);
+      u.searchParams.set('range', INT[int].range); u.searchParams.set('interval', int);
+      if (s.apiKey) u.searchParams.set('key', s.apiKey);
+      const j = await (await fetch(u.toString())).json();
+      if (j.error) { lastErr = j.error === 'unauthorized' ? '存取密語不正確' : j.error === 'no data' ? '查無資料' : j.error; continue; }
+      const bars = toBars(j.bars || [], TZ[st.market]);
+      if (!bars.length) { lastErr = '查無資料'; continue; }
+      const rec = { at: Date.now(), b: packBars(bars) };
+      HMEM[key] = rec; storeHist(key, rec);
+      return bars;
+    } catch (e) { lastErr = e.message; }
+  }
+  if (cached) return unpackBars(cached.b);
+  throw new Error(lastErr || '抓不到資料');
+}
+
+// 示範用：依示範交易價位產生一段看起來合理的走勢
+const DEMO_BARS = {};
+function demoBars(st, int) {
+  const key = st.market + st.code;
+  if (!DEMO_BARS[key]) DEMO_BARS[key] = demoDaily(st);
+  const d = DEMO_BARS[key].map(b => Object.assign({}, b));
+  return int === '1d' ? d : aggBars(d, int);
+}
+function demoDaily(st) {
+  const q = (st.market === 'TW' ? DEMO_Q.tw : DEMO_Q.us)[st.code];
+  let seed = [...st.code].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) >>> 0, 7);
+  const rnd = () => { seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const gauss = () => Math.sqrt(-2 * Math.log(rnd() + 1e-12)) * Math.cos(2 * Math.PI * rnd());
+  const days = [], d = new Date(today() + 'T00:00:00Z');
+  while (days.length < 500) { const wd = d.getUTCDay(); if (wd && wd < 6) days.unshift(d.toISOString().slice(0, 10)); d.setUTCDate(d.getUTCDate() - 1); }
+  const anchors = data.trades.filter(t => t.stockId === st.id && t.date >= days[0]).map(t => ({ d: t.date, p: t.price })).sort((a, b) => a.d < b.d ? -1 : 1);
+  anchors.unshift({ d: days[0], p: (anchors[0] ? anchors[0].p : q.price) * 0.96 });
+  anchors.push({ d: days[days.length - 1], p: q.price });
+  const at = a => { const i = days.findIndex(x => x >= a.d); return i < 0 ? days.length - 1 : i; };
+  const close = new Array(days.length).fill(null);
+  for (let k = 0; k < anchors.length - 1; k++) {
+    const i0 = at(anchors[k]), i1 = at(anchors[k + 1]), K = i1 - i0;
+    if (K <= 0) { close[i1] = anchors[k + 1].p; continue; }
+    const w = [0]; for (let j = 1; j <= K; j++) w.push(w[j - 1] + gauss() * 0.016);
+    for (let j = 0; j <= K; j++) {
+      const base = Math.log(anchors[k].p) + (Math.log(anchors[k + 1].p) - Math.log(anchors[k].p)) * j / K;
+      close[i0 + j] = Math.exp(base + w[j] - w[K] * j / K);
+    }
+  }
+  close[close.length - 2] = q.prev;
+  const volBase = (q.vol || 1000) * (st.market === 'TW' ? 1000 : 1);
+  const r2 = v => Math.round(v * 100) / 100;
+  return days.map((time, i) => {
+    const c = close[i], prev = i ? close[i - 1] : c * 0.995;
+    let o = prev * (1 + (rnd() - 0.5) * 0.012);
+    let h = Math.max(o, c) * (1 + rnd() * 0.012), l = Math.min(o, c) * (1 - rnd() * 0.012);
+    if (i === days.length - 1) { o = q.open; h = q.high; l = q.low; }
+    return { time, o: r2(o), h: r2(Math.max(h, o, c)), l: r2(Math.min(l, o, c)), c: r2(c), v: Math.round(volBase * (0.55 + rnd() * 0.9)) };
+  });
+}
+function aggBars(daily, int) {
+  const m = new Map();
+  daily.forEach(b => {
+    let k;
+    if (int === '1mo') k = b.time.slice(0, 7) + '-01';
+    else { const d = new Date(b.time + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); k = d.toISOString().slice(0, 10); }
+    const g = m.get(k);
+    if (!g) m.set(k, { time: k, o: b.o, h: b.h, l: b.l, c: b.c, v: b.v });
+    else { g.h = Math.max(g.h, b.h); g.l = Math.min(g.l, b.l); g.c = b.c; g.v += b.v; }
+  });
+  return [...m.values()];
+}
+
+/* ========== K 線與頁面的連動 ========== */
+const K = { chart: null, st: null, bars: [], int: '', noteIdx: new Map(), selIdx: -1, pending: null, loading: false };
+function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function mktColors(m) { const r = cssVar('--red'), g = cssVar('--green'); return m === 'US' ? { up: g, dn: r } : { up: r, dn: g }; }
+function stanceColor(stance, m) { const c = mktColors(m); return stance === 'bull' ? c.up : stance === 'bear' ? c.dn : cssVar('--ac'); }
+function kDestroy() { if (K.chart) K.chart.destroy(); K.chart = null; K.st = null; K.bars = []; K.selIdx = -1; K.noteIdx = new Map(); }
+function kStyle(st) {
+  if (!K.chart) return;
+  const mc = mktColors(st.market);
+  K.chart.col = { bg: cssVar('--panel'), grid: cssVar('--line'), text: cssVar('--tx2'), faint: cssVar('--tx3'), ac: cssVar('--ac'), acbg: cssVar('--acbg'), up: mc.up, dn: mc.dn };
+  K.chart.topPad = isMobile() ? 64 : 44;
+}
+function kMount(st) {
+  kDestroy();
+  K.st = st;
+  K.chart = new KChart($('#kwrap'));
+  K.chart.maDefs = MA_DEFS;
+  K.chart.onHover = i => kLegend(i);
+  K.chart.onSelect = i => kSelect(i);
+  kStyle(st);
+  kLoad();
+}
+function kMsg(t) { const el = $('#kmsg'); if (el) el.textContent = t || ''; }
+async function kLoad() {
+  const st = K.st, int = ui.kInt || '1d';
+  if (!st) return;
+  K.int = int; K.bars = []; K.selIdx = -1; K.chart.setData([], INT[int].show, int);
+  kLegend(-1); kDay();
+  kMsg('載入 K 線中…');
+  try {
+    const bars = await loadHistory(st, int);
+    if (K.st !== st || (ui.kInt || '1d') !== int) return;
+    K.bars = bars;
+    kStyle(st);
+    K.chart.setData(bars, INT[int].show, int);
+    kMsg(bars.length ? '' : '沒有 K 線資料');
+    kOverlay(st, calc(st));
+    if (K.pending) { const d = K.pending; K.pending = null; kFocusDate(d); }
+  } catch (e) {
+    if (K.st === st) kMsg('K 線載入失敗：' + e.message);
+  }
+}
+function kLive(st, c) {
+  if (K.int !== '1d' || !K.bars.length) return;
+  const q = c.q; if (!q || !isNum(q.price)) return;
+  const qd = dateIn(TZ[st.market], q.time || Date.now());
+  const last = K.bars[K.bars.length - 1];
+  const vol = isNum(q.vol) ? (st.market === 'TW' && q.src !== 'yahoo' ? q.vol * 1000 : q.vol) : null;
+  if (last.time === qd) {
+    last.c = q.price;
+    last.h = Math.max(last.h, q.high || q.price, q.price);
+    last.l = Math.min(last.l, q.low || q.price, q.price);
+    if (vol != null) last.v = vol;
+  } else if (qd > last.time && isNum(q.open)) {
+    K.bars.push({ time: qd, o: q.open, h: Math.max(q.high || q.price, q.price, q.open), l: Math.min(q.low || q.price, q.price, q.open), c: q.price, v: vol || 0 });
+  }
+}
+function kMarkers(st) {
+  const ch = K.chart, mc = mktColors(st.market), ac = cssVar('--ac'), mk = [];
+  const tr = new Map(); K.noteIdx = new Map();
+  data.trades.forEach(t => {
+    if (t.stockId !== st.id) return;
+    const i = ch.indexAtOrBefore(t.date); if (i < 0) return;
+    const g = tr.get(i) || { b: 0, s: 0 }; g[t.side === 'buy' ? 'b' : 's']++; tr.set(i, g);
+  });
+  data.notes.forEach(n => {
+    if (n.stockId !== st.id) return;
+    const i = ch.indexAtOrBefore(n.date); if (i < 0) return;
+    if (!K.noteIdx.has(i)) K.noteIdx.set(i, []);
+    K.noteIdx.get(i).push(n);
+  });
+  if (ui.kTrades !== false) tr.forEach((g, i) => {
+    if (g.s) mk.push({ i, pos: 'above', shape: 'down', color: mc.dn, text: g.s > 1 ? '賣' + g.s : '賣' });
+    if (g.b) mk.push({ i, pos: 'below', shape: 'up', color: mc.up, text: g.b > 1 ? '買' + g.b : '買' });
+  });
+  if (ui.kNotes !== false) K.noteIdx.forEach((list, i) => {
+    const bull = list.some(n => n.stance === 'bull'), bear = list.some(n => n.stance === 'bear');
+    mk.push({ i, pos: 'above', shape: 'dot', color: bull && !bear ? mc.up : bear && !bull ? mc.dn : ac, text: list.length > 1 ? String(list.length) : '' });
+  });
+  ch.markers = mk;
+}
+function kOverlay(st, c) {
+  if (!K.chart || K.st !== st || !K.bars.length) return;
+  kStyle(st);
+  kLive(st, c);
+  kMarkers(st);
+  const lines = [];
+  if (c.sh > 0 && isNum(c.avg)) lines.push({ price: c.avg, color: cssVar('--tx2'), label: '成本' });
+  if (isNum(st.target) && st.target > 0) lines.push({ price: st.target, color: cssVar('--ac'), label: '目標' });
+  K.chart.lines = lines;
+  K.chart.refresh();
+  kLegend(K.chart.hover);
+  kDay();
+}
+function kLegend(i) {
+  const el = $('#klegend'); if (!el) return;
+  const bars = K.bars; if (!bars.length || !K.st) { el.innerHTML = ''; return; }
+  if (!(i >= 0 && i < bars.length)) i = bars.length - 1;
+  const b = bars[i], p = i > 0 ? bars[i - 1].c : null, m = K.st.market, chg = p ? b.c / p - 1 : null, k = cls(chg, m);
+  const vol = m === 'TW' ? fmtVol(Math.round(b.v / 1000), 'TW') : fmtVol(b.v, 'US');
+  const mas = K.chart.ma.map(x => x.v[i] != null ? `<span style="color:${x.color}">MA${x.p} ${fmtPrice(x.v[i])}</span>` : '').filter(Boolean).join('　');
+  el.innerHTML = `<div><b>${b.time}</b>　開 <b>${fmtPrice(b.o)}</b>　高 <b>${fmtPrice(b.h)}</b>　低 <b>${fmtPrice(b.l)}</b>　收 <b class="${k}">${fmtPrice(b.c)}</b> <span class="${k}">${fmtPct(chg)}</span>　量 ${vol}</div><div>${mas}</div>`;
+}
+function kSelect(i) {
+  K.selIdx = i;
+  const notes = K.noteIdx.get(i) || [];
+  ui.noteHl = new Set(notes.map(n => n.id));
+  kDay();
+  renderNotes();
+  if (notes.length && !isMobile()) {
+    const it = document.querySelector('#p-notes .nt.hl');
+    if (it) it.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+}
+function kDay() {
+  const el = $('#kday'); if (!el) return;
+  const i = K.selIdx, b = K.bars[i];
+  const notes = b ? (K.noteIdx.get(i) || []) : [];
+  if (!notes.length) { el.innerHTML = b ? `<div class="faint" style="font-size:12px">${b.time}${K.int !== '1d' ? ' 這段期間' : ''}沒有重點</div>` : ''; return; }
+  const m = K.st.market;
+  el.innerHTML = `<div class="kd-h"><span style="white-space:nowrap">${b.time}${K.int !== '1d' ? ' 這段期間' : ''} 的重點（${notes.length}）</span>
+      <span class="kd-sum hide-m">${notes.map(n => `<i class="dotc" style="background:${stanceColor(n.stance, m)}"></i>${esc(n.title)}`).join('　')}</span>
+      <span class="sp only-m"></span><button class="btn only-m" data-act="mtab" data-tab="notes">看全部重點</button></div>` +
+    notes.map(n => `<div class="kd-it only-m"><i class="dotc" style="background:${stanceColor(n.stance, m)}"></i><span class="faint">${esc(n.topic)} › ${esc(n.sub)}</span>　${esc(n.title)}</div>`).join('');
+}
+function kFocusDate(date) {
+  if (!K.chart || !K.bars.length) { K.pending = date; return; }
+  const i = K.chart.indexAtOrBefore(date);
+  if (i < 0) return;
+  K.chart.focusIndex(i);
+  kLegend(i);
+  kSelect(i);
+}
+
+/* ========== 重點（ChatGPT 整理） ========== */
+const DEFAULT_TOPICS = ['產品', '管理層', '營收財報', '新聞事件', '產業與競爭', '分析師看法', '風險', '估值'];
+const STANCE = { bull: '偏多', bear: '偏空', neutral: '中性' };
+function topicTree(st, withDefaults = true) {
+  const map = new Map();
+  if (withDefaults) DEFAULT_TOPICS.forEach(t => map.set(t, { topic: t, count: 0, subs: new Map() }));
+  data.notes.forEach(n => {
+    if (n.stockId !== st.id) return;
+    if (!map.has(n.topic)) map.set(n.topic, { topic: n.topic, count: 0, subs: new Map() });
+    const t = map.get(n.topic); t.count++; t.subs.set(n.sub, (t.subs.get(n.sub) || 0) + 1);
+  });
+  const rank = t => { const i = DEFAULT_TOPICS.indexOf(t.topic); return i < 0 ? 100 : i; };
+  return [...map.values()]
+    .map(t => ({ topic: t.topic, count: t.count, subs: [...t.subs.entries()].sort((a, b) => b[1] - a[1]).map(([sub, count]) => ({ sub, count })) }))
+    .sort((a, b) => (rank(a) - rank(b)) || (b.count - a.count) || a.topic.localeCompare(b.topic));
+}
+function buildPrompt(st) {
+  const tree = topicTree(st);
+  const lines = tree.map(t => `- ${t.topic}：${t.subs.length ? t.subs.map(s => s.sub).join('、') : '（還沒有子主題）'}`).join('\n');
+  return `請幫我把這段對話裡關於 ${st.code} ${st.name || ''} 的重點整理出來，我要匯入我的股票追蹤網頁。
+
+規則：
+1. 一條重點只講一件具體的事（一個事實、數字、事件或觀點）。
+2. 分三層：主題 → 子主題 → 重點。優先沿用下面已有的主題和子主題，名稱要一字不差；真的放不進去才新增，新名稱要簡短（2～6 個字）。
+已有的分類：
+${lines}
+3. 日期：重點在講某個事件（法說會、財報、新聞、產品發表、政策等）就用事件發生的日期；其他的用今天 ${today()}。格式 YYYY-MM-DD。
+4. stance 是這條重點對股價的影響：bull（偏多）、bear（偏空）、neutral（中性）。
+5. title 不超過 20 個字；body 用 1～3 句話說明，保留關鍵數字；source 寫資料來源（例如法說會、某家媒體），不確定就留空。
+6. 對話裡沒提到的事不要自己補充。
+7. 只輸出一個 JSON 程式碼區塊，不要任何其他文字，格式如下：
+
+\`\`\`json
+{"stock":"${st.code}","notes":[
+  {"date":"YYYY-MM-DD","topic":"主題","sub":"子主題","title":"標題","body":"說明","stance":"bull","source":"來源"}
+]}
+\`\`\``;
+}
+function normStance(s) {
+  s = String(s || '').trim().toLowerCase();
+  if (/^(bull|bullish|positive|偏多|看多|多|利多|正面)/.test(s)) return 'bull';
+  if (/^(bear|bearish|negative|偏空|看空|空|利空|負面)/.test(s)) return 'bear';
+  return 'neutral';
+}
+function normNote(n) {
+  if (!n || typeof n !== 'object') return null;
+  const clean = v => String(v == null ? '' : v).replace(/\s+/g, ' ').trim();
+  const body = String(n.body || n.content || n.detail || n.summary || '').trim();
+  let title = clean(n.title || n.headline);
+  if (!title && !body) return null;
+  if (!title) title = body.slice(0, 24);
+  const m = String(n.date || '').trim().replace(/[/.年月]/g, '-').match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  const date = m ? `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}` : today();
+  return { date, topic: clean(n.topic || n.category) || '其他', sub: clean(n.sub || n.subtopic || n.subTopic) || '一般', title, body, stance: normStance(n.stance || n.view), source: clean(n.source) };
+}
+function parseNotesText(text) {
+  let t = String(text || '').trim();
+  if (!t) throw new Error('請貼上 ChatGPT 的回覆');
+  const fence = t.match(/```(?:json|JSON)?\s*([\s\S]*?)```/);
+  if (fence) t = fence[1].trim();
+  const tryParse = s => { try { return JSON.parse(s); } catch (e) { return undefined; } };
+  const fix = s => s.replace(/[“”„″]/g, '"').replace(/[‘’]/g, "'").replace(/,\s*([}\]])/g, '$1');
+  const cands = [];
+  const a = t.indexOf('{'), b = t.lastIndexOf('}'), a2 = t.indexOf('['), b2 = t.lastIndexOf(']');
+  if (a >= 0 && b > a) cands.push({ at: a, s: t.slice(a, b + 1) });
+  if (a2 >= 0 && b2 > a2) cands.push({ at: a2, s: t.slice(a2, b2 + 1) });
+  cands.sort((x, y) => x.at - y.at);   // 以最外層（最先出現）的括號為準
+  let obj;
+  for (const c of cands) { obj = tryParse(c.s); if (obj === undefined) obj = tryParse(fix(c.s)); if (obj !== undefined) break; }
+  if (Array.isArray(obj)) obj = { notes: obj };
+  else if (obj && !Array.isArray(obj.notes) && (obj.title || obj.body)) obj = { notes: [obj] };
+  if (!obj || !Array.isArray(obj.notes)) throw new Error('看不懂這段內容。請確認貼上的是 ChatGPT 依「整理指令」輸出的 JSON。');
+  return { stock: obj.stock ? String(obj.stock).trim().toUpperCase() : '', notes: obj.notes.map(normNote).filter(Boolean) };
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) { /* 改用舊方法 */ }
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  (dlg.open ? dlg : document.body).appendChild(ta); ta.select();
+  let ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  ta.remove(); return ok;
+}
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast.tm); toast.tm = setTimeout(() => t.classList.remove('on'), 2400);
+}
+
+function openPrompt(st) {
+  const text = buildPrompt(st);
+  openDialog({
+    title: '複製整理指令', wide: true, okText: '複製',
+    body: `<div class="note" style="margin:0 0 8px">和 ChatGPT 討論完這檔股票後，把下面這段貼到<b>同一個對話</b>裡。ChatGPT 會照格式整理重點，拿到回覆後回來按「貼上匯入」。</div>
+      <textarea class="prompt" readonly>${esc(text)}</textarea>`,
+    extra: `<a class="btn" href="https://chatgpt.com/" target="_blank" rel="noopener">開啟 ChatGPT</a>`,
+    onOk: async () => {
+      const ok = await copyText(text);
+      if (!ok) return '沒辦法自動複製，請手動全選上面的文字複製。';
+      setTimeout(() => toast('已複製，貼到 ChatGPT 的對話裡'), 50);
+    }
+  });
+}
+function openImport(st) {
+  openDialog({
+    title: `貼上匯入　<span class="muted" style="font-size:14px">${stockLabel(st)}</span>`, wide: true, okText: '下一步',
+    body: fld('ChatGPT 的回覆', `<textarea name="raw" class="prompt" style="min-height:220px" placeholder="把 ChatGPT 依整理指令輸出的內容整段貼上"></textarea>`, '整段貼上就好，前後多出來的文字會自動略過。'),
+    onOpen: f => f.elements.raw.focus(),
+    onOk: f => {
+      let parsed;
+      try { parsed = parseNotesText(fv(f, 'raw')); } catch (e) { return e.message; }
+      if (!parsed.notes.length) return '沒有找到任何重點';
+      setTimeout(() => openPreview(st, parsed), 0);
+    }
+  });
+}
+function openPreview(st, parsed) {
+  const tree = topicTree(st);
+  const exT = new Set(tree.map(t => t.topic));
+  const exS = new Map(tree.map(t => [t.topic, t.subs.map(s => s.sub)]));
+  const SEP = '\u0001';
+  const newT = new Map(), newS = new Map();
+  parsed.notes.forEach(n => {
+    if (!exT.has(n.topic)) newT.set(n.topic, (newT.get(n.topic) || 0) + 1);
+    else if (!exS.get(n.topic).includes(n.sub)) newS.set(n.topic + SEP + n.sub, (newS.get(n.topic + SEP + n.sub) || 0) + 1);
+  });
+  const norm = s => s.replace(/\s/g, '');
+  const dup = n => data.notes.some(x => x.stockId === st.id && x.date === n.date && norm(x.title) === norm(n.title));
+  const nt = [...newT.keys()], ns = [...newS.keys()];
+  const optsT = [...exT].map(x => `<option value="${esc(x)}">併入「${esc(x)}」</option>`).join('');
+  let mapHtml = '';
+  nt.forEach((t, k) => { mapHtml += `<div class="map-row"><span>新主題 <b>${esc(t)}</b>（${newT.get(t)} 條）</span><select name="mt_${k}"><option value="">保留為新主題</option>${optsT}</select></div>`; });
+  ns.forEach((key, k) => {
+    const [t, s] = key.split(SEP), subs = exS.get(t);
+    mapHtml += `<div class="map-row"><span>新子主題 <b>${esc(t)} › ${esc(s)}</b>（${newS.get(key)} 條）</span>${subs.length ? `<select name="ms_${k}"><option value="">保留為新子主題</option>${subs.map(x => `<option value="${esc(x)}">併入「${esc(t)} › ${esc(x)}」</option>`).join('')}</select>` : ''}</div>`;
+  });
+  const dups = parsed.notes.filter(dup).length;
+  const list = parsed.notes.map((n, i) => {
+    const isNT = newT.has(n.topic), isNS = newS.has(n.topic + SEP + n.sub), d = dup(n);
+    return `<label class="imp"><input type="checkbox" name="inc_${i}" ${d ? '' : 'checked'}><div style="min-width:0">
+      <div class="nt-top"><span class="num">${n.date}</span><span class="pill" style="color:${stanceColor(n.stance, st.market)}">${STANCE[n.stance]}</span><span>${esc(n.topic)} › ${esc(n.sub)}</span>${isNT ? '<span class="newtag">新主題</span>' : isNS ? '<span class="newtag">新子主題</span>' : ''}${d ? '<span class="newtag">可能重複</span>' : ''}</div>
+      <div class="nt-title">${esc(n.title)}</div>${n.body ? `<div class="nt-body" style="-webkit-line-clamp:3">${esc(n.body)}</div>` : ''}</div></label>`;
+  }).join('');
+  const mismatch = parsed.stock && parsed.stock !== st.code
+    ? `<div class="banner warn" style="border-radius:8px;margin-bottom:10px">這段整理寫的是 <b>${esc(parsed.stock)}</b>，但你目前選的是 <b>${esc(st.code)}</b>。確定要匯入到 ${esc(st.code)} 嗎？</div>` : '';
+  openDialog({
+    title: `確認匯入　<span class="muted" style="font-size:14px">${stockLabel(st)}</span>`, wide: true, okText: '匯入',
+    body: `${mismatch}<div class="note" style="margin:0 0 10px">共 ${parsed.notes.length} 條重點${dups ? `，其中 ${dups} 條和已有的重點同日期同標題，預設不勾選` : ''}。</div>
+      ${mapHtml ? `<div class="gset"><span class="lbl">新的分類</span><div class="note" style="margin:-6px 0 8px">如果和已有的分類是同一件事，可以直接併入，避免腦圖越長越亂。</div>${mapHtml}</div>` : ''}
+      <div>${list}</div>`,
+    onOk: f => {
+      const tMap = {}, sMap = {};
+      nt.forEach((t, k) => { tMap[t] = fv(f, 'mt_' + k) || t; });
+      ns.forEach((key, k) => { sMap[key] = fv(f, 'ms_' + k) || key.split(SEP)[1]; });
+      const now = Date.now(); let added = 0;
+      parsed.notes.forEach((n, i) => {
+        if (!f.elements['inc_' + i] || !f.elements['inc_' + i].checked) return;
+        const topic = tMap[n.topic] || n.topic;
+        const sub = sMap[n.topic + SEP + n.sub] || n.sub;
+        data.notes.push({ id: uid(), stockId: st.id, date: n.date, topic, sub, title: n.title, body: n.body, stance: n.stance, source: n.source, from: 'chatgpt', ts: now + i });
+        added++;
+      });
+      if (!added) return '沒有勾選任何重點';
+      ui.noteTopic = ''; ui.noteHl = new Set();
+      commit();
+      setTimeout(() => toast(`已匯入 ${added} 條重點`), 50);
+    }
+  });
+}
+function openNote(st, n) {
+  const editing = !!n;
+  n = n || { date: today(), topic: '', sub: '', title: '', body: '', stance: 'neutral', source: '' };
+  const tree = topicTree(st);
+  const subs = [...new Set(tree.flatMap(t => t.subs.map(s => s.sub)))];
+  openDialog({
+    title: `${editing ? '編輯' : '新增'}重點　<span class="muted" style="font-size:14px">${stockLabel(st)}</span>`, wide: true,
+    body: `${radio('stance', [['bull', '偏多'], ['neutral', '中性'], ['bear', '偏空']], n.stance)}
+      <div class="r2">${fld('日期', inp('date', n.date, 'type="date"'), '事件發生的日期')}${fld('來源（選填）', inp('source', n.source, 'placeholder="例：法說會"'))}</div>
+      <div class="r2">${fld('主題', inp('topic', n.topic, 'list="dlTopics" autocomplete="off" placeholder="例：營收財報"'))}${fld('子主題', inp('sub', n.sub, 'list="dlSubs" autocomplete="off" placeholder="例：毛利率"'))}</div>
+      ${fld('標題', inp('title', n.title, 'placeholder="一句話講重點"'))}
+      ${fld('說明（選填）', `<textarea name="body" rows="4">${esc(n.body)}</textarea>`)}
+      <datalist id="dlTopics">${tree.map(t => `<option value="${esc(t.topic)}">`).join('')}</datalist>
+      <datalist id="dlSubs">${subs.map(s => `<option value="${esc(s)}">`).join('')}</datalist>`,
+    extra: editing ? `<button type="button" class="btn danger" data-act="del-note" data-id="${n.id}">${ic('trash')}刪除</button>` : '',
+    onOk: f => {
+      const date = fv(f, 'date'), title = fv(f, 'title');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return '請選日期';
+      if (!title) return '請輸入標題';
+      const rec = { date, title, topic: fv(f, 'topic') || '其他', sub: fv(f, 'sub') || '一般', body: f.elements.body.value.trim(), stance: fv(f, 'stance'), source: fv(f, 'source') };
+      if (editing) Object.assign(n, rec);
+      else data.notes.push(Object.assign({ id: uid(), stockId: st.id, from: 'manual', ts: Date.now() }, rec));
+      commit();
+    }
+  });
+}
+function openTopics(st) {
+  const tree = topicTree(st, false);
+  if (!tree.length) { toast('這檔還沒有重點'); return; }
+  openDialog({
+    title: `管理分類　<span class="muted" style="font-size:14px">${stockLabel(st)}</span>`, wide: true,
+    body: `<div class="note" style="margin:0 0 10px">直接改名稱後按儲存。改成和另一個分類一樣的名字，兩個就會合併。</div>` +
+      tree.map((t, i) => `<div class="gset"><div class="fld"><label>主題（${t.count} 條）</label>${inp('t_' + i, t.topic)}</div>
+        <div class="r2">${t.subs.map((s, j) => fld(`子主題（${s.count} 條）`, inp(`s_${i}_${j}`, s.sub))).join('')}</div></div>`).join(''),
+    onOk: f => {
+      let changed = 0;
+      data.notes.forEach(n => {
+        if (n.stockId !== st.id) return;
+        const i = tree.findIndex(t => t.topic === n.topic); if (i < 0) return;
+        const j = tree[i].subs.findIndex(s => s.sub === n.sub);
+        const nt = fv(f, 't_' + i) || n.topic, ns = j >= 0 ? (fv(f, `s_${i}_${j}`) || n.sub) : n.sub;
+        if (nt !== n.topic || ns !== n.sub) { n.topic = nt; n.sub = ns; changed++; }
+      });
+      if (changed) { if (ui.noteTopic && !data.notes.some(n => n.stockId === st.id && n.topic === ui.noteTopic)) ui.noteTopic = ''; commit(); }
+    }
+  });
+}
+
+function renderNotes() {
+  const el = $('#p-notes'), st = selStock();
+  if (!st) { el.innerHTML = `<div class="ph"><h2>重點時間軸</h2></div><div class="pb"><div class="empty">從列表選一檔標的</div></div>`; return; }
+  const all = data.notes.filter(n => n.stockId === st.id);
+  const head = `<div class="ph"><h2>重點時間軸</h2><span class="faint hide-m">${all.length} 條</span><span class="sp"></span>
+    <button class="btn" data-act="prompt"><span><span class="hide-m">複製</span>整理指令</span></button><button class="btn pri" data-act="import">貼上匯入</button>
+    <button class="ibtn sm" data-act="add-note" title="手動新增重點" aria-label="手動新增重點">${ic('plus')}</button>
+    <button class="ibtn sm" data-act="topics" title="管理分類" aria-label="管理分類">${ic('tag')}</button></div>`;
+  if (!all.length) {
+    el.innerHTML = head + `<div class="pb"><div class="steps">
+      <b>把 ChatGPT 的討論變成時間軸</b>
+      <ol><li>在 ChatGPT 討論這檔股票（新聞、財報、法說會、分析師看法…）。</li>
+      <li>討論完，按上面的「複製整理指令」，貼到同一個 ChatGPT 對話。</li>
+      <li>把 ChatGPT 的回覆整段複製，回來按「貼上匯入」。</li></ol>
+      <div class="faint" style="margin-top:8px">重點會依日期排在這裡、標在 K 線上，並依主題 → 子主題分類，之後組成 Memory 腦圖。也可以按 + 手動新增。</div></div></div>`;
+    return;
+  }
+  const tree = topicTree(st, false);
+  const ft = ui.noteTopic && tree.some(t => t.topic === ui.noteTopic) ? ui.noteTopic : '';
+  const list = all.filter(n => !ft || n.topic === ft).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : (b.ts || 0) - (a.ts || 0));
+  const chips = `<div class="chips"><button class="chip2 ${!ft ? 'on' : ''}" data-act="ntopic" data-topic="">全部 ${all.length}</button>` +
+    tree.map(t => `<button class="chip2 ${ft === t.topic ? 'on' : ''}" data-act="ntopic" data-topic="${esc(t.topic)}">${esc(t.topic)} ${t.count}</button>`).join('') + '</div>';
+  const hl = ui.noteHl || new Set(), open = ui.noteOpen || new Set();
+  let html = '', mon = '';
+  list.forEach(n => {
+    const mm = n.date.slice(0, 7);
+    if (mm !== mon) { mon = mm; html += `<div class="mon">${mm.slice(0, 4)} 年 ${+mm.slice(5, 7)} 月</div>`; }
+    const sc = stanceColor(n.stance, st.market);
+    html += `<div class="nt ${hl.has(n.id) ? 'hl' : ''} ${open.has(n.id) ? 'open' : ''}" data-act="note-open" data-id="${n.id}">
+      <div class="nt-top"><span class="num">${n.date}</span><span class="pill" style="color:${sc}">${STANCE[n.stance] || '中性'}</span><span class="tp">${esc(n.topic)} › ${esc(n.sub)}</span>
+        <button class="ibtn sm" data-act="note-k" data-id="${n.id}" title="在 K 線上看" aria-label="在 K 線上看">${ic('chart')}</button>
+        <button class="ibtn sm" data-act="edit-note" data-id="${n.id}" aria-label="編輯">${ic('edit')}</button></div>
+      <div class="nt-title">${esc(n.title)}</div>
+      ${n.body ? `<div class="nt-body">${esc(n.body)}</div>` : ''}
+      ${n.source ? `<div class="nt-src">來源：${esc(n.source)}</div>` : ''}</div>`;
+  });
+  const pb = el.querySelector('.pb'), keep = pb ? pb.scrollTop : 0;
+  el.innerHTML = head + `<div class="pb">${chips}${html}</div>`;
+  if (keep) el.querySelector('.pb').scrollTop = keep;
+}
+
+let qKey = '';
+function renderQuote(C) {
+  const el = $('#p-quote'), st = selStock();
+  if (!st) { qKey = ''; kDestroy(); el.innerHTML = `<div class="ph"><h2>報價與 K 線</h2></div><div class="pb"><div class="empty">從列表選一檔標的</div></div>`; return; }
+  if (qKey !== st.id) {
+    qKey = st.id;
+    el.innerHTML = `<div class="ph" id="qph"></div><div class="pb qb"><div id="qhead"></div><div class="kbar" id="kbar"></div>
+      <div class="kwrap" id="kwrap"><div class="klegend" id="klegend"></div><div class="kmsg" id="kmsg"></div></div><div class="kday" id="kday"></div></div>`;
+    kMount(st);
+  }
+  const c = C[st.id], q = c.q, m = st.market, k = cls(c.chg, m);
+  const mkt = m === 'TW' ? '台股' + (st.exch === 'otc' ? '・上櫃' : st.exch === 'tse' ? '・上市' : '') : '美股';
+  let src = '尚無報價';
+  if (q) src = q.src === 'demo' ? '示範報價' : (q.src === 'twse' ? '證交所' : 'Yahoo') + (q.delayed ? '・可能延遲' : '') + (q.src === 'twse' && q.lastTrade === false ? '・這一刻無成交，顯示買賣價' : '') + '・' + fmtTime(q.time);
+  const stat = (label, v) => `<span>${label}<b class="${isNum(v) && c.prev != null ? cls(v - c.prev, m) : ''}">${fmtPrice(v)}</b></span>`;
+  $('#qph').innerHTML = `<h2>${esc(st.code)}</h2><span class="muted">${esc(st.name || '')}</span><span class="tag">${mkt}</span><span class="tag ${c.sh > 0 ? 'ac' : ''}">${c.sh > 0 ? '持有' : '觀察'}</span><span class="sp"></span>
+    <button class="ibtn sm" data-act="edit-stock" title="編輯標的" aria-label="編輯標的">${ic('edit')}</button>`;
+  $('#qhead').innerHTML = `<div class="qline"><span class="big ${k}">${fmtPrice(c.price)}</span><span class="qchg ${k}">${arrow(c.chg)}${fmtSigned(c.chg, 'USD')}　${fmtPct(c.chgPct)}</span><span class="src">${esc(src)}</span></div>
+    <div class="qstats">${stat('開', q && q.open)}${stat('高', q && q.high)}${stat('低', q && q.low)}<span>昨收<b>${fmtPrice(c.prev)}</b></span><span>量<b>${fmtVol(q && q.vol, m)}</b></span>${isNum(st.target) ? `<span>目標<b>${fmtPrice(st.target)}</b></span>` : ''}</div>`;
+  const int = ui.kInt || '1d';
+  $('#kbar').innerHTML = `<div class="tabs">${Object.entries(INT).map(([key, v]) => `<button class="${key === int ? 'on' : ''}" data-act="kint" data-int="${key}">${v.label}</button>`).join('')}</div>
+    <button class="tog ${ui.kTrades !== false ? 'on' : ''}" data-act="ktog" data-k="kTrades">買賣點</button><button class="tog ${ui.kNotes !== false ? 'on' : ''}" data-act="ktog" data-k="kNotes">重點</button>
+    <span class="sp"></span><span class="faint hide-m" style="font-size:12px">滾輪縮放・拖曳平移・點 K 棒看當天重點</span>
+    <button class="ibtn sm" data-act="kreset" title="回到最新" aria-label="回到最新">${ic('latest')}</button>`;
+  kOverlay(st, c);
+}
+
 /* ========== 對話框 ========== */
 const dlg = $('#dlg');
-function openDialog({ title, body, okText = '儲存', extra = '', onOk, onInput, onOpen }) {
+function openDialog({ title, body, okText = '儲存', extra = '', onOk, onInput, onOpen, wide }) {
+  dlg.classList.toggle('wide', !!wide);
   dlg.innerHTML = `<form class="dlg" novalidate>
     <div class="dlg-h"><h3>${title}</h3><span class="sp"></span><button type="button" class="ibtn" data-close aria-label="關閉">${ic('x')}</button></div>
     <div class="dlg-b">${body}<div class="err" id="dlgErr"></div></div>
@@ -1047,17 +1901,19 @@ document.addEventListener('click', e => {
   switch (act) {
     case 'tab': ui.tab = a.dataset.tab; saveUi(); render(); break;
     case 'sel':
+      if (ui.sel !== id) { ui.noteHl = new Set(); ui.noteTopic = ''; }
       ui.sel = id; saveUi();
       if (isMobile()) { ui.view = 'detail'; ui.mtab = ui.mtab || 'quote'; window.scrollTo(0, 0); }
       render(); break;
     case 'back': ui.view = 'list'; render(); window.scrollTo(0, 0); break;
-    case 'mtab': ui.mtab = a.dataset.tab; render(); window.scrollTo(0, 0); break;
+    case 'mtab': ui.mtab = a.dataset.tab; if (dlg.open) dlg.close(); render(); window.scrollTo(0, 0); break;
     case 'add-stock': openStock(); break;
     case 'edit-stock': if (st) openStock(st); break;
     case 'del-stock':
-      if (st && confirm(`確定刪除 ${st.code} ${st.name || ''}？\n它的交易和股利紀錄也會一起刪除，無法復原。`)) {
+      if (st && confirm(`確定刪除 ${st.code} ${st.name || ''}？\n它的交易、股利和重點紀錄也會一起刪除，無法復原。`)) {
         data.trades = data.trades.filter(t => t.stockId !== st.id);
         data.dividends = data.dividends.filter(x => x.stockId !== st.id);
+        data.notes = data.notes.filter(x => x.stockId !== st.id);
         data.stocks = data.stocks.filter(s => s.id !== st.id);
         ui.sel = null; ui.view = 'list'; saveUi();
         if (dlg.open) dlg.close();
@@ -1085,6 +1941,30 @@ document.addEventListener('click', e => {
       }
       break;
     case 'settings': openSettings(); break;
+    case 'kint': if (ui.kInt !== a.dataset.int) { ui.kInt = a.dataset.int; saveUi(); render(); kLoad(); } break;
+    case 'ktog': ui[a.dataset.k] = ui[a.dataset.k] === false; saveUi(); render(); break;
+    case 'kreset': if (K.chart) K.chart.resetView(); break;
+    case 'prompt': if (st) openPrompt(st); break;
+    case 'import': if (st) openImport(st); break;
+    case 'add-note': if (st) openNote(st); break;
+    case 'edit-note': { const n = data.notes.find(x => x.id === id); if (st && n) openNote(st, n); break; }
+    case 'del-note':
+      if (confirm('確定刪除這條重點？')) { data.notes = data.notes.filter(x => x.id !== id); if (dlg.open) dlg.close(); commit(); }
+      break;
+    case 'topics': if (st) openTopics(st); break;
+    case 'ntopic': ui.noteTopic = a.dataset.topic; saveUi(); renderNotes(); break;
+    case 'note-open': {
+      ui.noteOpen.has(id) ? ui.noteOpen.delete(id) : ui.noteOpen.add(id);
+      const n = data.notes.find(x => x.id === id);
+      if (n && !isMobile()) { ui.noteHl = new Set([id]); kFocusDate(n.date); ui.noteHl = new Set([id]); }
+      renderNotes(); break;
+    }
+    case 'note-k': {
+      const n = data.notes.find(x => x.id === id); if (!n) break;
+      ui.noteHl = new Set([id]);
+      if (isMobile()) { ui.mtab = 'quote'; render(); window.scrollTo(0, 0); }
+      kFocusDate(n.date); break;
+    }
     case 'theme':
       conf.theme = conf.theme === 'dark' ? 'light' : 'dark'; saveConf();
       document.documentElement.dataset.theme = conf.theme;
