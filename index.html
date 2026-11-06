@@ -364,6 +364,47 @@ dialog.mgr[open]{display:flex;flex-direction:column}
 .ih.done{opacity:.6}
 .pk{max-height:46dvh;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:0 10px}
 .mg-ftog{display:none}
+/* 新聞 */
+.ctag.ann{color:var(--ac);border-color:var(--ac);background:var(--acbg)}
+.tabs button .n.nwn{color:var(--ac);font-weight:500}
+.nw{border:1px solid var(--line);border-radius:10px;padding:8px 11px;margin-bottom:8px}
+.nw.sel{border-color:var(--ac);background:var(--acbg)}
+.nw.dismissed,.nw.added{opacity:.7}
+.nw .nt-top input{margin:0}
+.nw-src{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40%}
+.nw-t{display:block;font-weight:500;color:var(--tx);text-decoration:none;margin-top:2px}
+a.nw-t:hover{color:var(--ac);text-decoration:underline}
+.nw-more{font-size:12px;color:var(--tx2);margin-top:4px}
+.nw-more summary{cursor:pointer}
+.nw-more div{padding:2px 0 2px 12px}
+.nw-more a{color:var(--tx2)}
+.nw-act{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.nw-bar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;background:var(--panel2);border-radius:8px;padding:6px 8px;margin-bottom:8px;position:sticky;top:-10px;z-index:1}
+.nw-bar b{font-weight:500;margin-right:4px}
+.mg-head.nwh,.mg-r.nwr{grid-template-columns:30px 100px 86px 46px 110px minmax(200px,3fr) 130px 70px}
+.mg-r.nwr a{color:var(--tx);text-decoration:none}
+.mg-r.nwr a:hover{color:var(--ac);text-decoration:underline}
+.mg-r.old{opacity:.6}
+/* 公司資料與財報 */
+.cohead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.cohead b{font-size:15px;font-weight:500}
+.colinks{display:flex;gap:6px;flex-wrap:wrap}
+.colinks .btn{font-size:12px;padding:2px 8px;text-decoration:none;color:var(--tx)}
+.cosec{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--panel)}
+.cosec>summary{cursor:pointer;padding:8px 12px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px;list-style:none;user-select:none}
+.cosec>summary::-webkit-details-marker{display:none}
+.cosec>summary::before{content:'▸';color:var(--tx3);display:inline-block;transition:transform .15s}
+.cosec[open]>summary::before{transform:rotate(90deg)}
+.cosec-b{padding:0 12px 10px;min-width:0}
+.cosec .note{margin-top:4px}
+.cobar{width:100%;height:auto;display:block;margin:2px 0 6px;max-height:220px}
+table.kv{border-collapse:collapse;font-size:13px;width:100%}
+.kv th{text-align:left;font-weight:400;color:var(--tx2);padding:4px 12px 4px 0;white-space:nowrap;width:1%;vertical-align:top}
+.kv td{padding:4px 0;word-break:break-all}
+.kv a,.cosec-b a:not(.btn){color:var(--ac)}
+dialog.co{background:var(--bg)}
+.co-body{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:12px;padding:12px 14px;align-content:start}
+.co-col{min-width:0}
 
 @media (max-width:899px){
   body{height:auto;min-height:100dvh;display:block}
@@ -411,6 +452,11 @@ dialog.mgr[open]{display:flex;flex-direction:column}
   .mg-r>.ck{grid-row:1/3}
   .mg-r>.tt{grid-column:2/-1;grid-row:2;font-weight:500}
   .mg-r>.cl,.mg-r>.an2,.mg-r>.st2{display:none}
+  .mg-r.nwr{grid-template-columns:28px auto auto auto minmax(0,1fr)}
+  .co-body{grid-template-columns:1fr;padding:8px}
+  .mg-r.nwr>.tp2{display:none}
+  .mg-r.nwr .sr{font-size:12px}
+  .nw-src{max-width:none}
   .mg-r .dt,.mg-r .sk,.mg-r .tp2{font-size:12px;color:var(--tx2)}
   .mg-g{height:58px;flex-wrap:wrap;row-gap:0;padding:4px 8px}
   .mg-act{position:sticky;bottom:0;background:var(--bg)}
@@ -453,6 +499,7 @@ dialog.mgr[open]{display:flex;flex-direction:column}
 <dialog id="dlg"></dialog>
 <dialog id="mem" class="mem"></dialog>
 <dialog id="mgr" class="mgr"></dialog>
+<dialog id="co" class="mgr co"></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="fileIn" accept="application/json,.json" hidden>
 
@@ -477,11 +524,13 @@ function defaultSettings() {
 const TRASH_DAYS = 30;                                   // 回收桶保留天數
 const DATA_ARRAYS = ['stocks', 'trades', 'dividends', 'notes', 'strategies', 'imports', 'trash', 'tombs', 'dupIgnore'];
 // imports：匯入紀錄；trash：回收桶；tombs：刪過的重點（再匯入時提醒）；dupIgnore：標為「不是重複」的組合
-function emptyData() { return { version: 1, updatedAt: 0, settings: defaultSettings(), stocks: [], trades: [], dividends: [], notes: [], strategies: [], imports: [], trash: [], tombs: [], dupIgnore: [] }; }
+// newsAct：新聞的處理狀態 { 新聞編號: 'd'（略過）| 'a:重點編號'（已加入）}
+function emptyData() { return { version: 1, updatedAt: 0, settings: defaultSettings(), stocks: [], trades: [], dividends: [], notes: [], strategies: [], imports: [], trash: [], tombs: [], dupIgnore: [], newsAct: {} }; }
 function normalize(d) {
   const o = Object.assign(emptyData(), d || {});
   o.settings = Object.assign(defaultSettings(), (d && d.settings) || {});
   DATA_ARRAYS.forEach(k => { if (!Array.isArray(o[k])) o[k] = []; });
+  if (!o.newsAct || typeof o.newsAct !== 'object' || Array.isArray(o.newsAct)) o.newsAct = {};
   o.notes.forEach(n => { if (n.topic === '產品') n.topic = '產品業務'; });   // 舊版主題改名
   const cut = Date.now() - TRASH_DAYS * 864e5;
   o.trash = o.trash.filter(x => x && x.item && (x.at || 0) >= cut);
@@ -491,7 +540,9 @@ function normalize(d) {
   return o;
 }
 
+// 資料主要存在瀏覽器的資料庫（IndexedDB，容量大）；localStorage 放得下時也存一份，開啟時比較快
 let data = normalize(load(LS.data));
+const DATA0 = data;
 let conf = Object.assign({ theme: 'dark', token: '', repo: '', dirty: false, syncedAt: 0 }, load(LS.conf) || {});
 let quotes = Object.assign({ tw: {}, us: {}, fx: null, time: 0 }, load(LS.quotes) || {});
 let ui = Object.assign({ tab: 'hold', sel: null, kInt: '1d', kTrades: true, kNotes: true, noteTopic: '', memFold: false, memSpin: false, hiWin: 250, statRange: 0 }, load(LS.ui) || {});
@@ -499,7 +550,45 @@ ui.noteHl = new Set(); ui.noteOpen = new Set();
 let qState = { status: 'idle', msg: '' };
 let syncState = { status: conf.token ? 'idle' : 'off', msg: '', at: 0 };
 
-function saveData() { store(LS.data, data); }
+const STORE = { ok: true, ls: true };
+function saveData() {
+  const json = JSON.stringify(data);
+  try { localStorage.setItem(LS.data, json); STORE.ls = true; localStorage.removeItem('st.data.idb'); }
+  catch (e) { STORE.ls = false; try { localStorage.removeItem(LS.data); localStorage.setItem('st.data.idb', '1'); } catch (e2) { /* 略過 */ } }
+  idbSet('data', json).then(ok => { const was = STORE.ok; STORE.ok = ok || STORE.ls; if (was !== STORE.ok) renderBanner(); });
+}
+/* ---- 瀏覽器資料庫（IndexedDB）：一個簡單的鍵值儲存 ---- */
+const IDB = { p: null };
+function idb() {
+  if (IDB.p) return IDB.p;
+  IDB.p = new Promise(res => {
+    try {
+      const r = indexedDB.open('stock-tracker', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('kv');
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => res(null);
+      r.onblocked = () => res(null);
+    } catch (e) { res(null); }
+  });
+  return IDB.p;
+}
+async function idbGet(k) {
+  const db = await idb(); if (!db) return undefined;
+  return new Promise(res => { try { const q = db.transaction('kv').objectStore('kv').get(k); q.onsuccess = () => res(q.result); q.onerror = () => res(undefined); } catch (e) { res(undefined); } });
+}
+async function idbSet(k, v) {
+  const db = await idb(); if (!db) return false;
+  return new Promise(res => { try { const t = db.transaction('kv', 'readwrite'); t.objectStore('kv').put(v, k); t.oncomplete = () => res(true); t.onerror = () => res(false); t.onabort = () => res(false); } catch (e) { res(false); } });
+}
+// 開啟時：資料庫裡的比較新（或 localStorage 放不下）就用資料庫的；第一次使用時把舊資料搬過去
+async function idbLoadData() {
+  const s = await idbGet('data');
+  if (typeof s === 'string') {
+    let d = null; try { d = JSON.parse(s); } catch (e) { d = null; }
+    if (d && data === DATA0 && (d.updatedAt || 0) >= (data.updatedAt || 0) && (d.updatedAt || d.stocks)) { data = normalize(d); return true; }
+  } else if (data === DATA0 && (data.stocks.length || data.notes.length)) idbSet('data', JSON.stringify(data));
+  return false;
+}
 function saveConf() { store(LS.conf, conf); }
 function saveUi() { store(LS.ui, { tab: ui.tab, sel: ui.sel, kInt: ui.kInt, kTrades: ui.kTrades, kNotes: ui.kNotes, noteTopic: ui.noteTopic, memFold: ui.memFold, memSpin: ui.memSpin, hiWin: ui.hiWin, statRange: ui.statRange }); }
 
@@ -509,6 +598,7 @@ function commit(markDirty = true) {
   if (markDirty && !data.demo) { conf.dirty = true; saveConf(); scheduleSync(); }
   render();
   if (MG.open) mgRender();
+  if (data.settings.apiUrl && !data.demo && newsWatchSig() !== conf.newsSig) scheduleNewsWatch();
 }
 // 資料整理畫面的狀態
 const MG = { open: false, tab: 'notes', f: {}, sort: { k: 'date', d: -1 }, sel: new Set(), list: [], rows: [], dup: false, groups: null, last: -1, catStock: '', catSel: new Set(), tsel: new Set(), showFil: false };
@@ -797,6 +887,7 @@ const ICON = {
   chart: '<path d="M4 4v16h16"/><path d="M8 15l3-4 3 2 5-6"/>',
   tag: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.3"/>',
   list: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17"/>',
+  expand: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
   latest: '<path d="M5 12h11M12 7l5 5-5 5M20 5v14"/>',
   brain: '<path d="M12 5a3 3 0 0 0-5.6-1.5A3 3 0 0 0 4 8a3 3 0 0 0 0 6 3 3 0 0 0 3 4 3 3 0 0 0 5 1z"/><path d="M12 5a3 3 0 0 1 5.6-1.5A3 3 0 0 1 20 8a3 3 0 0 1 0 6 3 3 0 0 1-3 4 3 3 0 0 1-5 1z"/><path d="M12 5v14"/>',
   moon: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
@@ -850,7 +941,10 @@ function renderStatus() {
 
 function renderBanner() {
   const el = $('#banner');
-  if (data.demo) {
+  if (!STORE.ok) {
+    el.className = 'banner warn';
+    el.innerHTML = `<span>這台裝置的儲存空間不足，最新的修改沒有存到本機。${conf.token ? '雲端同步還是會進行。' : '建議設定 GitHub 同步，或先匯出備份。'}</span><span class="sp"></span><button class="btn" data-act="export">匯出備份</button>`;
+  } else if (data.demo) {
     el.className = 'banner';
     el.innerHTML = `<span>目前顯示的是<b>示範資料</b>，報價也是假的，只是讓你看看畫面。</span><span class="sp"></span><button class="btn" data-act="clear-demo">清除示範資料，開始使用</button>`;
   } else if (!data.settings.apiUrl) {
@@ -1031,6 +1125,17 @@ function dropOn(id, target) {
 function renderDetail(C) {
   const el = $('#p-detail'), st = selStock();
   if (!st) { el.innerHTML = `<div class="ph"><h2>交易與損益</h2></div><div class="pb"><div class="empty">從列表選一檔標的</div></div>`; return; }
+  const tab = ['co', 'fin'].includes(ui.dtab) ? ui.dtab : 'trade';
+  const tabs = `<div class="tabs"><button class="${tab === 'trade' ? 'on' : ''}" data-act="dtab" data-tab="trade">交易與損益</button><button class="${tab === 'co' ? 'on' : ''}" data-act="dtab" data-tab="co">公司</button><button class="${tab === 'fin' ? 'on' : ''}" data-act="dtab" data-tab="fin">財報</button></div>`;
+  if (tab !== 'trade') {
+    const pb0 = el.querySelector('.pb'), keep = pb0 && el.dataset.tab === tab + st.id ? pb0.scrollTop : 0;
+    el.dataset.tab = tab + st.id;
+    el.innerHTML = `<div class="ph">${tabs}<span class="sp"></span><button class="btn" data-act="fin-refresh" title="重新讀取公司資料">更新</button><button class="btn" data-act="co-open" title="展開成全螢幕">${ic('expand')}<span class="hide-m">展開</span></button></div><div class="pb">${renderCoTab(st, C[st.id], tab)}</div>`;
+    if (keep) el.querySelector('.pb').scrollTop = keep;
+    coKick(st);
+    return;
+  }
+  el.dataset.tab = '';
   const c = C[st.id], m = st.market, cur = c.cur, sym = curSym(cur);
   const met = (k, v, sub, colorV) => `<div class="met"><div class="k">${k}</div><div class="v ${colorV != null ? cls(colorV, m) : ''}">${v}${sub ? `<small>${sub}</small>` : ''}</div></div>`;
   let mets = '';
@@ -1059,7 +1164,7 @@ function renderDetail(C) {
     return `<tr><td>${x.date}${x.note ? `<div class="sub faint">${esc(x.note)}</div>` : ''}</td><td>${what}</td><td class="hide-m">${x.type === 'stock' ? '—' : fmtMoney(+x.deduct || 0, cur)}</td><td>${net}</td>${rowBtns('div', x.id)}</tr>`;
   }).join('');
 
-  el.innerHTML = `<div class="ph"><h2>交易與損益</h2><span class="muted hide-m">${stockLabel(st)}</span><span class="sp"></span>
+  el.innerHTML = `<div class="ph">${tabs}<span class="sp"></span>
       <button class="btn" data-act="add-trade">${ic('plus')}交易</button><button class="btn" data-act="add-div">${ic('plus')}股利</button></div>
     <div class="pb">
       ${st.parked && c.sh > 0 ? `<div class="banner warn" style="border-radius:8px;margin-bottom:10px;border:0"><span>這檔放在「觀察」，持股的市值和損益不列入頂部總覽。</span><span class="sp"></span><button class="btn" data-act="unpark">移回持有</button></div>` : ''}
@@ -1079,7 +1184,7 @@ function renderMbar(C) {
   el.innerHTML = `<button class="ibtn" data-act="back" aria-label="回列表">${ic('back')}</button>
     <b>${esc(st.code)}</b><span class="muted">${esc(st.name || '')}</span><span class="sp"></span>
     <span class="${cls(c.chg, st.market)}">${fmtPrice(c.price)}　${fmtPct(c.chgPct)}</span>
-    <div class="tabs"><button class="${t === 'quote' ? 'on' : ''}" data-act="mtab" data-tab="quote">報價</button><button class="${t === 'trade' ? 'on' : ''}" data-act="mtab" data-tab="trade">交易損益</button><button class="${t === 'notes' ? 'on' : ''}" data-act="mtab" data-tab="notes">重點</button></div>`;
+    <div class="tabs"><button class="${t === 'quote' ? 'on' : ''}" data-act="mtab" data-tab="quote">報價</button><button class="${t === 'trade' ? 'on' : ''}" data-act="mtab" data-tab="trade">交易・公司</button><button class="${t === 'notes' ? 'on' : ''}" data-act="mtab" data-tab="notes">重點</button></div>`;
 }
 
 /* ========== K 線圖（canvas） ========== */
@@ -1283,6 +1388,15 @@ class KChart {
         const b = this.bars[i], hgt = (b.v || 0) / vmax * volH;
         ctx.fillStyle = b.c >= b.o ? c.up : c.dn;
         ctx.fillRect(Math.round(X(i) - cw / 2), volTop + volH - hgt, Math.max(1, Math.round(cw)), hgt);
+      }
+      ctx.globalAlpha = 1;
+    }
+    // 新聞量：每天有幾則新聞（可能的雜訊不算），從成交量區的上緣往下畫細條
+    if (this.news && this.news.max > 0) {
+      ctx.globalAlpha = 0.6; ctx.fillStyle = c.ac;
+      for (let i = from; i <= to; i++) {
+        const k = this.news.cnt[i]; if (!k) continue;
+        ctx.fillRect(Math.round(X(i) - cw / 2), volTop, Math.max(1, Math.round(cw)), Math.max(2, k / this.news.max * volH * 0.35));
       }
       ctx.globalAlpha = 1;
     }
@@ -1574,6 +1688,7 @@ function kOverlay(st, c) {
   kStyle(st);
   kLive(st, c);
   kMarkers(st);
+  K.chart.news = ui.kNotes !== false ? kNews(st) : null;
   const lines = [];
   if (c.sh > 0 && isNum(c.avg)) lines.push({ price: c.avg, color: cssVar('--tx2'), label: '成本' });
   if (isNum(st.target) && st.target > 0) lines.push({ price: st.target, color: cssVar('--ac'), label: '目標' });
@@ -1582,6 +1697,12 @@ function kOverlay(st, c) {
   kLegend(K.chart.hover);
   kDay();
 }
+function kNews(st) {
+  const items = newsItems(st); if (!items.length || !K.chart || !K.bars.length) return null;
+  const cnt = new Array(K.bars.length).fill(0); let max = 0;
+  items.forEach(it => { if (newsNoise(it, st)) return; const i = K.chart.indexAtOrBefore(newsDay(it, st)); if (i < 0) return; cnt[i]++; if (cnt[i] > max) max = cnt[i]; });
+  return { cnt, max };
+}
 function kLegend(i) {
   const el = $('#klegend'); if (!el) return;
   const bars = K.bars; if (!bars.length || !K.st) { el.innerHTML = ''; return; }
@@ -1589,7 +1710,8 @@ function kLegend(i) {
   const b = bars[i], p = i > 0 ? bars[i - 1].c : null, m = K.st.market, chg = p ? b.c / p - 1 : null, k = cls(chg, m);
   const vol = m === 'TW' ? fmtVol(Math.round(b.v / 1000), 'TW') : fmtVol(b.v, 'US');
   const mas = K.chart.ma.map(x => x.v[i] != null ? `<span style="color:${x.color}">MA${x.p} ${fmtPrice(x.v[i])}</span>` : '').filter(Boolean).join('　');
-  el.innerHTML = `<div><b>${b.time}</b>　開 <b>${fmtPrice(b.o)}</b>　高 <b>${fmtPrice(b.h)}</b>　低 <b>${fmtPrice(b.l)}</b>　收 <b class="${k}">${fmtPrice(b.c)}</b> <span class="${k}">${fmtPct(chg)}</span>　量 ${vol}</div><div>${mas}</div>`;
+  const nc = K.chart.news && K.chart.news.cnt[i];
+  el.innerHTML = `<div><b>${b.time}</b>　開 <b>${fmtPrice(b.o)}</b>　高 <b>${fmtPrice(b.h)}</b>　低 <b>${fmtPrice(b.l)}</b>　收 <b class="${k}">${fmtPrice(b.c)}</b> <span class="${k}">${fmtPct(chg)}</span>　量 ${vol}${nc ? `　<span style="color:${cssVar('--ac')}">新聞 ${nc} 則</span>` : ''}</div><div>${mas}</div>`;
 }
 function kSelect(i) {
   K.selIdx = i;
@@ -1696,13 +1818,15 @@ function fmtNoteDate(n) {
   return n.date;
 }
 
-function buildPrompt() {
+// opts.news：要交給 ChatGPT 整理的新聞（已合併的組）
+function buildPrompt(opts = {}) {
+  const news = opts.news;
   const list = data.stocks.length
     ? data.stocks.map(s => `- ${s.code} ${s.name || ''}（${s.market === 'TW' ? '台股' : '美股'}）`).join('\n')
     : '（清單目前是空的）';
   const fixed = DEFAULT_TOPICS.map(t => {
     const note = {
-      '營收財報': '（季度或年度放 fiscal_period，例如 2026-Q3、2026-Q1~Q3）',
+      '營收財報': '（季度、累計、月份或年度放 fiscal_period，例如 2026-Q3、2026-Q1~Q3、2026-10、2026；數字和單位寫在 title 或 body，網頁會和官方財報對照）',
       '管理層': '（只放管理層本身的事；管理層「說的內容」依內容分類）',
       '市場數據': '（只放跌停、漲停、爆量、創新高或新低、處置股等特殊事件，原因不明也可以記；一般收盤價、盤中價、漲跌幅、試算跌幅、以當下股價算的本益比一律不要）',
       '估值': '（外部機構的 EPS 等預估；不要用當下股價算本益比）',
@@ -1716,8 +1840,29 @@ function buildPrompt() {
     const subs = topicTree(s, false).flatMap(t => t.subs.filter(x => !(FIXED_SUBS[t.topic] || []).includes(x.sub)).map(x => `${t.topic} › ${x.sub}`));
     return subs.length ? `- ${s.code}：${subs.join('、')}` : '';
   }).filter(Boolean).join('\n');
-  return `請把這段對話裡提到的股票資訊整理成 JSON，我要匯入我的股票追蹤網頁。請嚴格照以下規則。
-
+  const sm = new Map(data.stocks.map(s => [s.market + ':' + s.code, s]));
+  const newsBlock = news ? '\n【新聞清單】每則前面方括號裡的編號，要原樣填在 news_ids：\n' + news.map(cl => {
+    const it = cl.list.find(x => x.kind === 'ann') || cl.lead, st = sm.get(it.m + ':' + it.code);
+    let line = `[${it.id}] ${fmtNewsTime(it.at, st)}｜${it.code} ${st ? st.name || '' : ''}｜${it.kind === 'ann' ? '公司公告' : '新聞'}｜${it.src || ''}｜${it.title}${it.url ? '｜' + it.url : ''}`;
+    if (it.sum) line += `\n    內容：${it.sum.slice(0, it.kind === 'ann' ? 600 : 240)}`;
+    const others = cl.list.filter(x => x !== it);
+    if (others.length) line += `\n    同一件事的其他報導：${others.slice(0, 8).map(x => `[${x.id}] ${x.src || ''}`).join('、')}`;
+    return line;
+  }).join('\n') + '\n' : '';
+  const intro = news
+    ? '請閱讀下面這些新聞和公司公告（可以打開連結看內文），把值得記錄的資訊整理成 JSON，我要匯入我的股票追蹤網頁。請嚴格照以下規則。'
+    : '請把這段對話裡提到的股票資訊整理成 JSON，我要匯入我的股票追蹤網頁。請嚴格照以下規則。';
+  const newsRules = news ? `
+【新聞的規則】
+- 每條重點都要填 news_ids：這條資訊來自哪幾則新聞的編號（同一件事有好幾家報導，就全部填）。
+- 一則新聞裡有好幾件可以分別核對的事，拆成好幾條，news_ids 都填同一則。
+- 不值得記的（純股價漲跌、盤勢排行、只是順帶提到這家公司、和其他則重複）不用整理，把編號放在 skipped_news_ids。
+- 事件日期：內文寫了事件發生的日期就用那天；沒寫就用新聞發布日。公司公告的事實發生日就是事件日期。
+- source 寫媒體或公告名稱；source_url 可以不填，網頁會用新聞的連結，不要自己編連結。
+- 你從這些新聞推論出來的看法，放 AI research；evidence_ids 填同一次輸出裡支持它的重點 id。
+` : '';
+  return `${intro}
+${newsBlock}
 【標的】stock 請用這些代號，一字不差：
 ${list}
 不在清單上的股票也可以整理：台股用數字代號（例如 2454、0050，前導零要保留），美股用代號（例如 AAPL），並填 market（TW 或 US）。
@@ -1739,7 +1884,7 @@ ${extra ? '各標的已經用過的其他子主題（請沿用，名稱一字不
    - 財報數字的期間放 fiscal_period，不是 event_date。
    - 預測指向的期間放 target_period（例如 2027）。
 6. source 寫來源名稱；source_type 填 company、regulator（主管機關）、analyst、media、market、user、assistant 其中一個；有確定的原始連結才填 source_url。不要填「已查證」，查證由我自己在網頁上標記。
-7. 對話裡沒提到的事不要自己補充。
+7. ${news ? '新聞裡沒寫的事' : '對話裡沒提到的事'}不要自己補充。
 8. AI research 的每一條：
    - evidence_ids：填這次輸出裡支持它的重點 id，可以好幾個；找不到依據就填 []，不要編造。
    - analysis_as_of：這次分析依據的資料截止日（YYYY-MM-DD）。
@@ -1747,17 +1892,18 @@ ${extra ? '各標的已經用過的其他子主題（請沿用，名稱一字不
    - 先後發生不代表因果，推論要寫成推論，不要寫成已發生的事實。
 9. 市場數據 › 異常行情：記下觀察到的異常本身；cause_status 填 confirmed（已證實）、reported（有報導）、hypothesis（推測）或 unknown（不明）。不能因為新聞和下跌發生在同一天，就認定是下跌的原因。
 
+${newsRules}
 【個人資料】我的持股、成本、攤平試算不要放進 notes。對我持股的策略想法（觀察條件、加減碼構想）放在 strategy_notes。
 
 只輸出一個 JSON 程式碼區塊，不要任何其他文字，格式如下（沒有的欄位填 null 或 []）：
 
 \`\`\`json
-{"schema_version":"2.2","notes":[
-  {"id":"YYYYMMDD-代號-001","stock":"代號","name":"公司名稱","market":"TW","topic":"主題","sub":"子主題","title":"標題","body":"說明","stance":"neutral","claim_type":"fact","event_date":"YYYY-MM-DD","event_period":null,"fiscal_period":null,"target_period":null,"analyst":null,"source":"來源","source_type":"company","source_url":null,"related_stocks":[],"evidence_ids":[],"analysis_as_of":null,"related_topic":null,"cause_status":null}
+{"schema_version":"2.3","notes":[
+  {"id":"YYYYMMDD-代號-001","stock":"代號","name":"公司名稱","market":"TW","topic":"主題","sub":"子主題","title":"標題","body":"說明","stance":"neutral","claim_type":"fact","event_date":"YYYY-MM-DD","event_period":null,"fiscal_period":null,"target_period":null,"analyst":null,"source":"來源","source_type":"company","source_url":null,"related_stocks":[],"evidence_ids":[],"analysis_as_of":null,"related_topic":null,"cause_status":null${news ? ',"news_ids":["新聞編號"]' : ''}}
 ],
 "strategy_notes":[
   {"stock":"代號","title":"標題","body":"說明"}
-]}
+]${news ? ',\n"skipped_news_ids":[]' : ''}}
 \`\`\``;
 }
 // 代號正規化：2330.TW、TPE:2330、２３３０ 都變成 2330
@@ -1857,7 +2003,8 @@ function normNote(n) {
     verification_status: ver,
     evidence_ids: Array.isArray(n.evidence_ids) ? [...new Set(n.evidence_ids.map(x => String(x).trim()).filter(Boolean))] : [],
     event_id: strOrNull(n.event_id), review_status: REVIEW[rs] && rs !== 'current' ? rs : null,
-    analysis_as_of: normDate(n.analysis_as_of), related_topic: relTopic, cause_status: CAUSE[cs] ? cs : null
+    analysis_as_of: normDate(n.analysis_as_of), related_topic: relTopic, cause_status: CAUSE[cs] ? cs : null,
+    news_ids: Array.isArray(n.news_ids) ? [...new Set(n.news_ids.map(x => String(x).replace(/^\[|\]$/g, '').replace(/^n:/, '').trim()).filter(Boolean))] : []
   });
 }
 function normStrategy(s, def) {
@@ -1894,7 +2041,8 @@ function parseNotesText(text) {
   const strategies = (Array.isArray(strat) ? strat : []).map(s => normStrategy(s, { code: defCode, name: defName, market: defMkt })).filter(Boolean)
     .concat(all.filter(n => n._strategy).map(n => { delete n._strategy; return n; }));
   const personal = { positions: Array.isArray(pi.positions) ? pi.positions.length : 0, snapshot: !!pi.portfolio_snapshot, simulations: Array.isArray(pi.simulations) ? pi.simulations.length : 0 };
-  return { stock: defCode, notes, watchlist, strategies, personal, schema: String(obj.schema_version || '') };
+  const skipped = Array.isArray(obj.skipped_news_ids) ? obj.skipped_news_ids.map(x => String(x).replace(/^\[|\]$/g, '').trim()).filter(Boolean) : [];
+  return { stock: defCode, notes, watchlist, strategies, personal, skipped, schema: String(obj.schema_version || '') };
 }
 
 async function copyText(text) {
@@ -1909,7 +2057,7 @@ async function copyText(text) {
 function toastEl() {
   let t = document.getElementById('toast');
   if (!t) { t = document.createElement('div'); t.className = 'toast'; t.id = 'toast'; t.setAttribute('role', 'status'); t.setAttribute('aria-live', 'polite'); }
-  const host = ['#dlg', '#mgr', '#mem'].map(s => $(s)).find(d => d && d.open) || document.body;
+  const host = ['#dlg', '#co', '#mgr', '#mem'].map(s => $(s)).find(d => d && d.open) || document.body;
   if (t.parentElement !== host) host.appendChild(t);
   return t;
 }
@@ -1961,11 +2109,12 @@ function openImport(fallback) {
       $('#impPick').onclick = () => $('#impFile').click();
       $('#impFile').onchange = async e => { const file = e.target.files[0]; if (file) { f.elements.raw.value = await file.text(); f.dataset.label = file.name; $('#dlgErr').textContent = ''; } };
     },
-    onOk: f => {
+    onOk: async f => {
       let parsed;
       try { parsed = parseNotesText(fv(f, 'raw')); } catch (e) { return e.message; }
       parsed.label = f.dataset.label || '貼上 ChatGPT 回覆';
-      if (!parsed.notes.length && !parsed.strategies.length && !parsed.watchlist.length) return '沒有找到任何重點';
+      if (parsed.notes.some(n => (n.news_ids || []).length) || parsed.skipped.length) await newsLoad(data.stocks.map(newsKey));   // 新聞整理的回覆：先把新聞讀進來才能對應
+      if (!parsed.notes.length && !parsed.strategies.length && !parsed.watchlist.length && !parsed.skipped.length) return '沒有找到任何重點';
       setTimeout(() => openPreview(parsed, fallback), 0);
     }
   });
@@ -2005,6 +2154,7 @@ function noteTags(n, market, preview) {
   if (n.verification_status === 'user_provided') h += '<span class="ctag">使用者提供</span>';
   if (n.verification_status === 'calculated') h += '<span class="ctag">試算</span>';
   if (n.cause_status) h += `<span class="ctag">${CAUSE[n.cause_status]}</span>`;
+  if (!preview && n.topic === '營收財報' && n.fiscal_period) h += finCheckTag(n);
   return h;
 }
 // 依據 ⇄ 相關 AI 推論（mode：nt 時間軸、mem 星系）
@@ -2034,6 +2184,7 @@ function noteMeta(n, links = true) {
 }
 function openPreview(parsed, fallback) {
   const SEP = '\u0001';
+  const NI = newsIndex();                         // 新聞編號 → 新聞（新聞整理的回覆用）
   const groups = groupNotes(parsed, fallback);
   const norm = normT, tombs = new Set(data.tombs);
   // 重複：標題相同，而且 id 相同、日期相同，或兩邊都是日期不明。
@@ -2081,7 +2232,7 @@ function openPreview(parsed, fallback) {
     const list = g.notes.map((n, i) => {
       if (n._dup) dupTotal++; else if (n._del) delTotal++;
       return `<label class="imp"><input type="checkbox" name="inc_${gi}_${i}" ${n._dup || n._del ? '' : 'checked'}><div style="min-width:0">
-        <div class="nt-top wrap"><span class="num">${fmtNoteDate(n)}</span><span class="pill" style="color:${stanceColor(n.stance, m)}">${STANCE[n.stance]}</span>${noteTags(n, m, true)}<span>${esc(n.topic)} › ${esc(n.sub)}</span>${n._nt ? '<span class="newtag">新主題</span>' : n._ns ? '<span class="newtag">新子主題</span>' : ''}${n._dup ? '<span class="newtag">可能重複</span>' : ''}${n._del ? '<span class="newtag">之前刪除過</span>' : ''}</div>
+        <div class="nt-top wrap"><span class="num">${fmtNoteDate(n)}</span><span class="pill" style="color:${stanceColor(n.stance, m)}">${STANCE[n.stance]}</span>${noteTags(n, m, true)}${(n.news_ids || []).some(id => NI.has(id)) ? `<span class="ctag ann">來自新聞 ${(n.news_ids || []).filter(id => NI.has(id)).length} 則</span>` : ''}<span>${esc(n.topic)} › ${esc(n.sub)}</span>${n._nt ? '<span class="newtag">新主題</span>' : n._ns ? '<span class="newtag">新子主題</span>' : ''}${n._dup ? '<span class="newtag">可能重複</span>' : ''}${n._del ? '<span class="newtag">之前刪除過</span>' : ''}</div>
         <div class="nt-title">${esc(n.title)}</div>${noteMeta(n)}${n.body ? `<div class="nt-body" style="-webkit-line-clamp:3">${esc(n.body)}</div>` : ''}</div></label>`;
     }).join('');
     const slist = g.strategies.map((s, i) => `<label class="imp"><input type="checkbox" name="sinc_${gi}_${i}" ${s._dup ? '' : 'checked'}><div style="min-width:0">
@@ -2089,11 +2240,13 @@ function openPreview(parsed, fallback) {
         <div class="nt-title">${esc(s.title)}</div>${s.body ? `<div class="nt-body" style="-webkit-line-clamp:3">${esc(s.body)}</div>` : ''}</div></label>`).join('');
     html += `<div class="pgrp">${head}${list}${slist}</div>`;
   });
+  const skipNews = (parsed.skipped || []).filter(id => NI.has(id) && newsState(id) === 'new');
   const P = parsed.personal || {};
   const skipped = [P.positions ? `持倉 ${P.positions} 筆` : '', P.snapshot ? '組合快照' : '', P.simulations ? `攤平試算 ${P.simulations} 筆` : ''].filter(Boolean);
   openDialog({
     title: '確認匯入', wide: true, okText: '匯入',
     body: `${skipped.length ? `<div class="banner warn" style="border-radius:8px;margin-bottom:10px;border:0">檔案裡的${skipped.join('、')}不會匯入。持倉請到交易紀錄手動新增，網站會用即時股價計算損益。</div>` : ''}
+      ${skipNews.length ? `<label class="chk"><input type="checkbox" name="skipnews" checked>把 ChatGPT 認為不用記的 ${skipNews.length} 則新聞標為「略過」</label>` : ''}
       <div class="note" style="margin:0 0 10px">共 ${total} 條重點${stratTotal ? `、${stratTotal} 條策略` : ''}，分屬 ${groups.length} 檔標的${dupTotal || delTotal ? `；其中${[dupTotal ? ` ${dupTotal} 條和已有的重點重複` : '', delTotal ? ` ${delTotal} 條之前刪除過` : ''].filter(Boolean).join('、')}，預設不勾選` : ''}。匯入是新增，不會覆蓋已有的重點。內容沒有重新查證，匯入後一樣標示來源。</div>${html}`,
     onOk: f => {
       const now = Date.now(), done = new Map(); let added = 0, sAdded = 0, newStocks = 0;
@@ -2133,7 +2286,21 @@ function openPreview(parsed, fallback) {
         });
         if (n0) done.set(st.code, (done.get(st.code) || 0) + n0);
       });
-      if (!added && !sAdded && !newStocks) return '沒有要匯入的內容（都沒勾選或都略過了）';
+      const skipOk = skipNews.length && f.elements.skipnews && f.elements.skipnews.checked;
+      if (!added && !sAdded && !newStocks && !skipOk) return '沒有要匯入的內容（都沒勾選或都略過了）';
+      // 來自新聞的重點：用新聞本身的來源、連結和發布日，並把那些新聞標為「已加入」
+      imported.forEach(rec => {
+        const ids = (rec.news_ids || []).filter(id => NI.has(id));
+        if (!ids.length) { delete rec.news_ids; return; }
+        const hit = NI.get(ids[0]), it = hit.it, st = data.stocks.find(s => s.id === rec.stockId);
+        rec.news_ids = ids; rec.from = 'news';
+        if (it.url) rec.source_url = it.url;
+        if (!rec.source) rec.source = it.src || '';
+        if (!rec.published_date) rec.published_date = newsDay(it, st);
+        if (!rec.source_type) rec.source_type = it.kind === 'ann' ? 'company' : 'media';
+        ids.forEach(id => { data.newsAct[id] = 'a:' + rec.id; });
+      });
+      if (skipOk) skipNews.forEach(id => { if (!data.newsAct[id]) data.newsAct[id] = 'd'; });
       // 沒有匯入的重複項目：依據指向已經存在的那一條
       groups.forEach(g => g.notes.forEach(n => { if (!n._in && n._dupOf && n.ext_id && !extMap.has(n.ext_id)) extMap.set(n.ext_id, n._dupOf); }));
       imported.forEach(rec => {
@@ -2158,14 +2325,14 @@ function openPreview(parsed, fallback) {
     }
   });
 }
-function openNote(st, n) {
+function openNote(st, n, draft) {
   const editing = !!n;
-  n = n || { date: today(), topic: '', sub: '', title: '', body: '', stance: 'neutral', source: '', claim_type: 'fact', analyst: '', date_precision: 'day' };
+  n = n || Object.assign({ date: today(), topic: '', sub: '', title: '', body: '', stance: 'neutral', source: '', claim_type: 'fact', analyst: '', date_precision: 'day' }, draft || {});
   const tree = topicTree(st);
   const subs = [...new Set(tree.flatMap(t => t.subs.map(s => s.sub)).concat(...Object.values(FIXED_SUBS)))];
   openDialog({
-    title: `${editing ? '編輯' : '新增'}重點　<span class="muted" style="font-size:14px">${stockLabel(st)}</span>`, wide: true,
-    body: `${radio('stance', [['bull', '偏多'], ['neutral', '中性'], ['bear', '偏空']], n.stance)}
+    title: `${editing ? '編輯' : draft ? '從新聞加入重點' : '新增'}重點　<span class="muted" style="font-size:14px">${stockLabel(st)}</span>`.replace('重點重點', '重點'), wide: true,
+    body: `${draft && draft.news_ids ? `<div class="note" style="margin:0 0 10px">已經先填好標題、日期、來源和建議的主題，請確認或修改後按儲存。${draft.source_url ? `<a href="${esc(draft.source_url)}" target="_blank" rel="noopener">開啟原文</a>` : ''}</div>` : ''}${radio('stance', [['bull', '偏多'], ['neutral', '中性'], ['bear', '偏空']], n.stance)}
       <div class="r2">${fld('日期', inp('date', n.date, 'type="date"'), `<label class="chk" style="margin:4px 0 0"><input type="checkbox" name="nodate" ${notePrec(n) === 'unknown' ? 'checked' : ''}>不確定確切日期（不畫在 K 線上）</label>`)}
         ${fld('類型', `<select name="claim_type"><option value="">（未指定）</option>${Object.entries(CLAIM).map(([k, v]) => `<option value="${k}" ${n.claim_type === k ? 'selected' : ''}>${v}</option>`).join('')}</select>`)}</div>
       <div class="r2">${fld('主題', `<select name="topic">${[...new Set(DEFAULT_TOPICS.concat(tree.map(t => t.topic)))].map(t => `<option ${t === n.topic ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>`)}
@@ -2187,7 +2354,12 @@ function openNote(st, n) {
       if (rec.date_precision === 'day') rec.event_date = date;
       Object.assign(rec, readAdvanced(f, n));
       if (editing) Object.assign(n, rec);
-      else data.notes.push(Object.assign({ id: uid(), stockId: st.id, from: 'manual', source_type: 'user', ts: Date.now() }, rec));
+      else {
+        const extra = draft ? { from: draft.from || 'manual', source_type: draft.source_type || 'user', source_url: draft.source_url || undefined, published_date: draft.published_date || undefined, news_ids: draft.news_ids } : {};
+        const note = Object.assign({ id: uid(), stockId: st.id, from: 'manual', source_type: 'user', ts: Date.now() }, extra, rec);
+        data.notes.push(note);
+        if (draft && draft.news_ids) draft.news_ids.forEach(id => { data.newsAct[id] = 'a:' + note.id; });   // 新聞標為「已加入」
+      }
       commit();
     }
   });
@@ -2313,18 +2485,68 @@ function stanceSeg(cur, list, attr) {
 }
 
 const NOTE_PAGE = 150;
+function newsNewCount(st) { return newsClusters(newsItems(st).filter(it => !newsNoise(it, st))).filter(c => c.state === 'new').length; }
+// 時間軸的「新聞」分頁：同一件事合併成一張卡；你按「加入重點」才會變成重點
+function renderNewsTab(st, el, head, keep) {
+  const F = ui.newsF || (ui.newsF = { st: 'new', ann: false, noise: false });
+  const sel = ui.newsSel || (ui.newsSel = new Set());
+  if (ui.newsFor !== st.id) { ui.newsFor = st.id; sel.clear(); ui.newsPage = 40; }
+  const box = inner => { el.innerHTML = head + `<div class="pb">${inner}</div>`; if (keep) el.querySelector('.pb').scrollTop = keep; };
+  if (!data.demo && !data.settings.apiUrl) { box(`<div class="steps"><b>新聞收件匣</b><div style="margin-top:6px">設定報價來源（Apps Script）之後，就能每小時自動收集這檔的新聞和公司公告。</div><div style="margin-top:10px"><button class="btn" data-act="settings">前往設定</button></div></div>`); return; }
+  if (NEWS.unsupported) { box(`<div class="steps"><b>Apps Script 需要更新</b><ol><li>把新的 Code.gs 整份貼到 Apps Script 專案、存檔。</li><li>上方選 setupNews，按「執行」，依提示授權雲端硬碟。</li><li>部署 > 管理部署作業 > 編輯 > 版本選「新版本」> 部署。</li></ol><div class="faint" style="margin-top:6px">詳細步驟在 README 的「新聞收集」。</div></div>`); return; }
+  const c = NEWS.cache.get(newsKey(st));
+  if (!c) { box('<div class="empty">載入新聞中…</div>'); return; }
+  const items = newsItems(st); items.forEach(it => { it._noise = newsNoise(it, st); });
+  const pool = items.filter(it => (F.noise || !it._noise) && (!F.ann || it.kind === 'ann'));
+  const cls = newsClusters(pool), cnt = { new: 0, added: 0, dismissed: 0 };
+  cls.forEach(x => cnt[x.state]++);
+  NEWS.cl = new Map(cls.map(x => [x.lead.id, x]));
+  sel.forEach(id => { if (!NEWS.cl.has(id)) sel.delete(id); });
+  const noiseN = items.filter(it => it._noise && (!F.ann || it.kind === 'ann')).length;
+  const shown = F.st === 'all' ? cls : cls.filter(x => x.state === F.st), lim = ui.newsPage || 40;
+  const seg = [['new', '未處理', cnt.new], ['added', '已加入', cnt.added], ['dismissed', '已略過', cnt.dismissed], ['all', '全部', cls.length]]
+    .map(([v, l, k]) => `<button type="button" class="${F.st === v ? 'on' : ''}" data-nwf="${v}">${l} ${k}</button>`).join('');
+  const bar = sel.size ? `<div class="nw-bar"><b>已選 ${sel.size} 則</b><button class="btn pri" data-act="news-gpt">交給 ChatGPT 整理</button><button class="btn" data-act="news-skip-sel">略過</button><span class="sp"></span><button class="btn" data-act="news-sel-none">取消</button></div>` : '';
+  const m = st.market;
+  const cards = shown.slice(0, lim).map(cl => {
+    const it = cl.lead, tp = newsTopic(cl.list.find(x => x.kind === 'ann') || it), on = sel.has(it.id);
+    return `<div class="nw ${cl.state} ${on ? 'sel' : ''}">
+      <div class="nt-top wrap"><input type="checkbox" data-nwck="${it.id}" ${on ? 'checked' : ''} aria-label="選取"><span class="num">${fmtNewsTime(it.at, st)}</span>${it.kind === 'ann' ? '<span class="ctag ann">公告</span>' : ''}<span class="faint nw-src">${esc(cl.srcs.slice(0, 3).join('、'))}${cl.srcs.length > 3 ? ` 等 ${cl.srcs.length} 家` : ''}</span>
+        ${it._noise ? `<span class="ctag old">${esc(it._noise)}</span>` : ''}${cl.state === 'added' ? '<span class="ctag ok">已加入重點</span>' : cl.state === 'dismissed' ? '<span class="ctag old">已略過</span>' : ''}<span class="sp"></span><span class="faint" title="建議的主題，加入時可以改">${esc(tp.topic)} › ${esc(tp.sub)}</span></div>
+      ${it.url ? `<a class="nw-t" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : `<div class="nw-t">${esc(it.title)}</div>`}
+      ${it.sum ? `<div class="nt-body">${esc(it.sum)}</div>` : ''}
+      ${cl.list.length > 1 ? `<details class="nw-more"><summary>${cl.list.length} 則相關報導</summary>${cl.list.map(x => `<div>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.src || '來源')}：${esc(x.title)}</a>` : esc(x.title)} <span class="faint">${fmtNewsTime(x.at, st)}</span></div>`).join('')}</details>` : ''}
+      <div class="nw-act">${cl.state !== 'added' ? `<button class="btn" data-act="news-add" data-id="${it.id}">${ic('plus')}加入重點</button>` : ''}${cl.state === 'new' ? `<button class="btn" data-act="news-skip" data-id="${it.id}">略過</button>` : ''}${cl.state === 'dismissed' ? `<button class="btn" data-act="news-undo" data-id="${it.id}">恢復未處理</button>` : ''}</div></div>`;
+  }).join('');
+  const older = newsOlder(st);
+  const foot = (shown.length > lim ? `<div class="empty" style="padding:10px"><button class="btn" data-act="news-more">再顯示 ${Math.min(40, shown.length - lim)} 則</button></div>` : '') +
+    (older.length ? `<div class="empty" style="padding:10px"><button class="btn" data-act="news-older">載入 ${older[0]} 的新聞</button><div class="faint" style="margin-top:4px">還有 ${older.length} 個月份</div></div>` : '');
+  const empty = !items.length ? `<div class="steps"><b>還沒有新聞</b><div style="margin-top:6px">Apps Script 每小時會收集一次。如果一直沒有，請確認已經在 Apps Script 執行過 setupNews，或到「設定 > 新聞收集」看各來源的狀況。</div><div style="margin-top:10px"><button class="btn" data-act="news-run">立即收集一次</button></div></div>`
+    : !shown.length ? `<div class="empty">${F.st === 'new' ? '沒有未處理的新聞' : '沒有符合的新聞'}</div>` : '';
+  box(`<div class="nfil"><div class="seg2" role="group" aria-label="狀態">${seg}</div>
+      <label class="chk" style="margin:0;font-size:12px"><input type="checkbox" data-nwann ${F.ann ? 'checked' : ''}>只看公告</label>
+      ${noiseN ? `<label class="chk" style="margin:0;font-size:12px"><input type="checkbox" data-nwnoise ${F.noise ? 'checked' : ''}>顯示可能的雜訊 ${noiseN}</label>` : ''}</div>
+    <div class="note" style="margin:0 0 8px">新聞先放在這裡，按「加入重點」確認後才會變成重點。股價漲跌、盤勢排行、標題沒提到這家公司的，先當成可能的雜訊收起來。${NEWS.err ? `<span class="r">　更新失敗：${esc(NEWS.err)}</span>` : ''}</div>
+    ${bar}${empty}${cards}${foot}`);
+}
 function renderNotes() {
+
   const el = $('#p-notes'), st = selStock();
   if (!st) { el.innerHTML = `<div class="ph"><h2>重點時間軸</h2></div><div class="pb"><div class="empty">從列表選一檔標的</div></div>`; return; }
   const all = data.notes.filter(n => n.stockId === st.id);
   const strats = data.strategies.filter(s => s.stockId === st.id).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : (b.ts || 0) - (a.ts || 0));
-  const tab = ui.noteTab === 'strategy' ? 'strategy' : 'notes';
-  const head = `<div class="ph"><div class="tabs"><button class="${tab === 'notes' ? 'on' : ''}" data-act="ntab" data-tab="notes">重點<span class="n">${all.length}</span></button><button class="${tab === 'strategy' ? 'on' : ''}" data-act="ntab" data-tab="strategy">我的策略<span class="n">${strats.length}</span></button></div><span class="sp"></span>
-    ${tab === 'notes' ? `<button class="btn" data-act="prompt"><span><span class="hide-m">複製</span>整理指令</span></button><button class="btn pri" data-act="import">貼上匯入</button>
+  const tab = ['strategy', 'news'].includes(ui.noteTab) ? ui.noteTab : 'notes';
+  const nk = newsKey(st);
+  if (!NEWS.cache.has(nk) && !NEWS.loadingKey) { NEWS.loadingKey = nk; newsLoad([nk]).finally(() => { NEWS.loadingKey = null; if (selStock() === st) { renderNotes(); if (K.st === st) kOverlay(st, calc(st)); } }); }
+  const nwNew = NEWS.cache.has(nk) ? newsNewCount(st) : 0;
+  if (all.some(n => n.topic === '營收財報' && n.fiscal_period)) coKick(st);
+  const head = `<div class="ph"><div class="tabs"><button class="${tab === 'notes' ? 'on' : ''}" data-act="ntab" data-tab="notes">重點<span class="n">${all.length}</span></button><button class="${tab === 'news' ? 'on' : ''}" data-act="ntab" data-tab="news">新聞${nwNew ? `<span class="n nwn">${nwNew}</span>` : ''}</button><button class="${tab === 'strategy' ? 'on' : ''}" data-act="ntab" data-tab="strategy">我的策略<span class="n">${strats.length}</span></button></div><span class="sp"></span>
+    ${tab === 'news' ? `<button class="btn" data-act="news-refresh">更新</button><button class="ibtn sm" data-act="mgr-news" title="在資料整理裡看所有標的的新聞" aria-label="所有新聞">${ic('list')}</button>` : tab === 'notes' ? `<button class="btn" data-act="prompt"><span><span class="hide-m">複製</span>整理指令</span></button><button class="btn pri" data-act="import">貼上匯入</button>
     <button class="ibtn sm" data-act="add-note" title="手動新增重點" aria-label="手動新增重點">${ic('plus')}</button>
     <button class="ibtn sm" data-act="mgr-stock" title="資料整理：批次編輯、刪除、合併分類" aria-label="資料整理">${ic('list')}</button>
     <button class="ibtn sm hide-m" data-act="mem" title="Memory 星系" aria-label="Memory 星系">${ic('brain')}</button>` : `<button class="btn" data-act="add-strat">${ic('plus')}新增策略</button>`}</div>`;
   const pb = el.querySelector('.pb'), keep = pb ? pb.scrollTop : 0;
+  if (tab === 'news') { renderNewsTab(st, el, head, keep); return; }
   if (tab === 'strategy') {
     el.innerHTML = head + `<div class="pb">${strats.length ? strats.map(s => `<div class="nt open"><div class="nt-top"><span class="num">${s.date}</span><span class="ctag strat">我的策略</span><span class="tp"></span>
         <button class="ibtn sm" data-act="edit-strat" data-id="${s.id}" aria-label="編輯">${ic('edit')}</button></div>
@@ -2936,6 +3158,511 @@ document.addEventListener('click', e => {
   memSelect(key ? MEM.nodes.find(x => x.id === key) || null : null);
 });
 
+/* ========== 公司資料與財報（Apps Script 每 12 小時收集，存在你的 Google 雲端硬碟） ========== */
+const FIN = { cache: new Map(), loading: new Set(), tried: new Map(), err: '', unsupported: false, status: null };
+const finData = st => FIN.cache.get(newsKey(st)) || null;
+async function finLoad(keys, opt = {}) {
+  keys = [...new Set(keys)];
+  for (const k of keys) if (!FIN.cache.has(k)) { const c = await idbGet('fin:' + k); if (c) FIN.cache.set(k, c); }
+  if (data.demo) { keys.forEach(k => { const st = data.stocks.find(s => newsKey(s) === k); if (st) finDemo(st); }); return; }
+  if (!data.settings.apiUrl || FIN.unsupported) return;
+  const need = keys.filter(k => !FIN.loading.has(k) && (opt.force || !FIN.cache.has(k) || Date.now() - (FIN.cache.get(k)._got || 0) > 6 * 3600e3));
+  if (!need.length) return;
+  need.forEach(k => FIN.loading.add(k));
+  try {
+    const r = await gas({ action: 'fin', codes: need.join(',') });
+    if (!r || !r.items) { FIN.unsupported = true; return; }
+    FIN.err = ''; FIN.status = r.status || FIN.status;
+    need.forEach(k => { const d = r.items[k]; if (d) { d._got = Date.now(); FIN.cache.set(k, d); idbSet('fin:' + k, d); } });
+  } catch (e) { FIN.err = e.message; }
+  finally { need.forEach(k => FIN.loading.delete(k)); }
+}
+// 金額：台股用兆／億／萬，美股用 B／M
+function fmtBig(v, cur) {
+  if (!isNum(v)) return '—';
+  const a = Math.abs(v), s = v < 0 ? '−' : '';
+  if (cur === 'USD') return s + '$' + (a >= 1e12 ? (a / 1e12).toFixed(2) + 'T' : a >= 1e9 ? (a / 1e9).toFixed(2) + 'B' : a >= 1e6 ? (a / 1e6).toFixed(1) + 'M' : nf(0).format(a));
+  if (a >= 1e12) return s + (a / 1e12).toFixed(2) + ' 兆';
+  if (a >= 1e8) { const x = a / 1e8; return s + x.toFixed(x >= 1000 ? 0 : x >= 100 ? 1 : 2) + ' 億'; }
+  if (a >= 1e4) return s + nf(0).format(a / 1e4) + ' 萬';
+  return s + nf(0).format(a);
+}
+const fmtP = v => isNum(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(1) + '%' : '—';
+const fmtR = v => isNum(v) ? v.toFixed(1) + '%' : '—';
+const lastYearKey = k => (+k.slice(0, 4) - 1) + k.slice(4);
+const qLabel = (k, st) => /-Q\d$/.test(k) ? `${k.slice(0, 4)} Q${k.slice(-1)}` : `至 ${k.replace('-', '/')}`;
+const FQ = ['rev', 'gp', 'op', 'ni', 'eps'];
+const pickQ = c => { const o = {}; FQ.forEach(f => { o[f] = isNum(c[f]) ? c[f] : null; }); return o; };
+const diffQ = (c, p) => { const o = {}; FQ.forEach(f => { o[f] = isNum(c[f]) && isNum(p[f]) ? (f === 'eps' ? Math.round((c[f] - p[f]) * 100) / 100 : c[f] - p[f]) : null; }); return o; };
+const withM = r => { const pc = v => isNum(v) && isNum(r.rev) && r.rev ? v / r.rev * 100 : null; return Object.assign(r, { gm: pc(r.gp), om: pc(r.op), nm: pc(r.ni) }); };
+const exOf = st => st.exch || (finData(st) || {}).x || '';      // 上市 tse／上櫃 otc（報價或官方資料判斷）
+// 季度：官方的累計值換成單季（第 n 季減第 n−1 季），沒有的用 Yahoo 補
+function finRows(st) {
+  const d = finData(st); if (!d) return null;
+  if (d._rows && d._rowsAt === d.at) return d._rows;
+  const q = new Map(), put = (k, o, src) => { if (!q.has(k) && (isNum(o.rev) || isNum(o.eps))) q.set(k, Object.assign({ key: k, src }, o)); };
+  Object.entries(d.cum || {}).forEach(([k, c]) => {
+    const y = k.slice(0, 4), n = +k.slice(-1);
+    if (n === 1) put(k, pickQ(c), '官方');
+    else if (d.cum[`${y}-Q${n - 1}`]) put(k, diffQ(c, d.cum[`${y}-Q${n - 1}`]), '官方');
+  });
+  Object.entries(d.yq || {}).forEach(([k, c]) => put(k, pickQ(c), 'Yahoo'));
+  const qs = [...q.values()].sort((a, b) => a.key < b.key ? 1 : -1).map(withM);
+  qs.forEach(r => {
+    const pr = d.pr && d.pr[r.key]; if (!isNum(r.gm) && pr && r.key.endsWith('Q1')) { r.gm = pr.gm; r.om = pr.om; r.nm = pr.nm; }
+    const ly = q.get(lastYearKey(r.key)); r.yoy = ly && ly.rev && isNum(r.rev) ? (r.rev / ly.rev - 1) * 100 : null;
+  });
+  const a = new Map();
+  Object.entries(d.cum || {}).forEach(([k, c]) => { if (k.endsWith('Q4')) a.set(k.slice(0, 4), Object.assign({ key: k.slice(0, 4), src: '官方' }, pickQ(c))); });
+  Object.entries(d.ya || {}).forEach(([k, c]) => { if (!a.has(k)) a.set(k, Object.assign({ key: k, src: 'Yahoo' }, pickQ(c))); });
+  const as = [...a.values()].sort((x, y) => x.key < y.key ? 1 : -1).map(withM);
+  as.forEach(r => { const ly = a.get(lastYearKey(r.key)); r.yoy = ly && ly.rev && isNum(r.rev) ? (r.rev / ly.rev - 1) * 100 : null; });
+  const rev = d.rev || {}, ms = Object.keys(rev).sort().reverse().map(ym => {
+    const x = rev[ym], y = +ym.slice(0, 4), mo = +ym.slice(5, 7), pm = mo === 1 ? `${y - 1}-12` : `${y}-${String(mo - 1).padStart(2, '0')}`, ly = `${y - 1}-${ym.slice(5)}`;
+    return { ym, v: x.v, mom: isNum(x.mom) ? x.mom : rev[pm] ? (x.v / rev[pm].v - 1) * 100 : null, yoy: isNum(x.yoy) ? x.yoy : rev[ly] ? (x.v / rev[ly].v - 1) * 100 : null, cumYoy: x.cumYoy };
+  });
+  // 近四季 EPS：最新四季都有才算
+  const e4 = qs.filter(r => isNum(r.eps)).slice(0, 4);
+  const span = e4.length === 4 ? (/-Q/.test(e4[0].key) ? (+e4[0].key.slice(0, 4) * 4 + +e4[0].key.slice(-1)) - (+e4[3].key.slice(0, 4) * 4 + +e4[3].key.slice(-1)) : (Date.parse(e4[0].key + '-01') - Date.parse(e4[3].key + '-01')) / 864e5 / 30.4) : 99;
+  const ttm = e4.length === 4 && span <= (/-Q/.test(e4[0].key) ? 3 : 10.5) ? e4.reduce((s, r) => s + r.eps, 0) : null;
+  const rows = { q: qs, a: as, m: ms, ttm, cur: d.cur || (st.market === 'TW' ? 'TWD' : 'USD') };
+  d._rows = rows; d._rowsAt = d.at;
+  return rows;
+}
+function finValuation(st, price) {
+  const d = finData(st), R = finRows(st), out = {};
+  if (!d || !R) return out;
+  if (d.val) { out.pe = d.val.pe; out.pb = d.val.pb; out.yield = d.val.yield; out.valAt = d.val.at; }
+  if (isNum(price) && R.ttm > 0) out.peTtm = price / R.ttm;
+  const sh = (d.profile && d.profile.shares) || ((R.q.find(r => isNum(r.shares)) || {}).shares) || Object.values(d.yq || {}).concat(Object.values(d.ya || {})).map(x => x.shares).filter(isNum).pop();
+  if (isNum(price) && sh) out.mcap = price * sh;
+  const yr = Date.now() - 365 * 864e5, divs = (d.div || []).filter(x => Date.parse(x.d) >= yr).reduce((s, x) => s + x.a, 0);
+  if (!isNum(out.yield) && isNum(price) && divs > 0) out.yield = divs / price * 100;
+  out.div12 = divs || null;
+  return out;
+}
+/* ---- 小圖（SVG）：長條＋折線 ---- */
+function svgBars(items, o = {}) {
+  const n = items.length; if (!n) return '';
+  const W = 600, H = o.h || 150, T = 16, B = 20, vals = items.map(x => x.v).filter(isNum);
+  if (!vals.length) return '';
+  const max = Math.max(0, ...vals), min = Math.min(0, ...vals), span = (max - min) || 1, bw = W / n, Y = v => T + (max - v) / span * (H - T - B);
+  let s = `<svg viewBox="0 0 ${W} ${H}" class="cobar" role="img" aria-label="${esc(o.aria || '')}"><line x1="0" x2="${W}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line2)" stroke-width="1"/>`;
+  const step = Math.ceil(n / (o.labels || 8));
+  items.forEach((x, i) => {
+    if (isNum(x.v)) { const y0 = Y(0), y1 = Y(x.v); s += `<rect x="${(i * bw + bw * 0.16).toFixed(1)}" y="${Math.min(y0, y1).toFixed(1)}" width="${(bw * 0.68).toFixed(1)}" height="${Math.max(1, Math.abs(y1 - y0)).toFixed(1)}" fill="${x.color || 'var(--ac)'}" opacity="0.85"><title>${esc(x.label)}：${esc(x.tip || '')}</title></rect>`; }
+    if ((n - 1 - i) % step === 0) s += `<text x="${(i * bw + bw / 2).toFixed(1)}" y="${H - 5}" text-anchor="middle" font-size="12" fill="var(--tx3)">${esc(x.short || x.label)}</text>`;
+  });
+  if (o.line) {
+    const lv = o.line.filter(isNum); if (lv.length > 1) {
+      const lmax = Math.max(...lv), lmin = Math.min(...lv), ls = (lmax - lmin) || 1, LY = v => T + (lmax - v) / ls * (H - T - B) * 0.9;
+      const pts = o.line.map((v, i) => isNum(v) ? `${(i * bw + bw / 2).toFixed(1)},${LY(v).toFixed(1)}` : null).filter(Boolean).join(' ');
+      s += `<polyline points="${pts}" fill="none" stroke="${o.lineColor || 'var(--warn)'}" stroke-width="2"/>`;
+      const li = o.line.length - 1 - [...o.line].reverse().findIndex(isNum);
+      s += `<text x="${Math.min(W - 4, li * bw + bw / 2 + 4).toFixed(1)}" y="${(LY(o.line[li]) - 6).toFixed(1)}" text-anchor="end" font-size="12" fill="${o.lineColor || 'var(--warn)'}">${esc(o.lineLabel || '')} ${o.line[li].toFixed(1)}%</text>`;
+    }
+  }
+  return s + '</svg>';
+}
+/* ---- 各區塊 ---- */
+function coLinks(st) {
+  const L = st.market === 'TW'
+    ? [['Goodinfo', `https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=${encodeURIComponent(st.code)}`], ['Yahoo 股市', `https://tw.stock.yahoo.com/quote/${encodeURIComponent(st.code)}${exOf(st) === 'otc' ? '.TWO' : '.TW'}`], ['公開資訊觀測站', 'https://mops.twse.com.tw/']]
+    : [['Yahoo Finance', `https://finance.yahoo.com/quote/${encodeURIComponent(st.code)}`], ['SEC 申報', `https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=${encodeURIComponent(st.code)}&type=10-Q`]];
+  return `<div class="colinks">${L.map(([l, u]) => `<a class="btn" href="${esc(u)}" target="_blank" rel="noopener">${esc(l)} ↗</a>`).join('')}</div>`;
+}
+function coValuation(st, c) {
+  const v = finValuation(st, c.price), R = finRows(st), pes = estPE(st, c.price);
+  const met = (k, val, sub) => `<div class="met"><div class="k">${k}</div><div class="v">${val}${sub ? `<small>${sub}</small>` : ''}</div></div>`;
+  return `<div class="mets">
+    ${met('本益比', isNum(v.pe) ? v.pe.toFixed(1) + ' 倍' : isNum(v.peTtm) ? v.peTtm.toFixed(1) + ' 倍' : '—', isNum(v.pe) ? '證交所' : isNum(v.peTtm) ? '近四季 EPS' : '')}
+    ${isNum(v.pe) && isNum(v.peTtm) ? met('本益比（即時）', v.peTtm.toFixed(1) + ' 倍', '近四季 EPS') : ''}
+    ${met('股價淨值比', isNum(v.pb) ? v.pb.toFixed(2) + ' 倍' : '—')}
+    ${met('殖利率', isNum(v.yield) ? v.yield.toFixed(2) + '%' : '—', isNum(v.div12) ? `近一年股利 ${v.div12.toFixed(2)}` : '')}
+    ${met('市值', fmtBig(v.mcap, R ? R.cur : curOf(st)))}
+    ${met('近四季 EPS', R && isNum(R.ttm) ? R.ttm.toFixed(2) : '—')}
+    ${pes.length ? met('預估本益比', pes.map(p => `${p.year.slice(2)}年 ${p.pe.toFixed(1)}`).join('・'), '依重點裡的 EPS 預估') : ''}
+  </div>${isNum(v.valAt) ? `<div class="note">證交所的本益比、殖利率、股價淨值比是 ${fmtDT(v.valAt).slice(0, 10)} 收集的；即時本益比用現價和近四季 EPS 計算。</div>` : ''}`;
+}
+function coProfile(st) {
+  const d = finData(st), p = (d && d.profile) || {};
+  const rows = [['公司名稱', p.name], ['產業', p.industry], ['董事長', p.chairman], ['總經理', p.ceo], ['成立日期', p.founded], [exOf(st) === 'otc' ? '上櫃日期' : '上市日期', p.listed],
+    ['實收資本額', isNum(p.capital) ? fmtBig(p.capital, 'TWD') : ''], ['發行股數', isNum(p.shares) ? nf(0).format(p.shares) + ' 股' : ''], ['網址', p.web ? `<a href="${esc(/^https?:/.test(p.web) ? p.web : 'https://' + p.web)}" target="_blank" rel="noopener">${esc(p.web)}</a>` : '']].filter(r => r[1]);
+  if (!rows.length) return `<div class="faint" style="font-size:13px">${st.market === 'US' ? '美股的基本資料目前只有名稱和股數；更多資訊請看上面的外部連結。' : '還沒有基本資料。'}</div>`;
+  return `<table class="kv">${rows.map(([k, v]) => `<tr><th>${k}</th><td>${k === '網址' ? v : esc(v)}</td></tr>`).join('')}</table>`;
+}
+function coDividends(st) {
+  const d = finData(st), list = (d && d.div) || [];
+  if (!list.length) return '<div class="faint" style="font-size:13px">沒有股利紀錄</div>';
+  const by = new Map(); list.forEach(x => by.set(x.d.slice(0, 4), (by.get(x.d.slice(0, 4)) || 0) + x.a));
+  const ys = [...by.keys()].sort().slice(-8);
+  return svgBars(ys.map(y => ({ label: y + ' 年', short: y, v: by.get(y), tip: by.get(y).toFixed(2) })), { h: 120, aria: '每年股利' }) +
+    `<table class="t small"><thead><tr><th class="tl">除息日</th><th>每股股利</th></tr></thead><tbody>${list.slice(-8).reverse().map(x => `<tr><td class="tl">${x.d}</td><td>${x.a.toFixed(x.a < 1 ? 4 : 2)}</td></tr>`).join('')}</tbody></table>`;
+}
+function finQuarterly(st, n) {
+  const R = finRows(st); if (!R || !R.q.length) return '<div class="faint" style="font-size:13px">還沒有季度財報資料</div>';
+  const rows = R.q.slice(0, n), m = st.market, ch = rows.slice().reverse();
+  return svgBars(ch.map(r => ({ label: qLabel(r.key, st), short: /-Q/.test(r.key) ? `${r.key.slice(2, 4)}Q${r.key.slice(-1)}` : r.key.slice(2).replace('-', '/'), v: r.rev, tip: fmtBig(r.rev, R.cur), color: isNum(r.yoy) ? (r.yoy >= 0 ? mktColors(m).up : mktColors(m).dn) : 'var(--ac)' })), { line: ch.map(r => r.gm), lineLabel: '毛利率', aria: '季度營收與毛利率' }) +
+    `<div class="tw"><table class="t small"><thead><tr><th class="tl">季度</th><th>營收</th><th>年增</th><th>毛利率</th><th class="hide-m">營益率</th><th class="hide-m">淨利率</th><th>EPS</th><th class="hide-m">來源</th></tr></thead><tbody>
+    ${rows.map(r => `<tr><td class="tl">${qLabel(r.key, st)}</td><td>${fmtBig(r.rev, R.cur)}</td><td class="${isNum(r.yoy) ? cls(r.yoy, m) : ''}">${fmtP(r.yoy)}</td><td>${fmtR(r.gm)}</td><td class="hide-m">${fmtR(r.om)}</td><td class="hide-m">${fmtR(r.nm)}</td><td>${isNum(r.eps) ? r.eps.toFixed(2) : '—'}</td><td class="hide-m faint">${r.src}</td></tr>`).join('')}</tbody></table></div>
+    <div class="note">長條是營收（顏色代表年增或年減），折線是毛利率。官方財報是累計數，網站換算成單季。${st.market === 'US' ? '美股依會計季度的期末年月排列。' : ''}</div>`;
+}
+function finAnnual(st) {
+  const R = finRows(st); if (!R || !R.a.length) return '<div class="faint" style="font-size:13px">還沒有年度資料</div>';
+  return `<div class="tw"><table class="t small"><thead><tr><th class="tl">年度</th><th>營收</th><th>年增</th><th>毛利率</th><th class="hide-m">營益率</th><th class="hide-m">淨利率</th><th>EPS</th></tr></thead><tbody>
+    ${R.a.slice(0, 6).map(r => `<tr><td class="tl">${r.key.length === 4 ? r.key : '至 ' + r.key.replace('-', '/')}</td><td>${fmtBig(r.rev, R.cur)}</td><td class="${isNum(r.yoy) ? cls(r.yoy, st.market) : ''}">${fmtP(r.yoy)}</td><td>${fmtR(r.gm)}</td><td class="hide-m">${fmtR(r.om)}</td><td class="hide-m">${fmtR(r.nm)}</td><td>${isNum(r.eps) ? r.eps.toFixed(2) : '—'}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function finMonthly(st, nBars, nRows) {
+  const R = finRows(st);
+  if (st.market !== 'TW') return '';
+  if (!R || !R.m.length) return '<div class="faint" style="font-size:13px">還沒有月營收資料。官方每月公布一次，網站會每期存下來，之後就看得到趨勢。</div>';
+  const m = st.market, bars = R.m.slice(0, nBars).reverse();
+  return svgBars(bars.map(r => ({ label: r.ym, short: r.ym.slice(2).replace('-', '/'), v: r.v, tip: `${fmtBig(r.v, 'TWD')}，年增 ${fmtP(r.yoy)}`, color: isNum(r.yoy) ? (r.yoy >= 0 ? mktColors(m).up : mktColors(m).dn) : 'var(--ac)' })), { aria: '月營收' }) +
+    `<div class="tw"><table class="t small"><thead><tr><th class="tl">月份</th><th>營收</th><th>月增</th><th>年增</th><th class="hide-m">累計年增</th></tr></thead><tbody>
+    ${R.m.slice(0, nRows).map(r => `<tr><td class="tl">${r.ym}</td><td>${fmtBig(r.v, 'TWD')}</td><td class="${isNum(r.mom) ? cls(r.mom, m) : ''}">${fmtP(r.mom)}</td><td class="${isNum(r.yoy) ? cls(r.yoy, m) : ''}">${fmtP(r.yoy)}</td><td class="hide-m ${isNum(r.cumYoy) ? cls(r.cumYoy, m) : ''}">${fmtP(r.cumYoy)}</td></tr>`).join('')}</tbody></table></div>
+    <div class="note">長條顏色代表和去年同月相比的增減。${R.m.length < 13 ? `目前累積了 ${R.m.length} 個月，官方只提供最新一期，之後每月會自動存下來。` : ''}</div>`;
+}
+// 財報與重點對照
+function finChecks(st) {
+  const ns = data.notes.filter(n => n.stockId === st.id && n.topic === '營收財報' && n.fiscal_period && !isOld(n));
+  if (!ns.length) return '<div class="faint" style="font-size:13px">這檔沒有標了財報期間的「營收財報」重點。</div>';
+  const rows = ns.map(n => ({ n, r: finCheck(n) })).sort((a, b) => (a.r ? (a.r.ok ? 1 : 0) : 2) - (b.r ? (b.r.ok ? 1 : 0) : 2));
+  return `<table class="t small"><thead><tr><th class="tl">重點</th><th class="tl">期間</th><th class="tl">結果</th></tr></thead><tbody>${rows.map(({ n, r }) => `<tr><td class="tl">${esc(n.title)}</td><td class="tl">${esc(n.fiscal_period)}</td><td class="tl">${r ? (r.ok ? `<span class="ctag ok">一致</span> <span class="faint">${esc(r.label)} ${esc(r.off)}</span>` : `<span class="ctag warn">不同</span> 財報：${esc(r.label)} ${esc(r.off)}`) : '<span class="faint">沒有可比對的數字或財報</span>'}</td></tr>`).join('')}</tbody></table>`;
+}
+function finSrcNote(st) {
+  const d = finData(st);
+  if (!d) return '';
+  const S = FIN.status && FIN.status.sources, bad = S ? Object.entries(S).filter(([, v]) => v.err) : [];
+  const NAME = { twse_profile: '證交所基本資料', twse_revenue: '證交所月營收', twse_income: '證交所綜合損益表', twse_profit: '證交所營益分析', twse_valuation: '證交所本益比', tpex_profile: '櫃買基本資料', tpex_revenue: '櫃買月營收', tpex_income: '櫃買綜合損益表', tpex_profit: '櫃買營益分析', tpex_valuation: '櫃買本益比', yahoo_fin: 'Yahoo 財報', yahoo_div: 'Yahoo 股利' };
+  return `<div class="note">資料來源：${st.market === 'TW' ? (exOf(st) === 'otc' ? '櫃買中心' : '證交所') + '（官方）、' : ''}Yahoo。${d.demo ? '（示範資料）' : `更新於 ${fmtDT(d.at || d._got)}。`}${bad.length ? `<br><span class="r">這次有些來源沒抓到：${bad.map(([k, v]) => `${NAME[k] || k}（${esc(v.err)}）`).join('、')}</span>` : ''}${FIN.err ? `<br><span class="r">讀取失敗：${esc(FIN.err)}</span>` : ''}</div>`;
+}
+// 可以收起、展開的區塊
+const sec = (id, title, body, open = true) => { const o = ui.secOpen && id in ui.secOpen ? ui.secOpen[id] : open; return `<details class="cosec" data-sec="${id}" ${o ? 'open' : ''}><summary><span>${title}</span></summary><div class="cosec-b">${body}</div></details>`; };
+document.addEventListener('toggle', e => { const d = e.target; if (d && d.matches && d.matches('details.cosec')) { ui.secOpen = ui.secOpen || {}; ui.secOpen[d.dataset.sec] = d.open; } }, true);
+function coGate(st) {
+  if (!data.demo && !data.settings.apiUrl) return `<div class="steps"><b>公司資料與財報</b><div style="margin-top:6px">設定報價來源（Apps Script）後，就會自動收集這檔的基本資料、月營收、季度財報和股利。</div><div style="margin-top:10px"><button class="btn" data-act="settings">前往設定</button></div></div>`;
+  if (FIN.unsupported) return `<div class="steps"><b>Apps Script 需要更新</b><div style="margin-top:6px">把新的 Code.gs 整份貼上、存檔，再部署新版本（詳見 README「步驟五」）。</div></div>`;
+  if (!finData(st)) return `<div class="empty">${FIN.loading.has(newsKey(st)) ? '讀取公司資料中…第一次收集可能要半分鐘' : FIN.err ? `<span class="r">讀取失敗：${esc(FIN.err)}</span>` : '讀取公司資料中…'}</div>`;
+  return '';
+}
+function coKick(st) {
+  const k = newsKey(st);
+  if (!data.demo && (!data.settings.apiUrl || FIN.unsupported)) return;
+  if (FIN.loading.has(k)) return;
+  const d = finData(st);
+  if (d && (data.demo || Date.now() - (d._got || 0) < 6 * 3600e3)) return;
+  if (Date.now() - (FIN.tried.get(k) || 0) < 60e3) return;           // 剛試過就先不要再要
+  FIN.tried.set(k, Date.now());
+  finLoad([k]).finally(() => { if (selStock() === st) { renderDetail(calcAll()); renderNotes(); if ($('#co').open) openCompany(st, true); } });
+}
+const calcAll = () => { const C = {}; data.stocks.forEach(s => C[s.id] = calc(s)); return C; };
+function coHeader(st) {
+  const d = finData(st), p = (d && d.profile) || {};
+  return `<div class="cohead"><b>${esc(p.short || st.name || st.code)}</b><span class="faint">${esc(p.industry || '')}</span><span class="tag">${st.market === 'TW' ? (exOf(st) === 'otc' ? '上櫃' : exOf(st) === 'tse' ? '上市' : '台股') : '美股'}</span><span class="sp"></span>${coLinks(st)}</div>`;
+}
+// 左下區塊的「公司」「財報」分頁
+function renderCoTab(st, c, tab) {
+  const g = coGate(st); if (g) return g;
+  if (tab === 'co') return coHeader(st) + sec('val', '估值', coValuation(st, c)) + sec('prof', '基本資料', coProfile(st)) + sec('div', '股利', coDividends(st), false) + finSrcNote(st);
+  return sec('q', '季度財報', finQuarterly(st, 8)) + (st.market === 'TW' ? sec('m', '月營收', finMonthly(st, 13, 6)) : '') + sec('chk', '財報與重點對照', finChecks(st), false) + finSrcNote(st);
+}
+// 展開成全螢幕
+function openCompany(st, keep) {
+  const md = $('#co'), c = calc(st), g = coGate(st);
+  const top = `<div class="mg-top"><b>${stockLabel(st)}</b><span class="faint hide-m">公司資料與財報</span><span class="sp"></span><button class="btn" data-act="fin-refresh">更新</button><button class="ibtn" type="button" id="coClose" aria-label="關閉">${ic('x')}</button></div>`;
+  const body = g ? `<div class="co-body"><div>${g}</div></div>` : `<div class="co-body">
+      <div class="co-col">${coHeader(st)}${sec('val', '估值', coValuation(st, c))}${sec('prof', '基本資料', coProfile(st))}${sec('div', '股利', coDividends(st))}</div>
+      <div class="co-col">${sec('q', '季度財報', finQuarterly(st, 12))}${st.market === 'TW' ? sec('m', '月營收', finMonthly(st, 24, 12)) : ''}${sec('a', '年度財報', finAnnual(st))}${sec('chk', '財報與重點對照', finChecks(st))}${finSrcNote(st)}</div></div>`;
+  const sc = keep && md.querySelector('.co-body') ? md.querySelector('.co-body').scrollTop : 0;
+  md.innerHTML = top + body;
+  $('#coClose').onclick = () => md.close();
+  if (!md.open) { if (dlg.open) dlg.close(); md.showModal(); }
+  if (sc) md.querySelector('.co-body').scrollTop = sc;
+  coKick(st);
+}
+// 重點和官方數字對照（營收財報、有財報期間的）
+const EPS_RE = /(?:EPS|每股(?:稅後)?盈餘)[^0-9\-−]{0,10}([\-−]?\d+(?:\.\d+)?)/i;
+const GM_RE = /毛利率[^0-9\-−]{0,10}([\-−]?\d+(?:\.\d+)?)\s*%/;
+function parseAmount(t) {
+  let m = t.match(/營收[^0-9]{0,12}([\d,]+(?:\.\d+)?)\s*(兆|億|千萬|百萬|萬)\s*(?:元|美元)?/);
+  if (m) return parseFloat(m[1].replace(/,/g, '')) * { 兆: 1e12, 億: 1e8, 千萬: 1e7, 百萬: 1e6, 萬: 1e4 }[m[2]];
+  m = t.match(/(?:營收|revenue)[^0-9$]{0,12}\$?\s?([\d.]+)\s*(billion|million|B|M)\b/i);
+  if (m) return parseFloat(m[1]) * (/^b/i.test(m[2]) ? 1e9 : 1e6);
+  return null;
+}
+function finCheck(n) {
+  if (n.topic !== '營收財報' || !n.fiscal_period) return null;
+  const st = data.stocks.find(s => s.id === n.stockId); if (!st) return null;
+  const R = finRows(st); if (!R) return null;
+  const fp = String(n.fiscal_period).toUpperCase().replace(/\s/g, '').replace('～', '~');
+  let row = null, kind = '', m;
+  if ((m = fp.match(/^(\d{4})-?Q([1-4])$/))) { row = R.q.find(r => r.key === `${m[1]}-Q${m[2]}`); kind = 'q'; }
+  else if ((m = fp.match(/^(\d{4})-?Q1[~\-]Q?([1-4])$/))) { const c = (finData(st).cum || {})[`${m[1]}-Q${m[2]}`]; row = c && withM(pickQ(c)); kind = 'cum'; }
+  else if ((m = fp.match(/^(\d{4})-(\d{2})$/))) { const x = R.m.find(r => r.ym === fp); row = x && { rev: x.v }; kind = 'm'; }
+  else if ((m = fp.match(/^(\d{4})$/))) { row = R.a.find(r => r.key === fp); kind = 'a'; }
+  if (!row) return null;
+  const t = n.title + ' ' + (n.body || ''), num = re => { const x = t.match(re); return x ? parseFloat(x[1].replace('−', '-')) : null; };
+  const res = (v, off, ok, label, f) => ({ ok, label, off: f(off), mine: f(v) });
+  if (n.sub === 'EPS' || EPS_RE.test(t)) { const v = num(EPS_RE); if (v != null && isNum(row.eps)) return res(v, row.eps, Math.abs(v - row.eps) <= 0.015, 'EPS', x => x.toFixed(2) + ' 元'); }
+  if (n.sub === '毛利率' || GM_RE.test(t)) { const v = num(GM_RE); if (v != null && isNum(row.gm)) return res(v, row.gm, Math.abs(v - row.gm) <= 0.15, '毛利率', x => x.toFixed(2) + '%'); }
+  const v = parseAmount(t);
+  if (v != null && isNum(row.rev) && row.rev) return res(v, row.rev, Math.abs(v / row.rev - 1) <= 0.006, '營收', x => fmtBig(x, R.cur));
+  return null;
+}
+function finCheckTag(n) {
+  const r = finCheck(n); if (!r) return '';
+  return r.ok ? `<span class="ctag ok" title="和官方財報相同：${esc(r.label)} ${esc(r.off)}">財報一致</span>` : `<span class="ctag warn" title="重點寫 ${esc(r.mine)}，財報是 ${esc(r.off)}">與財報不同</span>`;
+}
+// 示範資料
+function finDemo(st) {
+  const k = newsKey(st); if (FIN.cache.has(k) && FIN.cache.get(k).demo) return;
+  const now = Date.now(), d = { code: st.code, m: st.market, at: now, demo: true, rev: {}, cum: {}, pr: {}, yq: {}, ya: {}, div: [] };
+  let seed = [...st.code].reduce((a, ch) => a * 31 + ch.charCodeAt(0), 7) % 9973;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const base = st.market === 'TW' ? 2.6e11 : 3.5e10, q0 = new Date();
+  if (st.market === 'TW') {
+    d.profile = { name: st.name + '（示範）', short: st.name, industry: st.code === '2330' ? '半導體業' : st.code === '2412' ? '通信網路業' : '其他電子業', chairman: '示範董事長', ceo: '示範總經理', founded: '1987-02-21', listed: '1994-09-05', capital: 2.59e11, shares: 2.59e10, web: 'https://example.com' };
+    d.val = { pe: 37.9, pb: 9.6, yield: 2.3, at: now };
+    for (let i = 0; i < 26; i++) { const dt = new Date(q0.getFullYear(), q0.getMonth() - 1 - i, 1), ym = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}`; d.rev[ym] = { v: base / 3 * (1 + 0.012 * (26 - i)) * (0.92 + rnd() * 0.16) }; }
+    for (let y = q0.getFullYear() - 3; y <= q0.getFullYear(); y++) {
+      let acc = { rev: 0, gp: 0, op: 0, ni: 0, eps: 0 };
+      for (let n = 1; n <= 4; n++) {
+        if (y === q0.getFullYear() && n > Math.floor(q0.getMonth() / 3)) break;
+        const r = base * (1 + 0.05 * ((y - q0.getFullYear() + 3) * 4 + n)) * (0.95 + rnd() * 0.1), g = 0.5 + rnd() * 0.08;
+        acc = { rev: acc.rev + r, gp: acc.gp + r * g, op: acc.op + r * (g - 0.1), ni: acc.ni + r * (g - 0.14), eps: Math.round((acc.eps + r * (g - 0.14) / 2.59e10) * 100) / 100 };
+        d.cum[`${y}-Q${n}`] = Object.assign({}, acc);
+      }
+    }
+  } else {
+    for (let i = 0; i < 8; i++) { const dt = new Date(q0.getFullYear(), q0.getMonth() - 2 - i * 3, 1), key = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}`, r = base * (1 + 0.12 * (8 - i)); d.yq[key] = { rev: r, gp: r * 0.74, op: r * 0.6, ni: r * 0.52, eps: Math.round(r * 0.52 / 2.45e10 * 100) / 100, shares: 2.45e10 }; }
+    d.cur = 'USD';
+  }
+  for (let y = 0; y < 6; y++) for (let qq = 0; qq < 4; qq++) { const dd = `${q0.getFullYear() - 5 + y}-${String(qq * 3 + 2).padStart(2, '0')}-15`; if (dd <= today()) d.div.push({ d: dd, a: st.market === 'TW' ? 2.75 + y * 0.5 : 0.01 }); }
+  FIN.cache.set(k, d);
+}
+
+/* ========== 新聞收件匣（Apps Script 每小時收集，存在你的 Google 雲端硬碟） ==========
+   新聞先進收件匣，你同意後才變成重點；新聞本身一直保留在雲端硬碟。 */
+const NEWS = { cache: new Map(), unsupported: false, status: null, busy: false, wt: 0 };
+const newsKey = st => st.market + ':' + st.code;
+const monthStr = d => { const x = new Date(d); x.setMinutes(x.getMinutes() - x.getTimezoneOffset()); return x.toISOString().slice(0, 7); };
+const prevMonthStr = m => { const [y, mo] = m.split('-').map(Number); return mo === 1 ? `${y - 1}-12` : `${y}-${String(mo - 1).padStart(2, '0')}`; };
+const newsDay = (it, st) => dateIn(TZ[(st && st.market) || 'TW'], it.at || Date.now());
+function fmtNewsTime(ms, st) {
+  const d = new Date(ms), tz = TZ[(st && st.market) || 'TW'];
+  const f = new Intl.DateTimeFormat('zh-TW', { timeZone: tz, month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false });
+  return f.format(d).replace(/\//g, '-');
+}
+async function gas(params) {
+  const s = data.settings;
+  if (!s.apiUrl) throw new Error('還沒設定報價來源');
+  const u = new URL(s.apiUrl);
+  Object.entries(params).forEach(([k, v]) => u.searchParams.set(k, v));
+  if (s.apiKey) u.searchParams.set('key', s.apiKey);
+  const j = await (await fetch(u.toString())).json();
+  if (j && j.error) throw new Error(j.error === 'unauthorized' ? '存取密語不正確' : j.error);
+  return j;
+}
+// 追蹤清單傳給 Apps Script（清單有變才傳；一天至少一次）
+function newsWatchSig() { return data.stocks.map(s => s.market + ':' + s.code + ':' + (s.name || '') + ':' + (s.exch || '')).join('|'); }
+async function newsWatchSync(force) {
+  if (data.demo || !data.settings.apiUrl) return;
+  const sig = newsWatchSig();
+  if (!force && conf.newsSig === sig && Date.now() - (conf.newsSigAt || 0) < 864e5) return;
+  try {
+    const r = await gas({ action: 'news_watch', list: JSON.stringify(data.stocks.map(s => ({ c: s.code, n: s.name || '', m: s.market, x: s.exch || '' }))) });
+    if (r && r.ok) { NEWS.unsupported = false; conf.newsSig = sig; conf.newsSigAt = Date.now(); saveConf(); }
+    else NEWS.unsupported = true;                         // 舊版的 Apps Script 不認得這個指令
+  } catch (e) { /* 網路問題，下次再傳 */ }
+}
+function scheduleNewsWatch() { clearTimeout(NEWS.wt); NEWS.wt = setTimeout(() => newsWatchSync(), 3000); }
+function newsBoot() { newsWatchSync(); }
+
+// 讀新聞：先用本機資料庫的，再向 Apps Script 要最新的（本月和上個月 10 分鐘更新一次）
+async function newsLoad(keys, opt = {}) {
+  keys = [...new Set(keys)];
+  for (const k of keys) if (!NEWS.cache.has(k)) NEWS.cache.set(k, (await idbGet('news:' + k)) || { months: {}, avail: [] });
+  if (data.demo) { keys.forEach(k => { const st = data.stocks.find(s => newsKey(s) === k); if (st) newsDemo(st); }); return; }
+  if (!data.settings.apiUrl || NEWS.unsupported) return;
+  const m0 = monthStr(Date.now()), m1 = prevMonthStr(m0), months = opt.months || [m0, m1];
+  const fresh = (c, m) => { const x = c.months[m]; return x && (m < m1 || Date.now() - x.at < 10 * 60e3); };
+  const need = keys.filter(k => opt.force || months.some(m => !fresh(NEWS.cache.get(k), m)));
+  for (let i = 0; i < need.length; i += 15) {
+    const part = need.slice(i, i + 15);
+    let r;
+    try { r = await gas({ action: 'news', codes: part.join(','), months: months.join(',') }); }
+    catch (e) { NEWS.err = e.message; continue; }
+    if (!r || !r.items) { NEWS.unsupported = true; return; }
+    NEWS.err = '';
+    part.forEach(k => {
+      const c = NEWS.cache.get(k), got = r.items[k] || {};
+      months.forEach(m => { c.months[m] = { items: got[m] || [], at: Date.now() }; });
+      if (r.avail && r.avail[k]) c.avail = r.avail[k];
+      idbSet('news:' + k, c);
+    });
+  }
+}
+function newsItems(st) {
+  const c = NEWS.cache.get(newsKey(st)); if (!c) return [];
+  const seen = new Set(), out = [];
+  Object.values(c.months).forEach(x => (x.items || []).forEach(it => { if (!seen.has(it.id)) { seen.add(it.id); out.push(it); } }));
+  return out.sort((a, b) => (b.at || 0) - (a.at || 0));
+}
+function newsOlder(st) {     // 還沒載入的更早月份
+  const c = NEWS.cache.get(newsKey(st)); if (!c) return [];
+  return (c.avail || []).filter(m => !c.months[m]).sort().reverse();
+}
+// 狀態：new 未處理、added 已加入重點、dismissed 已略過
+function newsState(id) {
+  const a = data.newsAct[id];
+  if (!a) return 'new';
+  if (a === 'd') return 'dismissed';
+  return noteById(a.slice(2)) ? 'added' : 'new';      // 加入的重點被刪掉了，就回到未處理
+}
+// 可能的雜訊：只是預設不顯示，不會刪除
+function newsNoise(it, st) {
+  if (it.kind === 'ann') return '';
+  const t = it.title || '';
+  if (/(漲停|跌停|處置股|注意股|暫停交易|創(歷史|波段|上市以來)?新(高|低)|爆量|limit up|limit down|halt)/i.test(t)) return '';
+  if (/(熱門股|排行|強勢股|弱勢股|人氣王|類股|盤後|盤前|早盤|午盤|尾盤|盤中速報|個股動態|焦點股|一表看|懶人包|台股(今|收盤|開盤)|大盤|加權指數|權值股|top (gainers|losers)|premarket|midday movers|stocks? to (buy|watch))/i.test(t)) return '盤勢或排行';
+  if (/(股價|股).{0,6}(漲|跌|走高|走低|翻紅|翻黑|勁揚|重挫|收紅|收黑|急殺|飆)|(漲|跌)\s*\d+(\.\d+)?\s*%|(漲|跌)幅|(shares|stock) (rise|rises|fall|falls|jump|jumps|drop|drops|surge|surges|slide|slides|tumble|tumbles|climb|climbs)|(up|down) \d+(\.\d+)?%/i.test(t)) return '股價漲跌';
+  const names = [st.code, st.name].filter(x => x && x.length >= 2), tl = t.toLowerCase();
+  if (it.feed !== 'yfin' && !names.some(n => tl.includes(n.toLowerCase()))) return '標題沒提到這家公司';
+  return '';
+}
+// 依關鍵字建議主題（只是預設值，加入時可以改）
+const NEWS_TOPIC = [
+  [/漲停|跌停|處置股|注意股|暫停交易|創(歷史|波段)?新(高|低)|爆量/, '市場數據', '異常行情'],
+  [/法說會|法人說明會|earnings call/i, '新聞事件', '法說會'],
+  [/目標價|price target/i, '分析師看法', '目標價'],
+  [/評等|調升|調降|upgrade|downgrade|rating/i, '分析師看法', '投資論點'],
+  [/毛利率|gross margin/i, '營收財報', '毛利率'],
+  [/財測|展望|guidance|outlook/i, '營收財報', '財測'],
+  [/營收|revenue|sales/i, '營收財報', '營收'],
+  [/EPS|每股盈餘|財報|獲利|淨利|earnings|profit/i, '營收財報', 'EPS'],
+  [/增資|可轉換公司債|可轉債|私募|發行新股|offering/i, '新聞事件', '股權融資'],
+  [/合作|結盟|聯盟|簽約|partnership/i, '新聞事件', '策略合作'],
+  [/擴產|新廠|動土|量產|產能/, '營運狀況', '產能擴充'],
+  [/漲價|報價|調價|長約|合約價/, '營運狀況', '定價與合約'],
+  [/訂單|接單|大單|order/i, '營運狀況', '接單動能'],
+  [/外資|投信|自營商|三大法人|買超|賣超/, '資金籌碼', '法人動向'],
+  [/融資|融券|借券/, '資金籌碼', '融資融券'],
+  [/董事長|總經理|執行長|CEO|CFO|人事|接任|辭任/i, '管理層', '人事異動'],
+  [/股利|配息|配股|除息|除權|dividend/i, '管理層', '股利政策'],
+  [/庫藏股|買回|buyback/i, '管理層', '資本配置'],
+  [/關稅|制裁|出口管制|地緣|tariff|sanction/i, '風險', '地緣政治'],
+  [/需求|供需|缺貨|庫存|demand|supply/i, '產業與競爭', '供需變化'],
+  [/競爭|對手|搶單|competitor/i, '產業與競爭', '競爭對手']
+];
+function newsTopic(it) { for (const [re, topic, sub] of NEWS_TOPIC) if (re.test(it.title || '')) return { topic, sub }; return { topic: '新聞事件', sub: '重大公告' }; }
+// 同一件事的多家報導合併成一組（3 天內、同類型、標題相近）
+function newsClusters(items) {
+  const out = [];
+  for (const it of items) {
+    const bg = bigr(normT(it.title));
+    let hit = null;
+    for (let i = out.length - 1, k = 0; i >= 0 && k < 80; i--, k++) {
+      const c = out[i];
+      if (c.kind !== it.kind || Math.abs((c.lead.at || 0) - (it.at || 0)) > 3 * 864e5) continue;
+      if (dice(bg, c.bg) >= 0.55) { hit = c; break; }
+    }
+    if (hit) hit.list.push(it); else out.push({ lead: it, list: [it], bg, kind: it.kind });
+  }
+  out.forEach(c => {
+    const s = c.list.map(x => newsState(x.id));
+    c.state = s.includes('added') ? 'added' : s.every(x => x === 'dismissed') ? 'dismissed' : 'new';
+    c.srcs = [...new Set(c.list.map(x => x.src).filter(Boolean))];
+  });
+  return out;
+}
+function newsIndex() {
+  const m = new Map();
+  NEWS.cache.forEach((c, k) => Object.values(c.months).forEach(x => (x.items || []).forEach(it => m.set(it.id, { it, key: k }))));
+  return m;
+}
+function openNewsPrompt(cls) {
+  if (cls.length > 60) { toast('一次最多 60 則，先整理前 60 則'); cls = cls.slice(0, 60); }
+  const text = buildPrompt({ news: cls });
+  openDialog({
+    title: `新聞交給 ChatGPT 整理　<span class="muted" style="font-size:14px">${cls.length} 則</span>`, wide: true, okText: '複製',
+    body: `<div class="note" style="margin:0 0 8px">複製後貼到 ChatGPT（開新的對話就可以），它會打開連結讀內文。把回覆整段複製回來，按「貼上匯入」。匯入時會自動帶入新聞的來源和連結，並把這些新聞標成「已加入」；ChatGPT 認為不用記的，可以一起標成「略過」。</div>
+      <textarea class="prompt" readonly>${esc(text)}</textarea>`,
+    extra: `<a class="btn" href="https://chatgpt.com/" target="_blank" rel="noopener">開啟 ChatGPT</a>`,
+    onOk: async () => {
+      const ok = await copyText(text);
+      if (!ok) return '沒辦法自動複製，請手動全選上面的文字複製。';
+      setTimeout(() => toast('已複製，貼到 ChatGPT'), 50);
+    }
+  });
+}
+async function newsRun() {
+  if (data.demo) { toast('示範資料不會收集新聞'); return; }
+  toast('收集中，大約需要半分鐘…');
+  try {
+    await newsWatchSync(true);
+    const r = await gas({ action: 'news_run' });
+    if (!r || r.watch === undefined) { NEWS.unsupported = !r || !r.busy; toast(r && r.busy ? '已經在收集中，等一下再看' : 'Apps Script 需要更新才能收集新聞'); renderNotes(); return; }
+    toast(`收集完成：新增 ${r.added || 0} 則`);
+    await newsLoad([...NEWS.cache.keys()], { force: true });
+    renderNotes(); newsStatusShow();
+  } catch (e) { toast('收集失敗：' + e.message); }
+}
+// 設定裡的「新聞收集」狀態
+const NEWS_FEED = { twse: '證交所重大訊息', tpex: '櫃買中心重大訊息', gnews: 'Google 新聞', ytw: 'Yahoo 股市', yfin: 'Yahoo Finance', sec: 'SEC 公告' };
+async function newsStatusShow() {
+  const el = $('#newsStat'); if (!el) return;
+  if (data.demo) { el.textContent = '示範資料不會收集新聞。'; return; }
+  if (!data.settings.apiUrl) { el.textContent = '先填好上面的報價來源。'; return; }
+  el.textContent = '讀取中…';
+  let r;
+  try { r = await gas({ action: 'news_status' }); } catch (e) { el.innerHTML = `<span class="r">讀取失敗：${esc(e.message)}</span>`; return; }
+  if (!r || r.watch === undefined) { el.innerHTML = '<span class="r">你的 Apps Script 還是舊版。</span>請照 README「新聞收集」更新 Code.gs，並執行一次 setupNews。'; NEWS.unsupported = true; return; }
+  NEWS.unsupported = false;
+  const S = r.status, rows = S ? Object.entries(S.sources || {}).map(([k, v]) => `<tr><td class="tl">${NEWS_FEED[k] || esc(k)}</td><td>${v.ok} / ${v.req}</td><td>${v.added}</td><td class="tl">${v.err ? `<span class="r">${esc(v.err)}</span>` : v.items ? '正常' : '沒有資料'}</td></tr>`).join('') : '';
+  el.innerHTML = `<div>${r.trigger ? `每 ${r.every} 小時自動收集` : '<span class="r">還沒設定自動收集：請在 Apps Script 執行一次 setupNews</span>'}・追蹤 ${r.watch.length} 檔${S ? `・上次收集 ${fmtDT(S.at)}，新增 ${S.added} 則` : '・還沒收集過'}${r.sec ? '' : '・美股 SEC 公告沒有開啟'}</div>
+    ${rows ? `<table class="t small" style="margin-top:6px"><thead><tr><th class="tl">來源</th><th>成功／請求</th><th>新增</th><th class="tl">狀況</th></tr></thead><tbody>${rows}</tbody></table>` : ''}`;
+}
+function newsSetAct(ids, v, msg) {
+  const before = Object.assign({}, data.newsAct);
+  ids.forEach(id => { if (v == null) delete data.newsAct[id]; else data.newsAct[id] = v; });
+  commit();
+  if (msg) setTimeout(() => toastAct(msg, '復原', () => { data.newsAct = before; commit(); toast('已復原'); }), 0);
+}
+// 加入重點：預先填好標題、日期、來源、連結和建議的主題，你確認後才存
+function newsToNote(st, cl) {
+  const it = cl.list.find(x => x.kind === 'ann') || cl.lead, tp = newsTopic(it);
+  const day = it.fact || newsDay(it, st);
+  openNote(st, null, {
+    date: day, date_precision: 'day', title: it.title.slice(0, 60), body: it.sum || '', stance: 'neutral',
+    claim_type: 'fact', topic: tp.topic, sub: tp.sub, source: cl.srcs.join('、') || it.src || '',
+    source_url: it.url || null, source_type: it.kind === 'ann' ? 'company' : 'media', published_date: newsDay(it, st),
+    news_ids: cl.list.map(x => x.id), from: 'news'
+  });
+}
+// 示範用的新聞（示範資料才會出現）
+function newsDemo(st) {
+  const k = newsKey(st), m = monthStr(Date.now());
+  if (NEWS.cache.get(k) && NEWS.cache.get(k).demo) return;
+  const h = 3600e3, now = Date.now(), n = st.name || st.code, list = [];
+  const add = (dh, kind, src, title, sum, extra) => list.push(Object.assign({ id: 'demo' + st.code + list.length, code: st.code, m: st.market, kind, feed: kind === 'ann' ? 'twse' : 'gnews', title, src, url: 'https://example.com/demo/' + st.code + '/' + list.length, at: now - dh * h, ts: now, sum }, extra || {}));
+  if (st.market === 'TW') {
+    add(3, 'ann', '公開資訊觀測站（上市）', `${n}董事會決議資本預算案`, '（示範資料）董事會通過資本預算，主要用於先進製程產能建置。', { fact: today() });
+    add(5, 'news', '經濟日報', `${n}擴大先進封裝產能 明年量產`, '（示範資料）');
+    add(6, 'news', '工商時報', `${n}擴大先進封裝產能，明年量產`, '');
+    add(7, 'news', '鉅亨網', `${n}擴大先進封裝產能 明年開始量產`, '');
+    add(20, 'news', '經濟日報', `外資連三日買超${n}`, '');
+    add(26, 'news', 'Yahoo 股市', `${n}股價盤中大漲 3%`, '');
+    add(30, 'news', '鉅亨網', '台股盤後：電子權值股撐盤 加權指數收高', '');
+    add(50, 'news', '中央社', `美國擬調整半導體關稅 ${n}審慎因應`, '（示範資料）');
+    add(80, 'news', '工商時報', `${n}10月營收年增 25%`, '（示範資料）');
+  } else {
+    add(4, 'news', 'Reuters', `${n} unveils next-generation chips`, '(demo)');
+    add(5, 'news', 'CNBC', `${n} unveils next generation chips for data centers`, '');
+    add(30, 'news', 'Yahoo Finance', `${n} shares rise 4% in premarket`, '');
+  }
+  NEWS.cache.set(k, { months: { [m]: { items: list, at: now } }, avail: [m], demo: true });
+}
+
 /* ========== 資料整理（全螢幕、可跨標的、資料量大也順） ========== */
 const fmtDT = ms => { const d = new Date(ms); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 16).replace('T', ' '); };
 const mgDefaults = () => ({ stock: '', topic: '', sub: '', rel: false, stance: '', claim: '', src: '', analyst: '', status: '', batch: '', from: '', to: '', q: '' });
@@ -2949,6 +3676,7 @@ function openManager(preset = {}) {
   MG.tab = preset.tab || 'notes';
   MG.catStock = preset.tab === 'cats' ? (preset.stock || '') : (preset.stock || MG.catStock || '');
   MG.sel = new Set(); MG.dup = false; MG.groups = null; MG.last = -1; MG.catSel = new Set(); MG.tsel = new Set(); MG.showFil = false;
+  MG.nf = Object.assign(mgNewsDefaults(), preset.tab === 'news' && preset.stock ? { stock: preset.stock } : {}); MG.nsel = new Set(); MG.nwLoaded = false;
   const md = $('#mgr');
   md.innerHTML = `<div class="mg-top"><b>資料整理</b><div class="tabs" id="mgTabs"></div><span class="sp"></span>
       <span class="faint hide-m" style="font-size:12px">匯入是新增；刪除會先放進回收桶 ${TRASH_DAYS} 天</span>
@@ -2962,18 +3690,19 @@ function openManager(preset = {}) {
 }
 function mgRender(full) {
   if (!MG.open) return;
-  const tabs = [['notes', '重點', data.notes.length], ['cats', '分類', ''], ['imports', '匯入紀錄', data.imports.length], ['trash', '回收桶', data.trash.length]];
+  const tabs = [['notes', '重點', data.notes.length], ['news', '新聞', ''], ['cats', '分類', ''], ['imports', '匯入紀錄', data.imports.length], ['trash', '回收桶', data.trash.length]];
   $('#mgTabs').innerHTML = tabs.map(([k, l, n]) => `<button type="button" class="${MG.tab === k ? 'on' : ''}" data-mgtab="${k}">${l}${n !== '' ? `<span class="n">${n}</span>` : ''}</button>`).join('');
   const body = $('#mgBody');
   if (full || body.dataset.tab !== MG.tab) {
     body.dataset.tab = MG.tab;
-    body.innerHTML = MG.tab === 'notes' ? `<div class="mg-fil ${MG.showFil ? 'on' : ''}" id="mgFil"></div><div class="mg-sum" id="mgSum"></div>
+    body.innerHTML = MG.tab === 'notes' || MG.tab === 'news' ? `<div class="mg-fil ${MG.showFil ? 'on' : ''}" id="mgFil"></div><div class="mg-sum" id="mgSum"></div>
         <div class="mg-grid"><div class="mg-head" id="mgHead"></div><div class="mg-vp" id="mgVp"><div class="mg-sp" id="mgSp"></div></div></div>
         <div class="mg-act" id="mgAct"></div><div class="mg-foot"></div>`
       : `<div class="mg-tools" id="mgTools"></div><div class="mg-scroll" id="mgList"></div>`;
-    if (MG.tab === 'notes') $('#mgVp').onscroll = () => { if (!MG.raf) MG.raf = requestAnimationFrame(() => { MG.raf = 0; mgRows(); }); };
+    if (MG.tab === 'notes' || MG.tab === 'news') $('#mgVp').onscroll = () => { if (!MG.raf) MG.raf = requestAnimationFrame(() => { MG.raf = 0; MG.tab === 'news' ? mgNewsRows() : mgRows(); }); };
   }
-  if (MG.tab === 'notes') mgNotes();
+  if (MG.tab === 'notes') { $('#mgHead').className = 'mg-head'; mgNotes(); }
+  else if (MG.tab === 'news') mgNews();
   else if (MG.tab === 'cats') mgCats();
   else if (MG.tab === 'imports') mgImports();
   else mgTrash();
@@ -3202,6 +3931,107 @@ function mgLink() {
   });
 }
 
+/* ---- 資料整理：所有標的的新聞（量大時用） ---- */
+const mgNewsDefaults = () => ({ stock: '', st: 'new', kind: '', noise: false, q: '' });
+function mgNews() {
+  const f = MG.nf || (MG.nf = mgNewsDefaults()), sel = MG.nsel || (MG.nsel = new Set());
+  if (!MG.nwLoaded) {
+    MG.nwLoaded = true;
+    $('#mgSp').style.height = '100%'; $('#mgSp').innerHTML = '<div class="mg-empty">載入新聞中…</div>';
+    newsLoad(data.stocks.map(newsKey)).then(() => { if (MG.open && MG.tab === 'news') mgNews(); });
+    return;
+  }
+  const sel1 = (k, label, opts) => `<select data-mgnf="${k}" aria-label="${label}">${opts.map(([v, l]) => `<option value="${esc(v)}" ${f[k] === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>`;
+  const fh = [
+    sel1('stock', '標的', [['', '全部標的']].concat(data.stocks.map(s => [s.id, `${s.code} ${s.name || ''}`]))),
+    sel1('st', '狀態', [['new', '未處理'], ['added', '已加入重點'], ['dismissed', '已略過'], ['all', '全部狀態']]),
+    sel1('kind', '類型', [['', '公告和新聞'], ['ann', '只看公司公告'], ['news', '只看新聞']]),
+    `<label class="chk"><input type="checkbox" data-mgnf="noise" ${f.noise ? 'checked' : ''}>顯示可能的雜訊</label>`,
+    `<input type="search" data-mgnf="q" value="${esc(f.q)}" placeholder="搜尋標題、來源" aria-label="搜尋">`
+  ].join('');
+  const fil = $('#mgFil');
+  if (fil.dataset.h !== fh && !fil.contains(document.activeElement)) { fil.innerHTML = fh; fil.dataset.h = fh; }
+  const q = f.q.trim().toLowerCase(), list = [];
+  let noiseN = 0, older = 0;
+  (f.stock ? data.stocks.filter(s => s.id === f.stock) : data.stocks).forEach(st => {
+    older += newsOlder(st).length;
+    newsItems(st).forEach(it => {
+      const noise = newsNoise(it, st), state = newsState(it.id);
+      if (f.kind && it.kind !== f.kind) return;
+      if (f.st !== 'all' && state !== f.st) return;
+      if (q && !((it.title || '') + ' ' + (it.src || '')).toLowerCase().includes(q)) return;
+      if (noise) { noiseN++; if (!f.noise) return; }
+      list.push({ it, st, noise, state });
+    });
+  });
+  MG.nlist = list.sort((a, b) => (b.it.at || 0) - (a.it.at || 0));
+  const vis = new Set(list.map(x => x.it.id)); sel.forEach(id => { if (!vis.has(id)) sel.delete(id); });
+  mgNewsSum(noiseN, older); mgNewsHead(); mgNewsRows(); mgNewsAct();
+}
+function mgNewsSum(noiseN, older) {
+  const n = MG.nlist.length, allSel = n > 0 && MG.nlist.every(x => MG.nsel.has(x.it.id));
+  $('#mgSum').innerHTML = `<button type="button" class="btn mg-ftog" data-mg="ftog">篩選</button><span><b>${n}</b> 則${noiseN && !MG.nf.noise ? `<span class="faint">（另有 ${noiseN} 則可能的雜訊沒有列出）</span>` : ''}</span>
+    <span class="faint">新聞先在這裡，按「加入重點」或交給 ChatGPT 整理後才會變成重點。</span><span class="sp"></span>
+    ${older ? `<button type="button" class="btn" data-mgn="older">載入更早一個月</button>` : ''}<button type="button" class="btn" data-mgn="run">立即收集</button>
+    ${n ? `<button type="button" class="btn" data-mgn="${allSel ? 'selnone' : 'selall'}">${allSel ? '取消全選' : `全選 ${n} 則`}</button>` : ''}`;
+}
+function mgNewsHead() {
+  const n = MG.nlist.length, k = MG.nlist.reduce((a, x) => a + (MG.nsel.has(x.it.id) ? 1 : 0), 0), el = $('#mgHead');
+  el.className = 'mg-head nwh';
+  el.innerHTML = `<span><input type="checkbox" data-mgnall aria-label="全選" ${n && k === n ? 'checked' : ''}></span><span>時間</span><span>標的</span><span>類型</span><span>來源</span><span>標題</span><span>建議主題</span><span>狀態</span>`;
+  el.querySelector('[data-mgnall]').indeterminate = k > 0 && k < n;
+}
+function mgNewsRows() {
+  const vp = $('#mgVp'), sp = $('#mgSp'); if (!vp || !sp) return;
+  const H = isMobile() ? 58 : 36, rows = MG.nlist || [];
+  if (!rows.length) { sp.style.height = '100%'; sp.innerHTML = `<div class="mg-empty">${data.demo || data.settings.apiUrl ? '沒有符合的新聞' : '設定報價來源後才能收集新聞'}</div>`; return; }
+  sp.style.height = rows.length * H + 'px';
+  const top = vp.scrollTop, vh = vp.clientHeight || 600;
+  const i0 = Math.max(0, Math.floor(top / H) - 8), i1 = Math.min(rows.length, Math.ceil((top + vh) / H) + 8);
+  let h = '';
+  for (let i = i0; i < i1; i++) {
+    const { it, st, noise, state } = rows[i], on = MG.nsel.has(it.id), tp = newsTopic(it);
+    h += `<div class="mg-r nwr ${on ? 'on' : ''} ${state !== 'new' ? 'old' : ''}" style="top:${i * H}px" data-nwid="${it.id}" data-i="${i}">
+      <span class="ck"><input type="checkbox" ${on ? 'checked' : ''} aria-label="選取"></span>
+      <span class="dt num">${fmtNewsTime(it.at, st)}</span>
+      <span class="sk">${esc(st.code)} <span class="faint">${esc(st.name || '')}</span></span>
+      <span class="kd">${it.kind === 'ann' ? '<span class="ctag ann">公告</span>' : '<span class="faint">新聞</span>'}</span>
+      <span class="sr faint">${esc(it.src || '')}</span>
+      <span class="tt" title="${esc(it.sum || it.title)}">${it.url ? `<a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : `<span>${esc(it.title)}</span>`}${noise ? `<span class="ctag old">${esc(noise)}</span>` : ''}</span>
+      <span class="tp2 faint">${esc(tp.topic)} › ${esc(tp.sub)}</span>
+      <span class="st2">${state === 'added' ? '<span class="ctag ok">已加入</span>' : state === 'dismissed' ? '<span class="ctag old">已略過</span>' : ''}</span></div>`;
+  }
+  sp.innerHTML = h;
+}
+function mgNewsAct() {
+  const el = $('#mgAct'), k = MG.nsel.size;
+  el.classList.toggle('on', k > 0);
+  el.innerHTML = k ? `<b>已選 ${k} 則</b>
+    ${k === 1 ? '<button type="button" class="btn pri" data-mgn="add">加入重點</button>' : ''}
+    <button type="button" class="btn ${k > 1 ? 'pri' : ''}" data-mgn="gpt">交給 ChatGPT 整理</button>
+    <button type="button" class="btn" data-mgn="skip">略過</button><button type="button" class="btn" data-mgn="undo">恢復未處理</button>
+    <span class="sp"></span><button type="button" class="btn" data-mgn="selnone">取消選取</button>` : '';
+}
+function mgNewsSelRefresh() { mgNewsSum(0, 0); mgNews(); }
+function mgNewsBtn(v) {
+  const picked = MG.nlist.filter(x => MG.nsel.has(x.it.id));
+  if (v === 'selall') { MG.nlist.forEach(x => MG.nsel.add(x.it.id)); mgNews(); }
+  else if (v === 'selnone') { MG.nsel.clear(); mgNews(); }
+  else if (v === 'add' && picked.length === 1) { const { it, st } = picked[0]; newsToNote(st, { lead: it, list: [it], srcs: [it.src].filter(Boolean) }); }
+  else if (v === 'gpt' && picked.length) {
+    const by = new Map(); picked.forEach(x => { if (!by.has(x.st.id)) by.set(x.st.id, []); by.get(x.st.id).push(x.it); });
+    openNewsPrompt([...by.values()].flatMap(items => newsClusters(items.sort((a, b) => (b.at || 0) - (a.at || 0)))));
+  }
+  else if (v === 'skip' && picked.length) { const n = picked.length; MG.nsel.clear(); newsSetAct(picked.map(x => x.it.id), 'd', `已略過 ${n} 則`); }
+  else if (v === 'undo' && picked.length) { MG.nsel.clear(); newsSetAct(picked.map(x => x.it.id), null, '已恢復成未處理'); }
+  else if (v === 'older') {
+    const jobs = data.stocks.map(st => [st, newsOlder(st)[0]]).filter(x => x[1]);
+    toast('載入更早的新聞…');
+    Promise.all(jobs.map(([st, mo]) => newsLoad([newsKey(st)], { months: [mo], force: true }))).then(() => { if (MG.open && MG.tab === 'news') mgNews(); });
+  }
+  else if (v === 'run') newsRun().then(() => { if (MG.open && MG.tab === 'news') mgNews(); });
+}
+
 /* ---- 找疑似重複：同一檔、文字相近、日期相近；數字不同（例如不同季度）就不算 ---- */
 const bigr = s => { const g = new Set(); for (let i = 0; i < s.length - 1; i++) g.add(s.slice(i, i + 2)); if (s.length === 1) g.add(s); return g; };
 const dice = (a, b) => { if (!a.size || !b.size) return 0; let k = 0; for (const x of a) if (b.has(x)) k++; return 2 * k / (a.size + b.size); };
@@ -3388,6 +4218,11 @@ document.addEventListener('click', e => {
   const sort = t.closest('[data-sort]');
   if (sort) { const k = sort.dataset.sort; MG.sort = { k, d: MG.sort.k === k ? -MG.sort.d : (k === 'date' ? -1 : 1) }; mgNotes(); return; }
   if (t.matches('[data-mgall]')) { const all = t.checked; MG.list.forEach(n => all ? MG.sel.add(n.id) : MG.sel.delete(n.id)); mgSelRefresh(); return; }
+  if (t.matches('[data-mgnall]')) { const all = t.checked; MG.nlist.forEach(x => all ? MG.nsel.add(x.it.id) : MG.nsel.delete(x.it.id)); mgNews(); return; }
+  const nr = t.closest('.mg-r.nwr');
+  if (nr) { if (t.closest('a')) return; const id = nr.dataset.nwid; MG.nsel.has(id) ? MG.nsel.delete(id) : MG.nsel.add(id); mgNews(); return; }
+  const nb = t.closest('[data-mgn]');
+  if (nb) { if (!nb.disabled) mgNewsBtn(nb.dataset.mgn); return; }
   const ck = t.closest('.mg-r .ck');
   if (ck) {
     const i = +ck.parentElement.dataset.i, r = MG.rows[i]; if (!r || r.t !== 'n') return;
@@ -3456,15 +4291,17 @@ document.addEventListener('change', e => {
     MG.last = -1; mgNotes(); return;
   }
   if (t.matches('[data-mg-more]')) { const v = t.value; t.value = ''; if (v) mgMore(v); return; }
+  if (t.matches('[data-mgnf]')) { const k = t.dataset.mgnf; if (k === 'q') return; MG.nf[k] = t.type === 'checkbox' ? t.checked : t.value; MG.nsel.clear(); mgNews(); return; }
   if (t.matches('[data-mgcat]')) { MG.catStock = t.value; MG.catSel = new Set(); mgCats(); }
 });
 document.addEventListener('input', e => {
   const t = e.target;
+  if (t.matches && t.matches('#mgr [data-mgnf=q]')) { clearTimeout(MG.qt); MG.qt = setTimeout(() => { MG.nf.q = t.value; mgNews(); }, 160); return; }
   if (!t.matches || !t.matches('#mgr [data-mgf=q]')) return;
   clearTimeout(MG.qt);
   MG.qt = setTimeout(() => { MG.f.q = t.value; MG.last = -1; mgNotes(); }, 160);
 });
-window.addEventListener('resize', () => { if (MG.open && MG.tab === 'notes') mgRows(); });
+window.addEventListener('resize', () => { if (MG.open && MG.tab === 'notes') mgRows(); else if (MG.open && MG.tab === 'news') mgNewsRows(); });
 
 /* ========== 對話框 ========== */
 const dlg = $('#dlg');
@@ -3655,6 +4492,9 @@ function openSettings() {
         <div class="r2">${fld('存取密語（選填）', inp('apiKey', s.apiKey, 'autocomplete="off"'), '要和 Code.gs 裡的 ACCESS_KEY 一樣')}
         ${fld('盤中更新間隔（秒）', numInp('refreshSec', s.refreshSec), '最少 5 秒')}</div>
       </div>
+      <div class="gset"><span class="lbl">新聞收集（Apps Script → 你的 Google 雲端硬碟）</span>
+        <div id="newsStat" class="note" style="margin:0 0 10px">讀取中…</div>
+        <div class="inl" style="margin-bottom:12px;flex-wrap:wrap"><button type="button" class="btn" data-act="news-run">立即收集一次</button><button type="button" class="btn" data-act="news-watch">重新傳送追蹤清單</button></div></div>
       <div class="gset"><span class="lbl">電腦和手機同步（GitHub 私人 repo）</span>
         ${fld('GitHub token', inp('token', conf.token, 'type="password" autocomplete="off" placeholder="github_pat_… 或 ghp_…"'), 'token 只存在這台裝置的瀏覽器裡，不會上傳。每台裝置各填一次。')}
         ${fld('資料 repo', inp('repo', conf.repo, 'autocomplete="off" autocapitalize="off" placeholder="stock-tracker-data"'), '放資料的私人 repo 名稱。留空就用 stock-tracker-data。')}
@@ -3671,6 +4511,7 @@ function openSettings() {
       <div class="gset"><span class="lbl">備份</span>
         <div class="inl" style="margin-bottom:12px;flex-wrap:wrap"><button type="button" class="btn" data-act="export">匯出備份</button><button type="button" class="btn" data-act="import-backup">匯入備份</button><button type="button" class="btn danger" data-act="wipe">清除這台裝置的資料</button></div>
       </div>`,
+    onOpen: () => newsStatusShow(),
     onOk: f => {
       const url = fv(f, 'apiUrl');
       if (url && !/^https:\/\//.test(url)) return '報價來源網址要以 https:// 開頭';
@@ -3889,6 +4730,27 @@ document.addEventListener('click', e => {
     case 'ntopic': ui.noteTopic = a.dataset.topic; ui.noteStance = ''; saveUi(); renderNotes(); break;
     case 'ntab': ui.noteTab = a.dataset.tab; renderNotes(); break;
     case 'note-more': ui.notePage = (ui.notePage || NOTE_PAGE) + NOTE_PAGE; renderNotes(); break;
+    case 'news-add': { const cl = NEWS.cl && NEWS.cl.get(id); if (st && cl) newsToNote(st, cl); break; }
+    case 'news-skip': { const cl = NEWS.cl && NEWS.cl.get(id); if (cl) newsSetAct(cl.list.map(x => x.id), 'd', '已略過 1 則'); break; }
+    case 'news-undo': { const cl = NEWS.cl && NEWS.cl.get(id); if (cl) newsSetAct(cl.list.map(x => x.id), null); break; }
+    case 'news-skip-sel': {
+      const k = ui.newsSel.size, ids = [...ui.newsSel].flatMap(x => ((NEWS.cl && NEWS.cl.get(x)) || { list: [] }).list.map(y => y.id));
+      ui.newsSel.clear(); newsSetAct(ids, 'd', `已略過 ${k} 則`); break;
+    }
+    case 'news-sel-none': ui.newsSel.clear(); renderNotes(); break;
+    case 'news-gpt': { const cls = [...ui.newsSel].map(x => NEWS.cl && NEWS.cl.get(x)).filter(Boolean); if (cls.length) openNewsPrompt(cls); break; }
+    case 'news-refresh': if (st) { NEWS.err = ''; toast('更新新聞中…'); newsLoad([newsKey(st)], { force: true }).then(() => { renderNotes(); if (K.st === st) kOverlay(st, calc(st)); }); } break;
+    case 'news-older': if (st) { const mo = newsOlder(st)[0]; if (mo) newsLoad([newsKey(st)], { months: [mo], force: true }).then(() => renderNotes()); } break;
+    case 'news-more': ui.newsPage = (ui.newsPage || 40) + 40; renderNotes(); break;
+    case 'news-run': newsRun(); break;
+    case 'news-watch': newsWatchSync(true).then(() => { toast('已傳送追蹤清單'); newsStatusShow(); }); break;
+    case 'mgr-news': openManager({ tab: 'news', stock: st ? st.id : '' }); break;
+    case 'dtab': ui.dtab = a.dataset.tab; render(); break;
+    case 'co-open': if (st) openCompany(st); break;
+    case 'fin-refresh': if (st) {
+      FIN.tried.delete(newsKey(st)); FIN.err = ''; toast('讀取公司資料中…');
+      finLoad([newsKey(st)], { force: true }).then(() => { render(); if ($('#co').open) openCompany(st, true); toast(FIN.err ? '讀取失敗：' + FIN.err : '已更新'); });
+    } break;
     case 'add-strat': if (st) openStrategy(st); break;
     case 'edit-strat': { const x = data.strategies.find(v => v.id === id); if (st && x) openStrategy(st, x); break; }
     case 'del-strat': if (confirm('確定刪除這條策略？')) { data.strategies = data.strategies.filter(v => v.id !== id); if (dlg.open) dlg.close(); commit(); } break;
@@ -3918,7 +4780,9 @@ document.addEventListener('click', e => {
     case 'wipe':
       if (confirm('清除這台裝置上的所有資料和設定（包括 token）？\nGitHub 上的資料不會被刪除，之後填回 token 就能拿回資料。')) {
         Object.values(LS).forEach(k => localStorage.removeItem(k));
-        location.reload();
+        localStorage.removeItem('st.data.idb');
+        try { indexedDB.deleteDatabase('stock-tracker'); } catch (e) { /* 略過 */ }
+        setTimeout(() => location.reload(), 300);
       }
       break;
   }
@@ -3941,8 +4805,16 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('click', e => {
   const b = e.target.closest && e.target.closest('#p-notes [data-nstance]');
-  if (!b) return;
-  ui.noteStance = b.dataset.nstance; renderNotes();
+  if (b) { ui.noteStance = b.dataset.nstance; renderNotes(); return; }
+  const f = e.target.closest && e.target.closest('#p-notes [data-nwf]');
+  if (f) { ui.newsF.st = f.dataset.nwf; ui.newsPage = 40; renderNotes(); }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (!t.closest || !t.closest('#p-notes')) return;
+  if (t.matches('[data-nwann]')) { ui.newsF.ann = t.checked; renderNotes(); }
+  else if (t.matches('[data-nwnoise]')) { ui.newsF.noise = t.checked; renderNotes(); }
+  else if (t.matches('[data-nwck]')) { t.checked ? ui.newsSel.add(t.dataset.nwck) : ui.newsSel.delete(t.dataset.nwck); renderNotes(); }
 });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) return;
@@ -3989,12 +4861,16 @@ document.addEventListener('dblclick', e => {
 /* ========== 啟動 ========== */
 applyLayout();
 if (conf.theme !== 'dark') document.querySelector('meta[name="theme-color"]').content = '#FFFFFF';
-if (!ui.sel && data.stocks.length) ui.sel = data.stocks[0].id;
 ui.view = 'list';
-render();
-fetchQuotes();
-if (conf.token) sync();
-schedulePoll();
+(async () => {
+  const fromDb = await idbLoadData();
+  if (!ui.sel && data.stocks.length) ui.sel = data.stocks[0].id;
+  render();
+  fetchQuotes();
+  if (conf.token) sync();
+  schedulePoll();
+  newsBoot();
+})();
 </script>
 </body>
 </html>
