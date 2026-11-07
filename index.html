@@ -397,7 +397,15 @@ dialog.mgr[open]{display:flex;flex-direction:column}
 /* 新聞 */
 .ctag.ann{color:var(--ac);border-color:var(--ac);background:var(--acbg)}
 .tabs button .n.nwn{color:var(--ac);font-weight:500}
-.nw{border:1px solid var(--line);border-radius:10px;padding:8px 11px;margin-bottom:8px}
+.nw{border:1px solid var(--line);border-radius:10px;padding:8px 11px;margin-bottom:8px;position:relative}
+.nw-dot{position:absolute;top:-5px;left:-5px;width:12px;height:12px;border-radius:50%;background:#e5484d;border:2px solid var(--panel);pointer-events:none}
+.nw.stale{border-color:var(--warn);box-shadow:inset 0 0 0 1px var(--warn)}
+.nw-stale{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0 2px;padding:6px 8px;border-radius:8px;background:color-mix(in srgb,var(--warn) 12%,transparent);font-size:12.5px;color:var(--tx)}
+.nw-stale .btn{padding:3px 10px;font-size:12px}
+.unr{display:inline-block;width:7px;height:7px;border-radius:50%;background:#e5484d;margin-left:4px;vertical-align:top}
+.mg-r.nwr.unread .dt::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:#e5484d;margin-right:5px;vertical-align:middle}
+.mg-r.nwr.stale{box-shadow:inset 3px 0 0 var(--warn)}
+.nfil select{font-size:12px;padding:2px 6px;background:var(--panel2);color:var(--tx);border:1px solid var(--line2);border-radius:6px}
 .nw.sel{border-color:var(--ac);background:var(--acbg)}
 .nw.dismissed,.nw.added{opacity:.7}
 .nw .nt-top input{margin:0}
@@ -590,7 +598,6 @@ dialog.co{background:var(--bg)}
 <body data-view="list" data-mtab="quote">
 
 <header class="top" id="top">
-  <div class="brand">持股追蹤</div>
   <div class="sum" id="sum"></div>
   <div class="sp hide-m"></div>
   <div class="st" id="st"></div>
@@ -653,12 +660,13 @@ const DATA_ARRAYS = ['stocks', 'trades', 'dividends', 'notes', 'strategies', 'im
 // imports：匯入紀錄；trash：回收桶；tombs：刪過的重點（再匯入時提醒）；dupIgnore：標為「不是重複」的組合
 // newsAct：新聞的處理狀態 { 新聞編號: 'd'（略過）| 'a:重點編號'（已加入）}
 // accounts：資產帳戶；acctTx：帳戶進出（ref 連到交易 t:、股利 d:、轉帳 x:）；acctBal：記下的餘額；divSkip：刪掉、不要再自動算的配息
-function emptyData() { return { version: 1, updatedAt: 0, settings: defaultSettings(), stocks: [], trades: [], dividends: [], notes: [], strategies: [], imports: [], trash: [], tombs: [], dupIgnore: [], accounts: [], acctTx: [], acctBal: [], divSkip: [], newsAct: {} }; }
+function emptyData() { return { version: 1, updatedAt: 0, settings: defaultSettings(), stocks: [], trades: [], dividends: [], notes: [], strategies: [], imports: [], trash: [], tombs: [], dupIgnore: [], accounts: [], acctTx: [], acctBal: [], divSkip: [], newsAct: {}, newsMeta: {} }; }
 function normalize(d) {
   const o = Object.assign(emptyData(), d || {});
   o.settings = Object.assign(defaultSettings(), (d && d.settings) || {});
   DATA_ARRAYS.forEach(k => { if (!Array.isArray(o[k])) o[k] = []; });
   if (!o.newsAct || typeof o.newsAct !== 'object' || Array.isArray(o.newsAct)) o.newsAct = {};
+  if (!o.newsMeta || typeof o.newsMeta !== 'object' || Array.isArray(o.newsMeta)) o.newsMeta = {};
   o.notes.forEach(n => { if (n.topic === '產品') n.topic = '產品業務'; });   // 舊版主題改名
   const cut = Date.now() - TRASH_DAYS * 864e5;
   o.trash = o.trash.filter(x => x && x.item && (x.at || 0) >= cut);
@@ -1107,9 +1115,18 @@ function renderSummary(C) {
   const pct = t.cost > 0 ? t.unreal / t.cost : null;
   const dayPct = t.mv - t.day > 0 ? t.day / (t.mv - t.day) : null;
   const fxTxt = t.fx.approx ? '（匯率暫估 32）' : '';
+  // 台股、美股各自的總損益（未實現＋已實現＋股利），用各自的幣別和漲跌顏色
+  const mkt = m => {
+    const b = t.sub[m]; if (!b.n) return '';
+    const cur = m === 'US' ? 'USD' : 'TWD', tot = b.unreal + b.real + b.div;
+    const tip = `未實現 ${fmtSigned(b.unreal, cur)}｜已實現 ${fmtSigned(b.real, cur)}｜股利 ${fmtSigned(b.div, cur)}${b.cost > 0 ? `｜未實現報酬率 ${fmtPct(b.unreal / b.cost)}` : ''}`;
+    return `<div class="chip" title="${esc(tip)}"><span class="k">${m === 'US' ? '美股損益 US$' : '台股損益 NT$'}</span><span class="v ${cls(tot, m)}">${fmtSigned(tot, cur)}</span></div>`;
+  };
   $('#sum').innerHTML = `
     <div class="chip"><span class="k">總市值 NT$${fxTxt}</span><span class="v">${fmtMoney(t.mv, 'TWD')}</span></div>
     <div class="chip"><span class="k">今日損益</span><span class="v ${cls(t.day, 'TW')}">${fmtSigned(t.day, 'TWD')}<small>${fmtPct(dayPct)}</small></span></div>
+    ${mkt('TW')}${mkt('US')}
+    <div class="chip" title="${esc(`未實現 ${fmtSigned(t.unreal, 'TWD')}｜已實現＋股利 ${fmtSigned(t.realDiv, 'TWD')}`)}"><span class="k">全部損益 NT$</span><span class="v ${cls(t.unreal + t.realDiv, 'TW')}">${fmtSigned(t.unreal + t.realDiv, 'TWD')}</span></div>
     <div class="chip"><span class="k">未實現損益</span><span class="v ${cls(t.unreal, 'TW')}">${fmtSigned(t.unreal, 'TWD')}<small>${fmtPct(pct)}</small></span></div>
     <div class="chip"><span class="k">已實現＋股利</span><span class="v ${cls(t.realDiv, 'TW')}">${fmtSigned(t.realDiv, 'TWD')}</span></div>
     <div class="chip"><span class="k">美元匯率</span><span class="v">${t.fx.rate.toFixed(2)}</span></div>`;
@@ -1149,16 +1166,20 @@ function renderBanner() {
 const isHeld = (st, c) => c.sh > 0 && !st.parked;
 function totals(C) {
   const fx = getFx();
-  const t = { mv: 0, cost: 0, unreal: 0, day: 0, realDiv: 0, missing: 0, parked: 0, sub: { TW: { mv: 0, unreal: 0, cost: 0 }, US: { mv: 0, unreal: 0, cost: 0 } }, fx };
+  const sub0 = () => ({ mv: 0, unreal: 0, cost: 0, real: 0, div: 0, day: 0, n: 0 });
+  const t = { mv: 0, cost: 0, unreal: 0, day: 0, realDiv: 0, missing: 0, parked: 0, sub: { TW: sub0(), US: sub0() }, fx };
   data.stocks.forEach(st => {
     const c = C[st.id], k = st.market === 'TW' ? 1 : fx.rate;
     if (st.parked) { if (c.sh > 0) t.parked++; return; }
     t.realDiv += (c.realized + c.div) * k;
+    const sb = t.sub[st.market];
+    sb.real += c.realized; sb.div += c.div;
+    if (c.sh > 0 || c.realized || c.div) sb.n++;
     if (c.sh > 0) {
       if (c.mv == null) { t.missing++; return; }
       t.mv += c.mv * k; t.cost += c.cost * k; t.unreal += c.unreal * k;
-      if (c.day != null) t.day += c.day * k;
-      const sb = t.sub[st.market]; sb.mv += c.mv; sb.unreal += c.unreal; sb.cost += c.cost;
+      if (c.day != null) { t.day += c.day * k; sb.day += c.day; }
+      sb.mv += c.mv; sb.unreal += c.unreal; sb.cost += c.cost;
     }
   });
   return t;
@@ -2733,23 +2754,28 @@ function renderNewsTab(st, el, head, keep) {
   const pool = items.filter(it => (F.noise || !it._noise) && (!F.ann || it.kind === 'ann'));
   const cls = newsClusters(pool), cnt = { new: 0, added: 0, dismissed: 0 };
   cls.forEach(x => cnt[x.state]++);
+  const staleN = cls.filter(newsStale).length, unreadN = cls.filter(x => x.state === 'new' && newsUnread(x)).length;
+  if (F.st === 'stale' && !staleN) F.st = 'new';
   NEWS.cl = new Map(cls.map(x => [x.lead.id, x]));
   sel.forEach(id => { if (!NEWS.cl.has(id)) sel.delete(id); });
   const noiseN = items.filter(it => it._noise && (!F.ann || it.kind === 'ann')).length;
-  const shown = F.st === 'all' ? cls : cls.filter(x => x.state === F.st), lim = ui.newsPage || 40;
-  const seg = [['new', '未處理', cnt.new], ['added', '已加入', cnt.added], ['dismissed', '已略過', cnt.dismissed], ['all', '全部', cls.length]]
+  const shown = F.st === 'all' ? cls : F.st === 'stale' ? cls.filter(newsStale) : cls.filter(x => x.state === F.st), lim = ui.newsPage || 40;
+  const seg = [['new', '未處理', cnt.new], ...(staleN ? [['stale', '待檢視', staleN]] : []), ['added', '已加入', cnt.added], ['dismissed', '已略過', cnt.dismissed], ['all', '全部', cls.length]]
     .map(([v, l, k]) => `<button type="button" class="${F.st === v ? 'on' : ''}" data-nwf="${v}">${l} ${k}</button>`).join('');
   const bar = sel.size ? `<div class="nw-bar"><b>已選 ${sel.size} 則</b><button class="btn pri" data-act="news-gpt">交給 ChatGPT 整理</button><button class="btn" data-act="news-skip-sel">略過</button><span class="sp"></span><button class="btn" data-act="news-sel-none">取消</button></div>` : '';
   const m = st.market;
+  const rd = newsRemindDays();
   const cards = shown.slice(0, lim).map(cl => {
     const it = cl.lead, tp = newsTopic(cl.list.find(x => x.kind === 'ann') || it), on = sel.has(it.id);
-    return `<div class="nw ${cl.state} ${on ? 'sel' : ''}">
+    const unread = newsUnread(cl), stale = newsStale(cl), perm = (data.newsMeta[it.id] || {}).k === -1;
+    return `<div class="nw ${cl.state} ${on ? 'sel' : ''}${unread ? ' unread' : ''}${stale ? ' stale' : ''}" data-nwid="${it.id}" data-ids="${cl.list.map(x => x.id).join(',')}">${unread ? '<span class="nw-dot" title="還沒看過" aria-label="新的"></span>' : ''}
       <div class="nt-top wrap"><input type="checkbox" data-nwck="${it.id}" ${on ? 'checked' : ''} aria-label="選取"><span class="num">${fmtNewsTime(it.at, st)}</span>${it.kind === 'ann' ? '<span class="ctag ann">公告</span>' : ''}<span class="faint nw-src">${esc(cl.srcs.slice(0, 3).join('、'))}${cl.srcs.length > 3 ? ` 等 ${cl.srcs.length} 家` : ''}</span>
-        ${it._noise ? `<span class="ctag old">${esc(it._noise)}</span>` : ''}${cl.state === 'added' ? '<span class="ctag ok">已加入重點</span>' : cl.state === 'dismissed' ? '<span class="ctag old">已略過</span>' : ''}<span class="sp"></span><span class="faint" title="建議的主題，加入時可以改">${esc(tp.topic)} › ${esc(tp.sub)}</span></div>
+        ${it._noise ? `<span class="ctag old">${esc(it._noise)}</span>` : ''}${cl.state === 'added' ? '<span class="ctag ok">已加入重點</span>' : cl.state === 'dismissed' ? '<span class="ctag old">已略過</span>' : ''}${perm && cl.state === 'new' ? '<span class="ctag" title="不會再提醒檢視">永久有效</span>' : ''}<span class="sp"></span><span class="faint" title="建議的主題，加入時可以改">${esc(tp.topic)} › ${esc(tp.sub)}</span></div>
       ${it.url ? `<a class="nw-t" href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.title)}</a>` : `<div class="nw-t">${esc(it.title)}</div>`}
       ${it.sum ? `<div class="nt-body">${esc(it.sum)}</div>` : ''}
       ${cl.list.length > 1 ? `<details class="nw-more"><summary>${cl.list.length} 則相關報導</summary>${cl.list.map(x => `<div>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.src || '來源')}：${esc(x.title)}</a>` : esc(x.title)} <span class="faint">${fmtNewsTime(x.at, st)}</span></div>`).join('')}</details>` : ''}
-      <div class="nw-act">${cl.state !== 'added' ? `<button class="btn" data-act="news-add" data-id="${it.id}">${ic('plus')}加入重點</button>` : ''}${cl.state === 'new' ? `<button class="btn" data-act="news-skip" data-id="${it.id}">略過</button>` : ''}${cl.state === 'dismissed' ? `<button class="btn" data-act="news-undo" data-id="${it.id}">恢復未處理</button>` : ''}</div></div>`;
+      ${stale ? `<div class="nw-stale"><span>這則放了超過 ${rd} 天，還需要嗎？</span><span class="sp"></span><button class="btn" data-act="news-skip" data-id="${it.id}" title="移到「已略過」，之後還可以恢復">刪除</button><button class="btn" data-act="news-keep" data-id="${it.id}" title="${rd} 天後再提醒一次">還需要</button><button class="btn" data-act="news-keep-forever" data-id="${it.id}" title="不會再提醒">永久有效</button></div>` : ''}
+      <div class="nw-act">${cl.state !== 'added' ? `<button class="btn" data-act="news-add" data-id="${it.id}">${ic('plus')}加入重點</button>` : ''}${cl.state === 'new' && !stale ? `<button class="btn" data-act="news-skip" data-id="${it.id}">略過</button>` : ''}${cl.state === 'dismissed' ? `<button class="btn" data-act="news-undo" data-id="${it.id}">恢復未處理</button>` : ''}</div></div>`;
   }).join('');
   const older = newsOlder(st);
   const foot = (shown.length > lim ? `<div class="empty" style="padding:10px"><button class="btn" data-act="news-more">再顯示 ${Math.min(40, shown.length - lim)} 則</button></div>` : '') +
@@ -2758,7 +2784,9 @@ function renderNewsTab(st, el, head, keep) {
     : !shown.length ? `<div class="empty">${F.st === 'new' ? '沒有未處理的新聞' : '沒有符合的新聞'}</div>` : '';
   box(`<div class="nfil"><div class="seg2" role="group" aria-label="狀態">${seg}</div>
       <label class="chk" style="margin:0;font-size:12px"><input type="checkbox" data-nwann ${F.ann ? 'checked' : ''}>只看公告</label>
-      ${noiseN ? `<label class="chk" style="margin:0;font-size:12px"><input type="checkbox" data-nwnoise ${F.noise ? 'checked' : ''}>顯示可能的雜訊 ${noiseN}</label>` : ''}</div>
+      ${noiseN ? `<label class="chk" style="margin:0;font-size:12px"><input type="checkbox" data-nwnoise ${F.noise ? 'checked' : ''}>顯示可能的雜訊 ${noiseN}</label>` : ''}
+      <span class="sp"></span>${unreadN ? `<button type="button" class="btn sm" data-act="news-read-all">全部標為已讀</button>` : ''}
+      <label class="faint" style="font-size:12px" title="未處理的新聞放超過這個天數，框會變黃，提醒你看看還要不要">提醒檢視 <select data-nwrmd>${NEWS_RMD.map(([v, l]) => `<option value="${v}" ${v === rd ? 'selected' : ''}>${l}</option>`).join('')}</select></label></div>
     <div class="note" style="margin:0 0 8px">新聞先放在這裡，按「加入重點」確認後才會變成重點。股價漲跌、盤勢排行、標題沒提到這家公司的，先當成可能的雜訊收起來。${NEWS.err ? `<span class="r">　更新失敗：${esc(NEWS.err)}</span>` : ''}</div>
     ${bar}${empty}${cards}${foot}`);
 }
@@ -2773,7 +2801,7 @@ function renderNotes() {
   if (!NEWS.cache.has(nk) && !NEWS.loadingKey) { NEWS.loadingKey = nk; newsLoad([nk]).finally(() => { NEWS.loadingKey = null; if (selStock() === st) { renderNotes(); if (K.st === st) kOverlay(st, calc(st)); } }); }
   const nwNew = NEWS.cache.has(nk) ? newsNewCount(st) : 0;
   if (all.some(n => n.topic === '營收財報' && n.fiscal_period)) coKick(st);
-  const head = `<div class="ph"><div class="tabs"><button class="${tab === 'notes' ? 'on' : ''}" data-act="ntab" data-tab="notes">重點<span class="n">${all.length}</span></button><button class="${tab === 'news' ? 'on' : ''}" data-act="ntab" data-tab="news">新聞${nwNew ? `<span class="n nwn">${nwNew}</span>` : ''}</button><button class="${tab === 'strategy' ? 'on' : ''}" data-act="ntab" data-tab="strategy">我的策略<span class="n">${strats.length}</span></button></div><span class="sp"></span>
+  const head = `<div class="ph"><div class="tabs"><button class="${tab === 'notes' ? 'on' : ''}" data-act="ntab" data-tab="notes">重點<span class="n">${all.length}</span></button><button class="${tab === 'news' ? 'on' : ''}" data-act="ntab" data-tab="news">新聞${nwNew ? `<span class="n nwn">${nwNew}</span>` : ''}${NEWS.cache.has(nk) && newsUnreadCount(st) ? '<span class="unr" title="有沒看過的新聞"></span>' : ''}</button><button class="${tab === 'strategy' ? 'on' : ''}" data-act="ntab" data-tab="strategy">我的策略<span class="n">${strats.length}</span></button></div><span class="sp"></span>
     ${tab === 'news' ? `<button class="btn" data-act="news-refresh">更新</button><button class="ibtn sm" data-act="mgr-news" title="在資料整理裡看所有標的的新聞" aria-label="所有新聞">${ic('list')}</button>` : tab === 'notes' ? `<button class="btn" data-act="prompt"><span><span class="hide-m">複製</span>整理指令</span></button><button class="btn pri" data-act="import">貼上匯入</button>
     <button class="ibtn sm" data-act="add-note" title="手動新增重點" aria-label="手動新增重點">${ic('plus')}</button>
     <button class="ibtn sm" data-act="mgr-stock" title="資料整理：批次編輯、刪除、合併分類" aria-label="資料整理">${ic('list')}</button>
@@ -3990,6 +4018,34 @@ function newsOlder(st) {     // 還沒載入的更早月份
   return (c.avail || []).filter(m => !c.months[m]).sort().reverse();
 }
 // 狀態：new 未處理、added 已加入重點、dismissed 已略過
+// 已讀、檢視提醒：newsMeta[id] = { r: 1（點過）, k: 上次按「還需要」的時間，-1 是永久有效 }
+const NEWS_RMD = [[7, '7 天'], [15, '15 天'], [30, '30 天'], [60, '60 天'], [90, '90 天'], [0, '不提醒']];
+const newsRemindDays = () => isNum(data.settings.newsRemind) ? data.settings.newsRemind : 15;
+const newsUnread = cl => cl.list.some(x => !(data.newsMeta[x.id] || {}).r);
+function newsStale(cl) {
+  const d = newsRemindDays(); if (!d || cl.state !== 'new') return false;
+  const m = data.newsMeta[cl.lead.id] || {};
+  if (m.k === -1) return false;
+  const from = m.k > 0 ? m.k : Math.max(...cl.list.map(x => x.at || 0));
+  return from > 0 && Date.now() - from > d * 864e5;
+}
+// 點過就算已讀：不重畫整頁，只拿掉紅點
+function newsMarkRead(ids, quiet) {
+  let ch = 0;
+  ids.forEach(id => { const m = data.newsMeta[id] || {}; if (!m.r) { data.newsMeta[id] = Object.assign({}, m, { r: 1 }); ch++; } });
+  if (!ch) return 0;
+  data.updatedAt = Date.now(); saveData();
+  if (!data.demo) { conf.dirty = true; saveConf(); scheduleSync(); }
+  if (!quiet) { const tb = document.querySelector('[data-act="ntab"][data-tab="news"] .unr'); if (tb && !newsUnreadCount(selStock())) tb.remove(); }
+  return ch;
+}
+function newsUnreadCount(st) { if (!st || !NEWS.cache.has(newsKey(st))) return 0; return newsClusters(newsItems(st).filter(it => !newsNoise(it, st))).filter(cl => cl.state === 'new' && newsUnread(cl)).length; }
+function newsKeep(id, forever) {
+  const cl = NEWS.cl && NEWS.cl.get(id), ids = cl ? cl.list.map(x => x.id) : [id];
+  ids.forEach(x => { data.newsMeta[x] = Object.assign({}, data.newsMeta[x], { r: 1, k: forever ? -1 : Date.now() }); });
+  commit();
+  toast(forever ? '已設成永久有效，不會再提醒' : `已保留，${newsRemindDays()} 天後再提醒`);
+}
 function newsState(id) {
   const a = data.newsAct[id];
   if (!a) return 'new';
@@ -5359,7 +5415,8 @@ function mgNewsRows() {
   let h = '';
   for (let i = i0; i < i1; i++) {
     const { it, st, noise, state } = rows[i], on = MG.nsel.has(it.id), tp = newsTopic(it);
-    h += `<div class="mg-r nwr ${on ? 'on' : ''} ${state !== 'new' ? 'old' : ''}" style="top:${i * H}px" data-nwid="${it.id}" data-i="${i}">
+    const unread = !(data.newsMeta[it.id] || {}).r && state === 'new', stale = newsStale({ state, lead: it, list: [it] });
+    h += `<div class="mg-r nwr ${on ? 'on' : ''} ${state !== 'new' ? 'old' : ''}${unread ? ' unread' : ''}${stale ? ' stale' : ''}" style="top:${i * H}px" data-nwid="${it.id}" data-i="${i}">
       <span class="ck"><input type="checkbox" ${on ? 'checked' : ''} aria-label="選取"></span>
       <span class="dt num">${fmtNewsTime(it.at, st)}</span>
       <span class="sk">${esc(st.code)} <span class="faint">${esc(st.name || '')}</span></span>
@@ -6058,6 +6115,7 @@ function merge3(B, L, R) {
   DATA_ARRAYS.forEach(k => { o[k] = mergeArr(k, B[k], L[k] || [], R[k] || []); });
   o.settings = mergeObj(B.settings, L.settings, R.settings);
   o.newsAct = mergeObj(B.newsAct, L.newsAct, R.newsAct);
+  o.newsMeta = mergeObj(B.newsMeta, L.newsMeta, R.newsMeta);
   // 標的被刪掉了：它的交易、股利、重點、策略也不留
   const ids = new Set(o.stocks.map(x => x.id));
   ['trades', 'dividends', 'notes', 'strategies'].forEach(k => { o[k] = o[k].filter(x => !x.stockId || ids.has(x.stockId)); });
@@ -6249,6 +6307,9 @@ document.addEventListener('click', e => {
     case 'news-older': if (st) { const mo = newsOlder(st)[0]; if (mo) newsLoad([newsKey(st)], { months: [mo], force: true }).then(() => renderNotes()); } break;
     case 'news-more': ui.newsPage = (ui.newsPage || 40) + 40; renderNotes(); break;
     case 'news-run': newsRun(); break;
+    case 'news-keep': newsKeep(id, false); break;
+    case 'news-keep-forever': newsKeep(id, true); break;
+    case 'news-read-all': { const s2 = selStock(); if (s2) { const ids = newsItems(s2).map(x => x.id); newsMarkRead(ids, true); renderNotes(); toast('已全部標為已讀'); } break; }
     case 'vault-on': vaultEnable(); break;
     case 'vault-change': vaultChange(false); break;
     case 'vault-rc': vaultNewRc(); break;
@@ -6335,6 +6396,17 @@ document.addEventListener('visibilitychange', () => {
   if (conf.token) sync();
 });
 matchMedia('(max-width: 899px)').addEventListener('change', () => { render(); applyCollapse(); });
+
+// 新聞：點到卡片（標題、相關報導、按鈕）就算看過；改提醒天數
+document.addEventListener('click', e => {
+  const card = e.target.closest && e.target.closest('.nw[data-ids], .mg-r.nwr[data-nwid]');
+  if (!card || e.target.closest('input[type=checkbox]')) return;
+  const ids = (card.dataset.ids || card.dataset.nwid).split(',').filter(Boolean);
+  if (newsMarkRead(ids)) { card.classList.remove('unread'); const d = card.querySelector('.nw-dot'); if (d) d.remove(); }
+}, true);
+document.addEventListener('change', e => {
+  if (e.target.matches && e.target.matches('[data-nwrmd]')) { data.settings.newsRemind = +e.target.value; commit(); toast(+e.target.value ? `未處理的新聞超過 ${e.target.value} 天會提醒` : '已關閉檢視提醒'); }
+});
 
 /* ========== 可調整大小的版面 ========== */
 const LAYOUT_DEF = { cl: 51, lt: 55, rt: 55, ms: 380 };
