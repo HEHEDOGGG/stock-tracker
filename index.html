@@ -430,6 +430,76 @@ a.nw-t:hover{color:var(--ac);text-decoration:underline}
 .fch-tr{display:flex;align-items:center;gap:6px;line-height:1.55}.fch-tr b{font-weight:600;color:var(--tx);font-variant-numeric:tabular-nums}.fch-tr span{color:var(--tx2)}
 .fch-tr i.kl{width:10px;height:2px;border-radius:1px;display:inline-block}
 .fch-m{margin:0 0 8px}
+.fch-tr i.kb{width:8px;height:8px;border-radius:2px;display:inline-block}
+/* 解鎖畫面 */
+html.locked body>*:not(#lock):not(dialog){visibility:hidden}
+.lock{position:fixed;inset:0;z-index:1000;background:var(--bg);display:grid;place-items:center;padding:16px}
+.lock[hidden]{display:none}
+.lock-box{width:min(360px,100%);display:flex;flex-direction:column;align-items:stretch;gap:10px;text-align:center}
+.lock-box h2{margin:4px 0 0;font-size:20px;font-weight:600}
+.lock-box p{margin:0 0 6px;font-size:13px}
+.lock-ic{margin:0 auto;width:56px;height:56px;border-radius:16px;background:var(--panel2);display:grid;place-items:center;color:var(--ac)}
+.lock-ic .ic{width:28px;height:28px}
+.lock-in{font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--line2);background:var(--panel);text-align:center}
+.lock-go{padding:10px;font-size:15px;justify-content:center;text-align:center}
+.ibtn[hidden]{display:none!important}
+.lock .err{min-height:18px;color:var(--red);font-size:13px}
+.lock .lnk{align-self:center}
+.keyline.rc{font-size:18px;letter-spacing:.06em;text-align:center;padding:12px}
+:root[data-theme="dark"]{--fc4:#c98500;--fc5:#d55181}
+:root[data-theme="light"]{--fc4:#eda100;--fc5:#e87ba4}
+/* 資產畫面 */
+.as-wrap{flex:1;min-height:0;display:flex}
+.as-main{flex:1;min-width:0;overflow:auto;padding:12px 14px}
+.as-dr{width:380px;flex:none;border-left:1px solid var(--line);background:var(--panel);overflow:auto;display:flex;flex-direction:column}
+.as-dr-h{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel)}
+.as-dr-b{padding:10px 12px}
+.as-kv{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:13px}
+.as-kv div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding:3px 0}
+.as-kv b{font-weight:500;font-variant-numeric:tabular-nums}
+.as-news{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:13px}
+.as-news a{color:var(--tx);text-decoration:none}.as-news a:hover{text-decoration:underline}
+.as-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.as-tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.as-tile .k{font-size:12px;color:var(--tx2)}.as-tile .v{font-size:18px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.as-tile.hero .v{font-size:22px}.as-tile .d{font-size:12px}
+.as-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:12px;margin-bottom:12px;align-items:start}
+.as-card{padding:12px;margin-bottom:12px}.as-grid .as-card{margin-bottom:0}
+.as-h{display:flex;align-items:center;gap:8px;font-weight:500;font-size:13px;color:var(--tx);margin-bottom:8px;flex-wrap:wrap}
+.as-h select,.as-set select,.as-set input{background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:3px 8px;font-size:12px;color:var(--tx)}
+.as-seg{display:flex;gap:2px;height:28px;border-radius:4px;overflow:hidden}
+.as-seg-b{min-width:2px;display:flex;align-items:center;padding-left:6px;border-radius:4px}
+.as-seg-b span{font-size:12px;font-weight:600;color:#fff;text-shadow:0 0 2px rgba(0,0,0,.35)}
+.as-leg{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;margin-top:6px}
+.as-sw{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.as-hl{display:grid;gap:2px}
+.as-hr{display:grid;grid-template-columns:minmax(120px,1.2fr) minmax(60px,2fr) minmax(96px,auto);gap:10px;align-items:center;border:0;background:transparent;color:inherit;text-align:left;padding:6px 6px;border-radius:6px;cursor:pointer;font:inherit}
+.as-hr:hover{background:var(--panel2)}
+.as-hn{display:flex;flex-direction:column;min-width:0}.as-hn b{font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.as-hb{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden}.as-hb i{display:block;height:100%;background:var(--fc1);border-radius:4px}
+.as-hv{display:flex;flex-direction:column;align-items:flex-end;font-size:13px;font-variant-numeric:tabular-nums}
+.as-acct{border-top:1px solid var(--line)}.as-acct:first-of-type{border-top:0}
+.as-acct.closed{opacity:.6}
+.as-acct-h{width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;color:inherit;padding:8px 4px;cursor:pointer;font:inherit;text-align:left}
+.as-acct-h:hover{background:var(--panel2);border-radius:6px}
+.as-acct-n{flex:1;display:flex;flex-direction:column;min-width:0}.as-acct-n b{font-weight:500}
+.as-acct-v{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+.as-acct-b{padding:4px 4px 10px}
+.as-rb{width:62px;padding-left:0!important;padding-right:0!important;white-space:nowrap}
+td.neg{color:var(--tx2)}
+.as-set{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:13px}
+.as-picks{display:grid;gap:6px}
+.as-pick{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.as-pick:has(input:checked){border-color:var(--ac)}
+button.lnk{border:0;background:none;padding:0;color:var(--tx);cursor:pointer;font:inherit;text-align:left}button.lnk:hover{text-decoration:underline}
+@media (max-width:899px){
+  .as-tiles{grid-template-columns:1fr 1fr}
+  .as-grid{grid-template-columns:1fr}
+  .as-main{padding:8px}
+  .as-dr{position:fixed;inset:auto 0 0 0;width:auto;max-height:78dvh;border-left:0;border-top:1px solid var(--line2);border-radius:14px 14px 0 0;box-shadow:0 -8px 24px var(--shade);z-index:3;padding-bottom:env(safe-area-inset-bottom)}
+  .as-hr{grid-template-columns:minmax(0,1.3fr) minmax(40px,1fr) auto}
+  .as-tabs button{padding:4px 12px;font-size:13px}
+}
 table.kv{border-collapse:collapse;font-size:13px;width:100%}
 .kv th{text-align:left;font-weight:400;color:var(--tx2);padding:4px 12px 4px 0;white-space:nowrap;width:1%;vertical-align:top}
 .kv td{padding:4px 0;word-break:break-all}
@@ -504,6 +574,8 @@ dialog.co{background:var(--bg)}
   <div class="sp hide-m"></div>
   <div class="st" id="st"></div>
   <div class="acts">
+    <button class="ibtn" id="lockBtn" data-act="vault-lock" title="現在上鎖" aria-label="現在上鎖" hidden><svg viewBox="0 0 24 24" class="ic"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></button>
+    <button class="ibtn" data-act="assets" title="資產與配息" aria-label="資產與配息"><svg viewBox="0 0 24 24" class="ic"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z"/><path d="M4 7l11-3v3"/><path d="M15 13.5h2"/></svg></button>
     <button class="ibtn" data-act="mgr" title="資料整理" aria-label="資料整理"><svg viewBox="0 0 24 24" class="ic"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17"/></svg></button>
     <button class="ibtn" data-act="refresh" title="重新抓取報價" aria-label="重新抓取報價"><svg viewBox="0 0 24 24" class="ic"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button>
     <button class="ibtn" id="syncBtn" data-act="sync" title="同步" aria-label="同步"><svg viewBox="0 0 24 24" class="ic"><path d="M7 18h10a4 4 0 0 0 .6-8A6 6 0 0 0 6.1 9.6 4.2 4.2 0 0 0 7 18z"/></svg></button>
@@ -532,6 +604,7 @@ dialog.co{background:var(--bg)}
 <dialog id="mem" class="mem"></dialog>
 <dialog id="mgr" class="mgr"></dialog>
 <dialog id="co" class="mgr co"></dialog>
+<dialog id="as" class="mgr co as"></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="fileIn" accept="application/json,.json" hidden>
 
@@ -539,7 +612,7 @@ dialog.co{background:var(--bg)}
 'use strict';
 
 /* ========== 基本資料與儲存 ========== */
-const APP_VERSION = '2026.11.06';
+const APP_VERSION = '2026.11.07';
 const LS = { data: 'st.data', conf: 'st.conf', quotes: 'st.quotes', ui: 'st.ui' };
 const $ = s => document.querySelector(s);
 
@@ -555,10 +628,11 @@ function defaultSettings() {
   };
 }
 const TRASH_DAYS = 30;                                   // 回收桶保留天數
-const DATA_ARRAYS = ['stocks', 'trades', 'dividends', 'notes', 'strategies', 'imports', 'trash', 'tombs', 'dupIgnore'];
+const DATA_ARRAYS = ['stocks', 'trades', 'dividends', 'notes', 'strategies', 'imports', 'trash', 'tombs', 'dupIgnore', 'accounts', 'acctTx', 'acctBal', 'divSkip'];
 // imports：匯入紀錄；trash：回收桶；tombs：刪過的重點（再匯入時提醒）；dupIgnore：標為「不是重複」的組合
 // newsAct：新聞的處理狀態 { 新聞編號: 'd'（略過）| 'a:重點編號'（已加入）}
-function emptyData() { return { version: 1, updatedAt: 0, settings: defaultSettings(), stocks: [], trades: [], dividends: [], notes: [], strategies: [], imports: [], trash: [], tombs: [], dupIgnore: [], newsAct: {} }; }
+// accounts：資產帳戶；acctTx：帳戶進出（ref 連到交易 t:、股利 d:、轉帳 x:）；acctBal：記下的餘額；divSkip：刪掉、不要再自動算的配息
+function emptyData() { return { version: 1, updatedAt: 0, settings: defaultSettings(), stocks: [], trades: [], dividends: [], notes: [], strategies: [], imports: [], trash: [], tombs: [], dupIgnore: [], accounts: [], acctTx: [], acctBal: [], divSkip: [], newsAct: {} }; }
 function normalize(d) {
   const o = Object.assign(emptyData(), d || {});
   o.settings = Object.assign(defaultSettings(), (d && d.settings) || {});
@@ -576,6 +650,7 @@ function normalize(d) {
 // 資料主要存在瀏覽器的資料庫（IndexedDB，容量大）；localStorage 放得下時也存一份，開啟時比較快
 let data = normalize(load(LS.data));
 const DATA0 = data;
+const DIV = { timer: 0, busy: false };   // 配息自動計算的狀態（commit 會用到，所以放前面）
 let conf = Object.assign({ theme: 'dark', token: '', repo: '', dirty: false, syncedAt: 0 }, load(LS.conf) || {});
 let quotes = Object.assign({ tw: {}, us: {}, fx: null, time: 0 }, load(LS.quotes) || {});
 let ui = Object.assign({ tab: 'hold', sel: null, kInt: '1d', kTrades: true, kNotes: true, noteTopic: '', memFold: false, memSpin: false, hiWin: 250, statRange: 0 }, load(LS.ui) || {});
@@ -583,9 +658,69 @@ ui.noteHl = new Set(); ui.noteOpen = new Set();
 let qState = { status: 'idle', msg: '' };
 let syncState = { status: conf.token ? 'idle' : 'off', msg: '', at: 0 };
 
+/* ---- 密碼保護：資料用 AES-256-GCM 加密 ----
+   一把隨機的「資料金鑰」加密所有資料；資料金鑰再分別用「密碼」和「救援碼」包起來（PBKDF2-SHA256）。
+   換密碼只要重新包資料金鑰。這台裝置和 GitHub 上存的都是加密後的內容。 */
+const VAULT = { on: !!load('st.vault'), hdr: load('st.vault'), dek: null, seq: 0, pending: Promise.resolve(), last: Date.now(), hiddenAt: 0 };
+const te = s => new TextEncoder().encode(s), td = b => new TextDecoder().decode(b);
+const b64e = u8 => { let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const rndB = n => crypto.getRandomValues(new Uint8Array(n));
+const PBKDF2_IT = 600000, RC_IT = 100000;
+async function kdf(secret, salt, it) {
+  const base = await crypto.subtle.importKey('raw', te(secret), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: it, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+const aad = kid => ({ additionalData: te('st|' + kid) });
+async function aesEnc(key, bytes, kid) { const iv = rndB(12); const ct = new Uint8Array(await crypto.subtle.encrypt(Object.assign({ name: 'AES-GCM', iv }, aad(kid)), key, bytes)); return { iv: b64e(iv), ct: b64e(ct) }; }
+async function aesDec(key, o, kid) { return new Uint8Array(await crypto.subtle.decrypt(Object.assign({ name: 'AES-GCM', iv: b64d(o.iv) }, aad(kid)), key, b64d(o.ct))); }
+const importDek = raw => crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['encrypt', 'decrypt']);
+// 救援碼：25 個字（Crockford base32，不會有 0/O、1/I/L 分不清的問題）
+const RC_A = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+function newRc() { const b = rndB(25); return [...b].map(x => RC_A[x % 32]).join('').replace(/(.{5})(?!$)/g, '$1-'); }
+const normRc = s => String(s || '').toUpperCase().replace(/[\s\-]/g, '').replace(/O/g, '0').replace(/[IL]/g, '1');
+const normPw = s => String(s || '').normalize('NFKC');
+// 用密碼或救援碼打開資料金鑰
+async function unwrapDek(hdr, secret, useRc) {
+  const w = useRc ? hdr.r : hdr.p;
+  const k = await kdf(useRc ? normRc(secret) : normPw(secret), b64d(w.salt), w.it);
+  return aesDec(k, w.w, hdr.kid);          // 錯的話會丟出錯誤
+}
+async function wrapPart(raw, secret, it, kid) { const salt = rndB(16); const k = await kdf(secret, salt, it); return { salt: b64e(salt), it, w: await aesEnc(k, raw, kid) }; }
+// 加密的儲存（IndexedDB）：鍵名也打亂，看不出存了哪些股票
+async function sKey(k) { if (!VAULT.on || !VAULT.dek) return k; const h = new Uint8Array(await crypto.subtle.digest('SHA-256', te(VAULT.hdr.kid + '|' + k))); return 'x:' + [...h.slice(0, 16)].map(x => x.toString(16).padStart(2, '0')).join(''); }
+async function sGet(k) {
+  if (VAULT.on && !VAULT.dek) return undefined;
+  const v = await idbGet(await sKey(k));
+  if (!VAULT.on || v == null) return v;
+  try { return JSON.parse(td(await aesDec(VAULT.dek, v, VAULT.hdr.kid))); } catch (e) { return undefined; }
+}
+async function sSet(k, v) {
+  if (VAULT.on && !VAULT.dek) return false;
+  if (!VAULT.on) return idbSet(k, v);
+  return idbSet(await sKey(k), await aesEnc(VAULT.dek, te(JSON.stringify(v)), VAULT.hdr.kid));
+}
+async function vaultEnc(text) { return aesEnc(VAULT.dek, te(text), VAULT.hdr.kid); }
+async function vaultDec(o) { return td(await aesDec(VAULT.dek, o, VAULT.hdr.kid)); }
+// 雲端／備份檔的格式：外面只看得到格式和金鑰編號，看不到內容（也故意不放 updatedAt，舊版網頁會當作沒變）
+async function vaultEnvelope(text) { const e = await vaultEnc(text); return JSON.stringify({ st_vault: 1, kid: VAULT.hdr.kid, hv: VAULT.hdr.hv || 0, p: VAULT.hdr.p, r: VAULT.hdr.r, iv: e.iv, ct: e.ct }); }
+const isEnvelope = o => !!(o && o.st_vault && o.kid && o.p && o.ct);
+if (VAULT.on) document.documentElement.classList.add('locked');
 const STORE = { ok: true, ls: true };
 function saveData() {
   const json = JSON.stringify(data);
+  if (VAULT.on) {
+    if (!VAULT.dek) return;                       // 還沒解鎖：什麼都不寫
+    const seq = ++VAULT.seq;
+    VAULT.pending = vaultEnc(json).then(async e => {
+      if (seq !== VAULT.seq) return;              // 後面還有更新的要存
+      const t = JSON.stringify(e);
+      try { localStorage.setItem(LS.data, t); STORE.ls = true; localStorage.removeItem('st.data.idb'); }
+      catch (err) { STORE.ls = false; try { localStorage.removeItem(LS.data); localStorage.setItem('st.data.idb', '1'); } catch (e2) { /* 略過 */ } }
+      const ok = await idbSet('data', t); const was = STORE.ok; STORE.ok = ok || STORE.ls; if (was !== STORE.ok) renderBanner();
+    }).catch(() => {});
+    return;
+  }
   try { localStorage.setItem(LS.data, json); STORE.ls = true; localStorage.removeItem('st.data.idb'); }
   catch (e) { STORE.ls = false; try { localStorage.removeItem(LS.data); localStorage.setItem('st.data.idb', '1'); } catch (e2) { /* 略過 */ } }
   idbSet('data', json).then(ok => { const was = STORE.ok; STORE.ok = ok || STORE.ls; if (was !== STORE.ok) renderBanner(); });
@@ -615,14 +750,15 @@ async function idbSet(k, v) {
 }
 // 開啟時：資料庫裡的比較新（或 localStorage 放不下）就用資料庫的；第一次使用時把舊資料搬過去
 async function idbLoadData() {
+  if (VAULT.on) return false;                     // 加密的資料在解鎖時讀
   const s = await idbGet('data');
   if (typeof s === 'string') {
     let d = null; try { d = JSON.parse(s); } catch (e) { d = null; }
     if (d && data === DATA0 && (d.updatedAt || 0) >= (data.updatedAt || 0) && (d.updatedAt || d.stocks)) { data = normalize(d); return true; }
-  } else if (data === DATA0 && (data.stocks.length || data.notes.length)) idbSet('data', JSON.stringify(data));
+  } else if (!VAULT.on && data === DATA0 && (data.stocks.length || data.notes.length)) idbSet('data', JSON.stringify(data));
   return false;
 }
-function saveConf() { store(LS.conf, conf); }
+function saveConf() { if (VAULT.on) { saveConfVault(); return; } store(LS.conf, conf); }
 function saveUi() { store(LS.ui, { tab: ui.tab, sel: ui.sel, kInt: ui.kInt, kTrades: ui.kTrades, kNotes: ui.kNotes, noteTopic: ui.noteTopic, memFold: ui.memFold, memSpin: ui.memSpin, hiWin: ui.hiWin, statRange: ui.statRange }); }
 
 function commit(markDirty = true) {
@@ -631,6 +767,7 @@ function commit(markDirty = true) {
   if (markDirty && !data.demo) { conf.dirty = true; saveConf(); scheduleSync(); }
   render();
   if (MG.open) mgRender();
+  if (!DIV.busy) divSchedule();
   if (data.settings.apiUrl && !data.demo && newsWatchSig() !== conf.newsSig) scheduleNewsWatch();
 }
 // 資料整理畫面的狀態
@@ -798,7 +935,7 @@ async function fetchQuotes(codesOverride) {
     Object.assign(quotes.us, j.us || {});
     if (isNum(j.fx)) quotes.fx = j.fx;
     quotes.time = j.time || Date.now();
-    store(LS.quotes, quotes);
+    if (VAULT.on) sSet('quotes', quotes); else store(LS.quotes, quotes);
     let changed = false;
     data.stocks.forEach(st => {
       const q = st.market === 'TW' ? (j.tw || {})[st.code] : (j.us || {})[st.code];
@@ -1536,6 +1673,7 @@ function toBars(raw, tz) {
   return [...m.values()].sort((a, b) => a.time < b.time ? -1 : 1);
 }
 function storeHist(key, rec) {
+  if (VAULT.on) { sSet(key, rec); return; }
   try { localStorage.setItem(key, JSON.stringify(rec)); }
   catch (e) {
     Object.keys(localStorage).filter(k => k.startsWith('st.h.') && k !== key).forEach(k => localStorage.removeItem(k));
@@ -1548,7 +1686,7 @@ async function loadHistory(st, int) {
   if (isDemoStock(st)) return demoBars(st, int);
   const key = `st.h.${st.market}:${st.code}:${int}`;
   const maxAge = int === '1d' ? 15 * 60e3 : 12 * 3600e3;
-  const cached = HMEM[key] || load(key);
+  const cached = HMEM[key] || (VAULT.on ? await sGet(key) : load(key));
   if (cached && Date.now() - cached.at < maxAge) { HMEM[key] = cached; return unpackBars(cached.b); }
   const s = data.settings;
   if (!s.apiUrl) { if (cached) return unpackBars(cached.b); throw new Error('還沒設定報價來源'); }
@@ -1876,6 +2014,7 @@ function promptRules(mode) {
 - 一則新聞裡有好幾件可以分別核對的事，拆成好幾條，news_ids 都填同一則。
 - 不值得記的（純股價漲跌、盤勢排行、只是順帶提到這家公司、和其他則重複）不用整理，把編號放在 skipped_news_ids。
 - 事件日期：內文寫了事件發生的日期就用那天；沒寫就用新聞發布日。公司公告的事實發生日就是事件日期。
+- 只有標題、沒有內容的新聞（例如 DIGITIMES）：只依標題記，不要自己補細節；標題看不出具體內容的放 skipped_news_ids。
 - source 寫媒體或公告名稱；source_url 可以不填，網頁會用新聞的連結，不要自己編連結。
 - 你從這些新聞推論出來的看法，放 AI research；evidence_ids 填同一次輸出裡支持它的重點 id。
 ` : '';
@@ -3235,7 +3374,7 @@ const FIN = { cache: new Map(), loading: new Set(), tried: new Map(), err: '', u
 const finData = st => FIN.cache.get(newsKey(st)) || null;
 async function finLoad(keys, opt = {}) {
   keys = [...new Set(keys)];
-  for (const k of keys) if (!FIN.cache.has(k)) { const c = await idbGet('fin:' + k); if (c) FIN.cache.set(k, c); }
+  for (const k of keys) if (!FIN.cache.has(k)) { const c = await sGet('fin:' + k); if (c) FIN.cache.set(k, c); }
   if (data.demo) { keys.forEach(k => { const st = data.stocks.find(s => newsKey(s) === k); if (st) finDemo(st); }); return; }
   if (!data.settings.apiUrl || FIN.unsupported) return;
   const need = keys.filter(k => !FIN.loading.has(k) && (opt.force || !FIN.cache.has(k) || Date.now() - (FIN.cache.get(k)._got || 0) > 6 * 3600e3));
@@ -3245,7 +3384,7 @@ async function finLoad(keys, opt = {}) {
     const r = await gas({ action: 'fin', codes: need.join(',') });
     if (!r || !r.items) { FIN.unsupported = true; return; }
     FIN.err = ''; FIN.status = r.status || FIN.status;
-    need.forEach(k => { const d = r.items[k]; if (d) { d._got = Date.now(); FIN.cache.set(k, d); idbSet('fin:' + k, d); } });
+    need.forEach(k => { const d = r.items[k]; if (d) { d._got = Date.now(); FIN.cache.set(k, d); sSet('fin:' + k, d); } });
   } catch (e) { FIN.err = e.message; }
   finally { need.forEach(k => FIN.loading.delete(k)); }
 }
@@ -3357,8 +3496,10 @@ function fchDraw(el) {
   const n = sp.cats.length, F = 11, ink = { t: 'var(--tx)', t2: 'var(--tx2)', t3: 'var(--tx3)' };
   const H = Math.round(Math.max(sp.minH || 130, Math.min(sp.maxH || 210, W * (sp.ratio || 0.3))));
   // Y 軸
-  const isLine = sp.kind === 'lines';
-  const all = isLine ? sp.lines.flatMap(l => l.v).filter(isNum) : sp.v.filter(isNum);
+  const isLine = sp.kind === 'lines', isStack = sp.kind === 'stack';
+  // 堆疊長條：正的往上疊、負的（例如負債）往下疊；sp.v 是每一期的合計（給標籤和說明用）
+  if (isStack) sp.v = sp.cats.map((_, i) => sp.stack.reduce((s, x) => s + (x.neg ? 0 : (+x.v[i] || 0)), 0));
+  const all = isLine ? sp.lines.flatMap(l => l.v).filter(isNum) : isStack ? sp.cats.flatMap((_, i) => [sp.v[i], -sp.stack.reduce((s, x) => s + (x.neg ? (+x.v[i] || 0) : 0), 0)]) : sp.v.filter(isNum);
   if (!all.length) { el.innerHTML = '<div class="faint small">沒有資料</div>'; return; }
   let lo = Math.min(...all), hi = Math.max(...all);
   if (isLine) { const pad = (hi - lo) * 0.15 || Math.abs(hi) * 0.1 || 1; lo -= pad; hi += pad; if (lo < 0 && Math.min(...all) >= 0) lo = 0; }
@@ -3385,12 +3526,30 @@ function fchDraw(el) {
   const xl = padT + H + (SH ? gap + SH : 0) + 14;
   sp.cats.forEach((c, i) => { if ((n - 1 - i) % every === 0) g += `<text x="${X(i).toFixed(1)}" y="${xl}" text-anchor="middle" class="ft${i === hl ? ' fcur' : ''}">${esc(c.short)}</text>`; });
   let marks = '';
-  if (!isLine) {
+  if (isStack) {
+    const y0 = Y(0);
+    sp.cats.forEach((_, i) => {
+      const x = +(X(i) - bw / 2).toFixed(1), w = +bw.toFixed(1);
+      [false, true].forEach(neg => {
+        const segs = sp.stack.map((ser, k) => ({ ser, k, v: +ser.v[i] || 0 })).filter(o => !!o.ser.neg === neg && o.v > 0);
+        let acc = 0;
+        segs.forEach((o, j) => {
+          const a = neg ? -acc : acc, b = neg ? -(acc + o.v) : acc + o.v; acc += o.v;
+          const ya = Y(a), yb = Y(b), outer = j === segs.length - 1;
+          // 段與段之間留 2px 底色縫隙；最外面那段才圓角
+          const gapA = j ? (neg ? 1 : -1) : 0, yA = ya + gapA;
+          if (Math.abs(yb - yA) < 0.6) return;
+          marks += outer ? `<path class="fsk" data-i="${i}" fill="${o.ser.color}" d="${barPath(x, w, +yA.toFixed(1), +yb.toFixed(1))}"/>`
+            : `<rect class="fsk" data-i="${i}" fill="${o.ser.color}" x="${x}" width="${w}" y="${Math.min(yA, yb).toFixed(1)}" height="${Math.abs(yb - yA).toFixed(1)}"/>`;
+        });
+      });
+    });
+  } else if (!isLine) {
     const y0 = Y(0);
     sp.v.forEach((v, i) => { if (isNum(v)) marks += `<path class="fb${i === hl ? ' hl' : ''}" data-i="${i}" d="${barPath(+(X(i) - bw / 2).toFixed(1), +bw.toFixed(1), y0, +Y(v).toFixed(1))}"/>`; });
     // 最新一期標數字（放得下才標）
     const lv = sp.v[hl];
-    if (isNum(lv)) {
+    if (isNum(lv) && !sp.noLab) {
       const t = sp.lab ? sp.lab(lv) : unit.div > 1 ? (x => (x < 0 ? '−' : '') + nf(Math.abs(x) >= 100 ? 0 : Math.abs(x) >= 10 ? 1 : 2).format(Math.abs(x)))(lv / unit.div) + unit.s : sp.fmt(lv), w = txtW(t, F), x = Math.min(W - padR - w / 2, Math.max(padL + w / 2, X(hl)));
       const y = lv >= 0 ? Y(lv) - 5 : Y(lv) + 13;
       if (y > 9 && y < padT + H + 12) marks += `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" class="fv">${esc(t)}</text>`;
@@ -3425,7 +3584,8 @@ function fchDraw(el) {
     sv.forEach((v, i) => { if (isNum(v)) strip += `<path class="fs${i === hl ? ' hl' : ''}" data-i="${i}" fill="${v >= 0 ? sp.strip.up : sp.strip.dn}" d="${barPath(+(X(i) - sbw / 2).toFixed(1), +sbw.toFixed(1), SY(0), +SY(v).toFixed(1))}"/>`; });
   }
   // 標題列：名稱・單位・圖例（兩條線以上才有圖例）
-  const leg = isLine ? sp.lines.map(l => `<span class="fk"><i style="background:${l.color}"></i>${esc(l.name)}</span>`).join('') : '';
+  const leg = isLine && sp.lines.length > 1 ? sp.lines.map(l => `<span class="fk"><i style="background:${l.color}"></i>${esc(l.name)}</span>`).join('')
+    : isStack ? sp.stack.map(l => `<span class="fk"><i style="background:${l.color};height:8px;width:8px;border-radius:2px"></i>${esc(l.name)}</span>`).join('') : '';
   const last = isLine ? ends.map(e => `${sp.lines[e.k].name} ${e.t}`).join('，') : `${sp.cats[hl] ? sp.cats[hl].label : ''} ${isNum(sp.v[hl]) ? sp.fmt(sp.v[hl]) : ''}`;
   el.innerHTML = `<div class="fch-h"><span class="fch-t">${esc(sp.title)}</span>${unit.u && !sp.pct ? `<span class="fch-u">${esc(unit.u)}</span>` : ''}<span class="sp"></span>${leg}</div>
     <svg width="${W}" height="${totH}" viewBox="0 0 ${W} ${totH}" role="img" tabindex="0" aria-label="${esc(sp.title + '。最新：' + last + '。完整數字在下方表格。')}">
@@ -3454,6 +3614,7 @@ function fchHover(el, i, keep) {
   const h = document.createElement('div'); h.className = 'fch-tt'; h.textContent = sp.cats[i].label; tip.append(h);
   const row = (val, name, color, line) => { const r = document.createElement('div'); r.className = 'fch-tr'; if (color) { const k = document.createElement('i'); k.className = line ? 'kl' : 'kb'; k.style.background = color; r.append(k); } const b = document.createElement('b'); b.textContent = val; const s2 = document.createElement('span'); s2.textContent = name; r.append(b, s2); tip.append(r); };
   if (G.isLine) sp.lines.forEach(l => row(isNum(l.v[i]) ? sp.fmt(l.v[i]) : '—', l.name, l.color, true));
+  else if (sp.kind === 'stack') sp.stack.forEach(l => { if (+l.v[i]) row((l.neg ? '−' : '') + sp.fmt(+l.v[i]), l.name, l.color, false); });
   else row(isNum(sp.v[i]) ? sp.fmt(sp.v[i]) : '—', sp.name || sp.title, '', false);
   if (sp.strip) row(fmtP(sp.strip.v[i]), sp.strip.name, '', false);
   (sp.extra || []).forEach(e => { const v = e.v[i]; if (v != null && v !== '') row(typeof v === 'number' ? e.fmt(v) : v, e.name); });
@@ -3775,7 +3936,7 @@ function newsBoot() { newsWatchSync(); }
 // 讀新聞：先用本機資料庫的，再向 Apps Script 要最新的（本月和上個月 10 分鐘更新一次）
 async function newsLoad(keys, opt = {}) {
   keys = [...new Set(keys)];
-  for (const k of keys) if (!NEWS.cache.has(k)) NEWS.cache.set(k, (await idbGet('news:' + k)) || { months: {}, avail: [] });
+  for (const k of keys) if (!NEWS.cache.has(k)) NEWS.cache.set(k, (await sGet('news:' + k)) || { months: {}, avail: [] });
   if (data.demo) { keys.forEach(k => { const st = data.stocks.find(s => newsKey(s) === k); if (st) newsDemo(st); }); return; }
   if (!data.settings.apiUrl || NEWS.unsupported) return;
   const m0 = monthStr(Date.now()), m1 = prevMonthStr(m0), months = opt.months || [m0, m1];
@@ -3792,7 +3953,7 @@ async function newsLoad(keys, opt = {}) {
       const c = NEWS.cache.get(k), got = r.items[k] || {};
       months.forEach(m => { c.months[m] = { items: got[m] || [], at: Date.now() }; });
       if (r.avail && r.avail[k]) c.avail = r.avail[k];
-      idbSet('news:' + k, c);
+      sSet('news:' + k, c);
     });
   }
 }
@@ -3891,7 +4052,7 @@ async function newsRun() {
   } catch (e) { toast('收集失敗：' + e.message); if (e.code === 'needkey') renderNotes(); }
 }
 // 設定裡的「新聞收集」狀態
-const NEWS_FEED = { twse: '證交所重大訊息', tpex: '櫃買中心重大訊息', gnews: 'Google 新聞', ytw: 'Yahoo 股市', yfin: 'Yahoo Finance', sec: 'SEC 公告' };
+const NEWS_FEED = { twse: '證交所重大訊息', tpex: '櫃買中心重大訊息', gnews: 'Google 新聞', ytw: 'Yahoo 股市', dgt: 'DIGITIMES（標題）', tn: '科技新報', yfin: 'Yahoo Finance', sec: 'SEC 公告' };
 async function newsStatusShow() {
   const el = $('#newsStat'); if (!el) return;
   if (data.demo) { el.textContent = '示範資料不會收集新聞。'; return; }
@@ -3905,6 +4066,787 @@ async function newsStatusShow() {
   el.innerHTML = `<div>${r.trigger ? `每 ${r.every} 小時自動收集` : '<span class="r">還沒設定自動收集：請在 Apps Script 執行一次 setupNews</span>'}・追蹤 ${r.watch.length} 檔${S ? `・上次收集 ${fmtDT(S.at)}，新增 ${S.added} 則` : '・還沒收集過'}${r.sec ? '' : '・美股 SEC 公告沒有開啟'}</div>
     ${rows ? `<table class="t small" style="margin-top:6px"><thead><tr><th class="tl">來源</th><th>成功／請求</th><th>新增</th><th class="tl">狀況</th></tr></thead><tbody>${rows}</tbody></table>` : ''}`;
 }
+/* ========== 配息：依除息日當時的持股自動計算 ========== */
+// 除息資料來自 Apps Script 的財報功能（Yahoo 的除息紀錄）；手動記過的同一次配息不會重複算
+function divOpt() {
+  const s = data.settings;
+  return { fee: isNum(s.divFee) ? s.divFee : 10, nhi: s.divNhi !== false, wht: isNum(s.usWht) ? s.usWht : 0.3 };
+}
+// 除息日「前一天收盤」的持股（除息日當天才買的沒有配息；當天賣的還是有）
+function sharesBefore(st, date) {
+  let sh = 0;
+  for (const e of events(st)) {
+    if (e.d >= date) break;
+    if (e.k === 'd') { if (e.r.type === 'stock') sh += +e.r.shares || 0; }
+    else if (e.r.side === 'buy') sh += e.r.shares;
+    else sh = Math.max(0, sh - e.r.shares);
+  }
+  return sh;
+}
+function divCalc(st, dps, held) {
+  const o = divOpt(), us = st.market === 'US';
+  const gross = us ? Math.round(dps * held * 100) / 100 : Math.floor(dps * held + 1e-6);   // 台股：元以下捨去
+  const parts = []; let deduct = 0;
+  if (!us) {
+    if (o.nhi && gross >= 20000) { const n = Math.round(gross * 0.0211); deduct += n; parts.push(`二代健保 ${n}`); }
+    if (o.fee > 0 && gross > 0) { const f = Math.min(o.fee, gross - deduct); deduct += f; parts.push(`匯費 ${f}`); }
+  } else if (o.wht > 0) { const w = Math.round(gross * o.wht * 100) / 100; deduct += w; parts.push(`預扣稅 ${Math.round(o.wht * 100)}%`); }
+  return { gross, deduct: Math.round(deduct * 100) / 100, parts };
+}
+const divId = (st, d) => 'dv_' + st.id + '_' + d;
+function divSchedule() { clearTimeout(DIV.timer); DIV.timer = setTimeout(divSync, 400); }
+function divSync() {
+  if (DIV.busy) return 0;
+  const t0 = today(), skip = new Set(data.divSkip || []);
+  let changed = 0;
+  data.stocks.forEach(st => {
+    const fd = finData(st); if (!fd || !Array.isArray(fd.div)) return;          // 沒有除息資料：已經算好的先不動
+    const mine = data.dividends.filter(x => x.stockId === st.id);
+    const manual = mine.filter(x => !x.auto && x.type === 'cash'), used = new Set(), want = new Map();
+    fd.div.filter(e => e.d <= t0 && e.a > 0).forEach(e => {
+      const held = sharesBefore(st, e.d); if (!(held > 0)) return;
+      const id = divId(st, e.d); if (skip.has(id)) return;
+      // 已經手動記過這次配息（日期在除息日前 10 天到後 60 天內）
+      const ex = Date.parse(e.d);
+      const m = manual.filter(x => !used.has(x.id)).map(x => ({ x, dd: (Date.parse(x.date) - ex) / 864e5 })).filter(o => o.dd >= -10 && o.dd <= 60).sort((a, b) => Math.abs(a.dd) - Math.abs(b.dd))[0];
+      if (m) { used.add(m.x.id); return; }
+      want.set(id, { e, held });
+    });
+    want.forEach(({ e, held }, id) => {
+      const c = divCalc(st, e.a, held);
+      const r = mine.find(x => x.id === id);
+      if (!r) {
+        const rec = { id, stockId: st.id, date: e.d, type: 'cash', amount: c.gross, deduct: c.deduct, shares: 0, note: '', auto: true, exDate: e.d, dps: e.a, held, ts: Date.parse(e.d) };
+        data.dividends.push(rec); changed++;
+        if (typeof cashAutoDiv === 'function') cashAutoDiv(st, rec);
+      } else if (!r.edited && (r.amount !== c.gross || r.deduct !== c.deduct || r.held !== held || r.dps !== e.a)) {
+        Object.assign(r, { amount: c.gross, deduct: c.deduct, held, dps: e.a }); changed++;
+        if (typeof cashSyncRef === 'function') cashSyncRef('d:' + r.id, r.amount - r.deduct);
+      } else if (r.edited && (r.held !== held || r.dps !== e.a)) { r.held = held; r.dps = e.a; changed++; }
+    });
+    // 已經不成立的自動紀錄（例如交易日期改了）：你沒改過的就拿掉
+    mine.forEach(r => {
+      if (r.auto && !r.edited && !want.has(r.id)) {
+        data.dividends = data.dividends.filter(x => x !== r); changed++;
+        if (typeof cashDropRef === 'function') cashDropRef('d:' + r.id);
+      }
+    });
+  });
+  if (changed) { DIV.busy = true; try { commit(); } finally { DIV.busy = false; } if ($('#as').open) asRender(); }
+  return changed;
+}
+// 有交易的標的都要有除息資料
+function divNeedKeys() { return [...new Set(data.trades.map(t => t.stockId))].map(id => data.stocks.find(s => s.id === id)).filter(Boolean).map(newsKey); }
+async function divBoot() {
+  const keys = divNeedKeys(); if (!keys.length) return;
+  await finLoad(keys);
+  divSync();
+}
+const toTwd = (v, cur) => cur === 'USD' ? v * getFx().rate : v;
+function divRows() {
+  return data.dividends.map(x => {
+    const st = data.stocks.find(s => s.id === x.stockId); if (!st) return null;
+    const cur = curOf(st), net = x.type === 'cash' ? (+x.amount || 0) - (+x.deduct || 0) : 0;
+    return { x, st, cur, net, twd: toTwd(net, cur), y: x.date.slice(0, 4) };
+  }).filter(Boolean).sort((a, b) => a.x.date < b.x.date ? 1 : a.x.date > b.x.date ? -1 : 0);
+}
+function asDividends() {
+  const R = divRows(), cash = R.filter(r => r.x.type === 'cash'), y0 = String(new Date().getFullYear());
+  const sum = f => cash.filter(f).reduce((s, r) => s + r.twd, 0), yr = Date.now() - 365 * 864e5;
+  const tiles = [['今年實收', sum(r => r.y === y0)], ['去年實收', sum(r => r.y === String(+y0 - 1))], ['近 12 個月', sum(r => Date.parse(r.x.date) >= yr)], ['累計實收', sum(() => true)]];
+  const fx = getFx(), hasUs = cash.some(r => r.cur === 'USD');
+  const years = [...new Set(cash.map(r => r.y))].sort();
+  const ys = years.length ? Array.from({ length: +years[years.length - 1] - +years[0] + 1 }, (_, i) => String(+years[0] + i)).slice(-10) : [];
+  const chart = ys.length ? finChart({ key: 'asdiv', kind: 'bars', title: '每年實收股利', name: '實收', unit: axisUnit(Math.max(...ys.map(y => sum(r => r.y === y))), 'TWD'), cur: 'TWD',
+    cats: ys.map(y => ({ label: y + ' 年' + (y === y0 ? '（今年到目前）' : ''), short: y })), v: ys.map(y => sum(r => r.y === y)), fmt: v => 'NT$' + fmtMoney(v, 'TWD'), ratio: 0.24, minH: 110, maxH: 170,
+    extra: [{ name: '筆', v: ys.map(y => cash.filter(r => r.y === y).length + ' 筆') }] }) : '';
+  // 篩選
+  const f = ui.asDivF || {}, yOpts = [...new Set(R.map(r => r.y))];
+  const held = data.stocks.filter(s => data.dividends.some(x => x.stockId === s.id));
+  const list = R.filter(r => (!f.y || r.y === f.y) && (!f.s || r.st.id === f.s));
+  const stat = r => r.x.type === 'stock' ? '<span class="ctag">配股</span>' : r.x.auto ? (r.x.edited ? '<span class="ctag">自動・已修改</span>' : '<span class="ctag ok" title="依除息日前一天的持股自動計算">自動</span>') : '<span class="ctag">手動</span>';
+  const rows = list.slice(0, 400).map(r => {
+    const x = r.x, sym = curSym(r.cur), m = r.st.market;
+    const exp = x.auto && x.edited && isNum(x.dps) && isNum(x.held) ? divCalc(r.st, x.dps, x.held) : null;
+    return `<tr><td class="tl">${x.date}</td><td class="tl"><button class="lnk" data-act="as-stock" data-sid="${r.st.id}">${esc(r.st.code)} ${esc(r.st.name || '')}</button></td>
+      <td>${x.type === 'cash' && isNum(x.dps) ? (m === 'US' ? x.dps.toFixed(4).replace(/0+$/, '').replace(/\.$/, '') : x.dps.toFixed(x.dps < 1 ? 4 : 2)) : '—'}</td>
+      <td class="hide-m">${x.type === 'cash' && isNum(x.held) ? fmtShares(x.held, m) : x.type === 'stock' ? '+' + fmtShares(+x.shares, m) : '—'}</td>
+      <td class="hide-m">${x.type === 'cash' ? sym + fmtMoney(+x.amount, r.cur) : '—'}</td>
+      <td class="hide-m">${x.type === 'cash' ? fmtMoney(+x.deduct || 0, r.cur) : '—'}</td>
+      <td><b>${x.type === 'cash' ? sym + fmtMoney(r.net, r.cur) : '—'}</b>${exp && Math.abs(exp.gross - exp.deduct - r.net) > 0.5 ? `<div class="sub faint">試算 ${fmtMoney(exp.gross - exp.deduct, r.cur)}</div>` : ''}</td>
+      <td>${stat(r)}</td><td style="width:34px;padding:0"><button class="ibtn sm" data-act="as-div-edit" data-id="${x.id}" aria-label="修改">${ic('edit')}</button></td></tr>`;
+  }).join('');
+  // 每檔小計
+  const by = held.map(st => {
+    const rs = cash.filter(r => r.st.id === st.id), c = calc(st);
+    const y12 = rs.filter(r => Date.parse(r.x.date) >= yr).reduce((s, r) => s + r.net, 0);
+    return { st, all: rs.reduce((s, r) => s + r.net, 0), y12, yoc: c.cost > 0 ? y12 / c.cost : null, cur: curOf(st), n: rs.length };
+  }).filter(o => o.n).sort((a, b) => toTwd(b.all, b.cur) - toTwd(a.all, a.cur));
+  // 沒有除息資料的持股
+  const noData = divNeedKeys().filter(k => { const d = FIN.cache.get(k); return !d || !Array.isArray(d.div); }).map(k => data.stocks.find(s => newsKey(s) === k)).filter(Boolean);
+  const o = divOpt();
+  return `<div class="as-tiles">${tiles.map(([k, v]) => `<div class="as-tile"><span class="k">${k}</span><span class="v">NT$${fmtMoney(v, 'TWD')}</span></div>`).join('')}</div>
+    ${hasUs ? `<div class="note" style="margin:-4px 0 10px">美股股利依目前匯率 ${fx.rate.toFixed(2)} 換算成台幣。</div>` : ''}
+    ${noData.length ? `<div class="steps" style="margin-bottom:10px"><b>${noData.length} 檔還沒有除息資料，暫時算不出配息</b><div style="margin-top:4px">${noData.map(s => esc(s.code + ' ' + (s.name || ''))).join('、')}。${data.settings.apiUrl ? '除息資料來自 Apps Script 的財報功能，剛加入的標的最多 12 小時內會抓到。' : '要先設定 Apps Script（README 步驟三、五）。'}</div></div>` : ''}
+    <div class="as-grid">
+      <div class="cosec as-card"><div class="as-h">每年實收</div>${chart || '<div class="faint small">還沒有配息紀錄</div>'}</div>
+      <div class="cosec as-card"><div class="as-h">各標的</div>${by.length ? `<table class="t small"><thead><tr><th class="tl">標的</th><th>累計實收</th><th>近 12 個月</th><th title="近 12 個月實收 ÷ 目前持股成本">成本殖利率</th></tr></thead><tbody>${by.map(b => `<tr><td class="tl"><button class="lnk" data-act="as-stock" data-sid="${b.st.id}">${esc(b.st.code)} ${esc(b.st.name || '')}</button></td><td>${curSym(b.cur)}${fmtMoney(b.all, b.cur)}</td><td>${fmtMoney(b.y12, b.cur)}</td><td>${b.yoc != null ? (b.yoc * 100).toFixed(2) + '%' : '—'}</td></tr>`).join('')}</tbody></table>` : '<div class="faint small">還沒有配息紀錄</div>'}</div>
+    </div>
+    <div class="cosec as-card"><div class="as-h">配息明細<span class="sp"></span>
+      <select data-asf="y" aria-label="年份"><option value="">全部年份</option>${yOpts.map(y => `<option ${f.y === y ? 'selected' : ''}>${y}</option>`).join('')}</select>
+      <select data-asf="s" aria-label="標的"><option value="">全部標的</option>${held.map(s => `<option value="${s.id}" ${f.s === s.id ? 'selected' : ''}>${esc(s.code + ' ' + (s.name || ''))}</option>`).join('')}</select></div>
+      ${rows ? `<div class="tw"><table class="t small"><thead><tr><th class="tl">日期</th><th class="tl">標的</th><th>每股</th><th class="hide-m">持股</th><th class="hide-m">總額</th><th class="hide-m">扣除</th><th>實收</th><th>來源</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>` : '<div class="faint small">沒有符合的紀錄</div>'}
+      <div class="note">「自動」是依除息日前一天的持股 × 每股股利算的，日期是除息日（實際入帳通常晚 3～5 週）。實際入帳金額不同時按鉛筆修改，改過的不會再被自動覆蓋。股票股利（配股）請在交易區手動加。</div></div>
+    <div class="cosec as-card"><div class="as-h">自動計算的扣除</div>
+      <div class="as-set">
+        <label>台股匯費 <input data-asset="divFee" inputmode="decimal" value="${o.fee}" style="width:64px"> 元</label>
+        <label class="chk"><input type="checkbox" data-asset="divNhi" ${o.nhi ? 'checked' : ''}>台股單次 2 萬元以上扣二代健保 2.11%</label>
+        <label>美股預扣稅 <input data-asset="usWht" inputmode="decimal" value="${Math.round(o.wht * 100)}" style="width:52px"> %</label>
+        ${typeof cashDivSetting === 'function' ? cashDivSetting() : ''}
+      </div><div class="note">改了之後，沒手動修改過的自動紀錄會重新計算。台股股利所得要在報稅時申報，這裡不扣所得稅。</div></div>`;
+}
+
+/* ========== 資產：現金與其他資產帳戶 ==========
+   每個帳戶可以「更新餘額」（記下某天的實際餘額），也可以「記一筆」進出；
+   餘額＝最近一次記下的餘額＋之後的進出。買賣股票、配息可以自動從現金帳戶扣款或存入，資產才不會重複算。 */
+const ACCT_TYPES = [['cash', '現金／活存'], ['deposit', '定存'], ['fund', '基金'], ['insurance', '保險'], ['crypto', '加密貨幣'], ['property', '房地產'], ['other', '其他資產'], ['loan', '貸款'], ['card', '信用卡']];
+const ACCT_NAME = Object.fromEntries(ACCT_TYPES);
+const isDebt = a => a.type === 'loan' || a.type === 'card';
+// 圖表分類（顏色依分類固定，不依排名）
+const AS_CATS = [['tw', '台股', 'var(--fc1)'], ['us', '美股', 'var(--fc2)'], ['cash', '現金與存款', 'var(--fc3)'], ['oth', '其他資產', 'var(--fc4)'], ['debt', '負債', 'var(--fc5)']];
+const acctCat = a => isDebt(a) ? 'debt' : (a.type === 'cash' || a.type === 'deposit') ? 'cash' : 'oth';
+const acctById = id => data.accounts.find(a => a.id === id) || null;
+const TX_KIND = { in: '存入', out: '提出', xfer: '轉帳', int: '利息', trade: '股票交易', div: '股利', adj: '其他' };
+function acctValue(a, date) {
+  date = date || '9999-12-31';
+  const bs = data.acctBal.filter(b => b.acct === a.id && b.date <= date).sort((x, y) => x.date < y.date ? -1 : x.date > y.date ? 1 : (x.ts || 0) - (y.ts || 0));
+  const last = bs[bs.length - 1];
+  let v = last ? +last.value || 0 : 0;
+  data.acctTx.forEach(t => {
+    if (t.acct !== a.id || t.date > date) return;
+    if (last && (t.date < last.date || (t.date === last.date && (t.ts || 0) <= (last.ts || 0)))) return;   // 已經包含在記下的餘額裡
+    v += +t.amount || 0;
+  });
+  return v;
+}
+const acctTwd = (a, date) => toTwd(acctValue(a, date), a.cur);
+const cashAccts = cur => data.accounts.filter(a => !a.closed && (a.type === 'cash' || a.type === 'deposit') && a.cur === cur);
+const txOf = ref => data.acctTx.find(t => t.ref === ref) || null;
+function cashSyncRef(ref, amount, date) {
+  const t = txOf(ref); if (!t) return false;
+  if (isNum(amount)) t.amount = amount;
+  if (date) t.date = date;
+  return true;
+}
+function cashDropRef(ref) { const n = data.acctTx.length; data.acctTx = data.acctTx.filter(t => t.ref !== ref); return n !== data.acctTx.length; }
+const tradeNet = t => t.side === 'buy' ? -(t.shares * t.price + (+t.fee || 0)) : t.shares * t.price - (+t.fee || 0) - (+t.tax || 0);
+// 買賣股票後：問要不要從現金帳戶扣款／存入
+function cashAskTrade(st, t) {
+  if (txOf('t:' + t.id) || data.settings.cashAskOff) return;
+  const cur = curOf(st), net = tradeNet(t), list = cashAccts(cur), s = data.settings, auto = s['tradeAcct' + cur];
+  if (auto && acctById(auto) && !acctById(auto).closed) { cashLink(auto, 't:' + t.id, t.date, net, 'trade', `${st.code} ${t.side === 'buy' ? '買進' : '賣出'}`); commit(); toast(`已${net < 0 ? '從' : '存入'}「${acctById(auto).name}」${net < 0 ? '扣款' : ''} ${curSym(cur)}${fmtMoney(Math.abs(net), cur)}`); return; }
+  setTimeout(() => cashAsk({ cur, net, date: t.date, ref: 't:' + t.id, kind: 'trade', memo: `${st.code} ${t.side === 'buy' ? '買進' : '賣出'} ${fmtShares(t.shares, st.market)}`, remKey: 'tradeAcct' + cur,
+    title: net < 0 ? '從現金帳戶扣款？' : '存入現金帳戶？', lead: `${stockLabel(st)} ${t.side === 'buy' ? '買進' : '賣出'}，${net < 0 ? '共付出' : '實收'} <b>${curSym(cur)}${fmtMoney(Math.abs(net), cur)}</b>。` }), 30);
+}
+// 手動記的現金股利：問要不要存入
+function cashAskDiv(st, x) {
+  if (x.type !== 'cash' || txOf('d:' + x.id) || data.settings.cashAskOff) return;
+  const cur = curOf(st), net = (+x.amount || 0) - (+x.deduct || 0);
+  setTimeout(() => cashAsk({ cur, net, date: x.date, ref: 'd:' + x.id, kind: 'div', memo: `${st.code} 股利`, remKey: 'divAcct' + cur,
+    title: '存入現金帳戶？', lead: `${stockLabel(st)} 現金股利，實收 <b>${curSym(cur)}${fmtMoney(net, cur)}</b>。` }), 30);
+}
+// 自動算出的配息：有設定存入帳戶就直接存
+function cashAutoDiv(st, x) {
+  const cur = curOf(st), id = data.settings['divAcct' + cur], a = id && acctById(id);
+  if (a && !a.closed && !txOf('d:' + x.id)) cashLink(a.id, 'd:' + x.id, x.date, (+x.amount || 0) - (+x.deduct || 0), 'div', `${st.code} 股利（自動）`);
+}
+function cashLink(acct, ref, date, amount, kind, note) {
+  data.acctTx.push({ id: uid(), acct, date, amount: Math.round(amount * 100) / 100, kind, ref, note: note || '', ts: Date.now() });
+}
+function cashAsk(o) {
+  const list = cashAccts(o.cur);
+  const opts = list.map(a => `<label class="as-pick"><input type="radio" name="acct" value="${a.id}" ${a.id === (data.settings[o.remKey] || data.settings['lastAcct' + o.cur] || list[0].id) ? 'checked' : ''}><span><b>${esc(a.name)}</b><span class="faint">　${ACCT_NAME[a.type]}・目前 ${curSym(a.cur)}${fmtMoney(acctValue(a), a.cur)}</span></span></label>`).join('');
+  openDialog({
+    title: o.title, okText: list.length ? (o.net < 0 ? '扣款' : '存入') : '建立帳戶並' + (o.net < 0 ? '扣款' : '存入'),
+    body: `<div style="margin-bottom:10px">${o.lead}</div>
+      ${list.length ? `<div class="as-picks">${opts}</div>` : `<div class="note" style="margin:0 0 8px">還沒有${o.cur === 'USD' ? '美元' : '台幣'}現金帳戶。建立一個，之後買賣股票就會自動扣款或存入，資產才不會重複計算。</div>${fld('帳戶名稱', inp('newName', o.cur === 'USD' ? '複委託美元帳戶' : '證券交割戶'))}${fld(`目前餘額（${o.cur === 'USD' ? '美元' : '元'}，這筆${o.net < 0 ? '扣款' : '存入'}之前）`, numInp('newBal', '', 'placeholder="0"'))}`}
+      <label class="chk" style="margin-top:8px"><input type="checkbox" name="rem">以後${o.kind === 'trade' ? '買賣股票' : '的股利'}都自動用這個帳戶，不用再問</label>
+      <div class="note">這筆會記在帳戶的進出裡，之後改或刪掉${o.kind === 'trade' ? '交易' : '股利'}，帳戶會跟著改。</div>`,
+    extra: '<button type="button" class="btn" data-act="cash-never">以後別問</button><button type="button" class="btn" data-close>不用</button>',
+    onOk: f => {
+      let id = fv(f, 'acct');
+      if (!list.length) {
+        const name = fv(f, 'newName'); if (!name) return '請填帳戶名稱';
+        const b = fv(f, 'newBal') === '' ? 0 : fnum(f, 'newBal'); if (!isNum(b)) return '餘額要是數字';
+        const a = { id: uid(), name, type: 'cash', cur: o.cur, note: '', ts: Date.now() };
+        data.accounts.push(a); data.acctBal.push({ id: uid(), acct: a.id, date: o.date < today() ? o.date : today(), value: b, ts: Date.now() - 1 }); id = a.id;
+      }
+      if (!id) return '請選一個帳戶';
+      cashLink(id, o.ref, o.date, o.net, o.kind, o.memo);
+      data.settings['lastAcct' + o.cur] = id;
+      if (f.elements.rem && f.elements.rem.checked) data.settings[o.remKey] = id;
+      commit(); if ($('#as').open) asRender();
+      toast(`已${o.net < 0 ? '從' : '存入'}「${acctById(id).name}」${o.net < 0 ? '扣款' : ''}`);
+    }
+  });
+  // 「不用」只關掉，不記
+}
+function cashDivSetting() {
+  const sel = cur => { const L = cashAccts(cur), v = data.settings['divAcct' + cur] || ''; return `<select data-asset="divAcct${cur}"><option value="">不存入帳戶</option>${L.map(a => `<option value="${a.id}" ${a.id === v ? 'selected' : ''}>${esc(a.name)}</option>`).join('')}</select>`; };
+  return `<label>台股股利存入 ${sel('TWD')}</label>${data.stocks.some(s => s.market === 'US') ? `<label>美股股利存入 ${sel('USD')}</label>` : ''}`;
+}
+/* ---- 帳戶分頁 ---- */
+function asAccounts() {
+  const A = data.accounts.filter(a => ui.asClosed || !a.closed);
+  const groups = ACCT_TYPES.map(([t, n]) => ({ t, n, list: A.filter(a => a.type === t) })).filter(g => g.list.length);
+  const open = ui.asOpen || '';
+  const row = a => {
+    const v = acctValue(a), last = acctLast(a);
+    return `<div class="as-acct${a.closed ? ' closed' : ''}"><button class="as-acct-h" data-act="as-acct-toggle" data-id="${a.id}" aria-expanded="${open === a.id}">
+        <span class="as-acct-n"><b>${esc(a.name)}</b>${a.closed ? '<span class="ctag">已結清</span>' : ''}<span class="faint small">${a.cur === 'USD' ? '美元' : '台幣'}${last ? '・' + last : ''}</span></span>
+        <span class="as-acct-v ${isDebt(a) ? 'r' : ''}">${isDebt(a) ? '−' : ''}${curSym(a.cur)}${fmtMoney(Math.abs(v), a.cur)}${a.cur === 'USD' ? `<div class="faint small">≈ NT$${fmtMoney(Math.abs(toTwd(v, 'USD')), 'TWD')}</div>` : ''}</span></button>
+      ${open === a.id ? acctDetail(a) : ''}</div>`;
+  };
+  const tot = asTotals();
+  return `<div class="as-tiles">${[['淨資產', tot.net], ['總資產', tot.assets], ['負債', tot.debt], ['現金與存款', tot.by.cash]].map(([k, v]) => `<div class="as-tile"><span class="k">${k}</span><span class="v">NT$${fmtMoney(v, 'TWD')}</span></div>`).join('')}</div>
+    <div class="inl" style="margin:0 0 10px;flex-wrap:wrap"><button class="btn pri" data-act="as-acct-new">${ic('plus')}新增帳戶</button>${data.accounts.some(a => a.closed) ? `<label class="chk"><input type="checkbox" data-asui="asClosed" ${ui.asClosed ? 'checked' : ''}>顯示已結清的帳戶</label>` : ''}<label class="chk"><input type="checkbox" data-asset="cashAsk" ${data.settings.cashAskOff ? '' : 'checked'}>買賣股票、記股利時，問要不要從現金帳戶扣款或存入</label><span class="sp"></span><span class="faint small">股票的市值由持股自動帶入，不用另外記</span></div>
+    ${groups.length ? groups.map(g => `<div class="cosec as-card"><div class="as-h">${g.n}<span class="sp"></span><span class="faint small">${isDebt({ type: g.t }) ? '−' : ''}NT$${fmtMoney(Math.abs(g.list.reduce((s, a) => s + acctTwd(a), 0)), 'TWD')}</span></div>${g.list.map(row).join('')}</div>`).join('')
+      : `<div class="steps"><b>還沒有帳戶</b><div style="margin-top:6px">先建立你的現金帳戶（例如證券交割戶、活存），再加定存、基金、保險、加密貨幣、房地產或貸款。之後買賣股票會問你要不要從現金帳戶扣款，總資產才不會重複算。</div></div>`}`;
+}
+function acctLast(a) {
+  const ds = data.acctBal.filter(b => b.acct === a.id).map(b => b.date).concat(data.acctTx.filter(t => t.acct === a.id).map(t => t.date)).sort();
+  return ds.length ? '最近 ' + ds[ds.length - 1] : '';
+}
+function acctDetail(a) {
+  const H = [...data.acctBal.filter(b => b.acct === a.id).map(b => ({ k: 'b', d: b.date, ts: b.ts || 0, r: b })), ...data.acctTx.filter(t => t.acct === a.id).map(t => ({ k: 't', d: t.date, ts: t.ts || 0, r: t }))]
+    .sort((x, y) => x.d < y.d ? 1 : x.d > y.d ? -1 : y.ts - x.ts);
+  const sym = curSym(a.cur);
+  const rows = H.slice(0, 200).map(h => h.k === 'b'
+    ? `<tr><td class="tl">${h.d}</td><td class="tl"><span class="ctag">記下餘額</span></td><td></td><td><b>${sym}${fmtMoney(+h.r.value, a.cur)}</b></td><td class="as-rb"><button class="ibtn sm" data-act="as-bal-edit" data-id="${h.r.id}" aria-label="修改">${ic('edit')}</button><button class="ibtn sm" data-act="as-bal-del" data-id="${h.r.id}" aria-label="刪除">${ic('trash')}</button></td></tr>`
+    : `<tr><td class="tl">${h.d}</td><td class="tl">${TX_KIND[h.r.kind] || '其他'}${h.r.note ? `<div class="sub faint">${esc(h.r.note)}</div>` : ''}</td><td class="${h.r.amount < 0 ? 'neg' : ''}">${h.r.amount < 0 ? '−' : '+'}${fmtMoney(Math.abs(h.r.amount), a.cur)}</td><td></td><td class="as-rb">${h.r.ref && /^[td]:/.test(h.r.ref) ? `<span class="faint small" title="跟著${h.r.ref[0] === 't' ? '交易' : '股利'}自動更新">連動</span>` : `<button class="ibtn sm" data-act="as-tx-edit" data-id="${h.r.id}" aria-label="修改">${ic('edit')}</button>`}<button class="ibtn sm" data-act="as-tx-del" data-id="${h.r.id}" aria-label="刪除">${ic('trash')}</button></td></tr>`).join('');
+  return `<div class="as-acct-b"><div class="inl" style="flex-wrap:wrap;margin-bottom:8px"><button class="btn" data-act="as-bal" data-id="${a.id}">更新餘額</button><button class="btn" data-act="as-tx" data-id="${a.id}">記一筆</button><span class="sp"></span><button class="btn" data-act="as-acct-edit" data-id="${a.id}">編輯帳戶</button></div>
+    ${rows ? `<div class="tw"><table class="t small"><thead><tr><th class="tl">日期</th><th class="tl">項目</th><th>進出</th><th>餘額</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>` : '<div class="faint small">還沒有紀錄</div>'}
+    ${a.note ? `<div class="note">${esc(a.note)}</div>` : ''}</div>`;
+}
+function openAcct(a) {
+  const editing = !!a;
+  a = a || { name: '', type: 'cash', cur: 'TWD', note: '' };
+  openDialog({
+    title: editing ? '編輯帳戶' : '新增帳戶',
+    body: `${fld('名稱', inp('name', a.name, 'placeholder="例：國泰活存、元大交割戶、房貸"'))}
+      <div class="r2">${fld('類型', `<select name="type">${ACCT_TYPES.map(([v, l]) => `<option value="${v}" ${v === a.type ? 'selected' : ''}>${l}</option>`).join('')}</select>`)}
+      ${fld('幣別', `<select name="cur" ${editing ? 'disabled' : ''}><option value="TWD" ${a.cur === 'TWD' ? 'selected' : ''}>台幣</option><option value="USD" ${a.cur === 'USD' ? 'selected' : ''}>美元</option></select>`)}</div>
+      ${editing ? '' : `<div class="r2">${fld('目前餘額', numInp('bal', '', 'placeholder="0"'), '貸款、信用卡填「還欠多少」（正數）')}${fld('餘額的日期', inp('date', today(), 'type="date"'), '想從過去開始畫走勢，可以填當時的日期和餘額')}</div>`}
+      ${fld('備註（選填）', inp('note', a.note))}
+      ${editing ? `<label class="chk"><input type="checkbox" name="closed" ${a.closed ? 'checked' : ''}>已結清（不再顯示，但保留過去的紀錄）</label>` : ''}`,
+    extra: editing ? '<button type="button" class="btn danger" data-act="as-acct-del" data-id="' + a.id + '">刪除帳戶</button>' : '',
+    onOk: f => {
+      const name = fv(f, 'name'); if (!name) return '請填名稱';
+      if (editing) { Object.assign(a, { name, type: fv(f, 'type'), note: fv(f, 'note'), closed: !!(f.elements.closed && f.elements.closed.checked) }); }
+      else {
+        const b = fv(f, 'bal') === '' ? 0 : fnum(f, 'bal'), d = fv(f, 'date') || today();
+        if (!isNum(b)) return '餘額要是數字';
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return '請選日期';
+        const n = { id: uid(), name, type: fv(f, 'type'), cur: fv(f, 'cur'), note: fv(f, 'note'), ts: Date.now() };
+        data.accounts.push(n); data.acctBal.push({ id: uid(), acct: n.id, date: d, value: b, ts: Date.now() });
+        ui.asOpen = n.id;
+      }
+      commit(); asRender();
+    }
+  });
+}
+function openBal(a, b) {
+  const editing = !!b;
+  b = b || { date: today(), value: acctValue(a) };
+  openDialog({
+    title: `更新餘額　<span class="muted" style="font-size:14px">${esc(a.name)}</span>`,
+    body: `<div class="r2">${fld('日期', inp('date', b.date, 'type="date"'))}${fld(`這天的餘額（${a.cur === 'USD' ? '美元' : '元'}）`, numInp('value', b.value))}</div>
+      <div class="note">記下這天的實際餘額，之前的進出就不再影響之後的餘額（以這次記下的為準）。${isDebt(a) ? '貸款、信用卡填還欠多少（正數）。' : ''}</div>`,
+    onOk: f => {
+      const d = fv(f, 'date'), v = fnum(f, 'value');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return '請選日期';
+      if (!isNum(v)) return '請填餘額';
+      if (editing) Object.assign(b, { date: d, value: v });
+      else data.acctBal.push({ id: uid(), acct: a.id, date: d, value: v, ts: Date.now() });
+      commit(); asRender();
+    }
+  });
+}
+function openTx(a, t) {
+  const editing = !!t;
+  t = t || { date: today(), kind: 'in', amount: '', note: '' };
+  const others = data.accounts.filter(x => x.id !== a.id && !x.closed && x.cur === a.cur);
+  const k0 = editing ? (t.amount < 0 ? (t.kind === 'xfer' ? 'xfer' : 'out') : t.kind === 'int' ? 'int' : 'in') : 'in';
+  openDialog({
+    title: `記一筆　<span class="muted" style="font-size:14px">${esc(a.name)}</span>`,
+    body: `${radio('kind', [['in', '存入'], ['out', '提出'], ['int', '利息'], ...(others.length && !editing ? [['xfer', '轉到其他帳戶']] : [])], k0)}
+      <div class="r2">${fld('日期', inp('date', t.date, 'type="date"'))}${fld(`金額（${a.cur === 'USD' ? '美元' : '元'}）`, numInp('amount', editing ? Math.abs(t.amount) : ''))}</div>
+      <div id="xferF">${others.length ? fld('轉到', `<select name="to">${others.map(x => `<option value="${x.id}">${esc(x.name)}（${ACCT_NAME[x.type]}）</option>`).join('')}</select>`, '例：活存轉定存、繳房貸') : ''}</div>
+      ${fld('備註（選填）', inp('note', t.note))}`,
+    onOpen: f => upd(f), onInput: f => upd(f),
+    onOk: f => {
+      const k = fv(f, 'kind'), d = fv(f, 'date'), v = fnum(f, 'amount');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return '請選日期';
+      if (!(v > 0)) return '金額要大於 0';
+      const note = fv(f, 'note');
+      // 負債帳戶：存入＝還款（欠的變少）
+      const sign = k === 'in' || k === 'int' ? 1 : -1, amt = isDebt(a) ? -sign * v : sign * v;
+      if (editing) Object.assign(t, { date: d, amount: amt, kind: k === 'int' ? 'int' : k === 'in' ? 'in' : 'out', note });
+      else if (k === 'xfer') {
+        const to = acctById(fv(f, 'to')); if (!to) return '請選要轉到哪個帳戶';
+        const ref = 'x:' + uid();
+        data.acctTx.push({ id: uid(), acct: a.id, date: d, amount: isDebt(a) ? v : -v, kind: 'xfer', ref, note: note || '轉到 ' + to.name, ts: Date.now() });
+        data.acctTx.push({ id: uid(), acct: to.id, date: d, amount: isDebt(to) ? -v : v, kind: 'xfer', ref, note: note || '從 ' + a.name + ' 轉入', ts: Date.now() });
+      } else data.acctTx.push({ id: uid(), acct: a.id, date: d, amount: amt, kind: k, ref: '', note, ts: Date.now() });
+      commit(); asRender();
+    }
+  });
+  function upd(f) { const x = f.querySelector('#xferF'); if (x) x.style.display = fv(f, 'kind') === 'xfer' ? '' : 'none'; }
+}
+
+/* ---- 總覽：比例與走勢 ---- */
+function asTotals(date) {
+  const by = { tw: 0, us: 0, cash: 0, oth: 0, debt: 0 }, hold = [];
+  const C = calcAll(), fx = getFx().rate;
+  data.stocks.forEach(st => {
+    const c = C[st.id];
+    if (!isHeld(st, c) || c.mv == null) return;
+    const v = st.market === 'US' ? c.mv * fx : c.mv;
+    by[st.market === 'US' ? 'us' : 'tw'] += v;
+    hold.push({ st, v, c });
+  });
+  data.accounts.forEach(a => { const v = acctTwd(a); by[acctCat(a)] += v; if (v && acctCat(a) !== 'debt') hold.push({ a, v }); });
+  const assets = by.tw + by.us + by.cash + by.oth;
+  return { by, assets, debt: by.debt, net: assets - by.debt, hold: hold.sort((x, y) => y.v - x.v) };
+}
+// 每月底的資產（股票用月收盤價、美股用當月匯率；帳戶用當時的餘額）
+const AS = { hist: new Map(), fx: null, loading: false, err: '' };
+async function asLoadHist() {
+  if (AS.loading) return; AS.loading = true;
+  try {
+    const sts = [...new Set(data.trades.map(t => t.stockId))].map(id => data.stocks.find(s => s.id === id)).filter(Boolean);
+    for (const st of sts) {
+      const k = newsKey(st); if (AS.hist.has(k)) continue;
+      try { const b = await loadHistory(st, '1mo'); AS.hist.set(k, new Map(b.map(x => [x.time.slice(0, 7), x.c]))); } catch (e) { AS.hist.set(k, new Map()); AS.err = e.message; }
+    }
+    if (!AS.fx && sts.some(s => s.market === 'US') && data.settings.apiUrl && !data.demo) {
+      try { const j = await gas({ action: 'history', symbol: 'TWD=X', range: '10y', interval: '1mo' }); AS.fx = new Map((j.bars || []).map(b => [dateIn('Asia/Taipei', b.t).slice(0, 7), b.c])); } catch (e) { AS.fx = new Map(); }
+    }
+  } finally { AS.loading = false; }
+  if ($('#as').open && (ui.asTab || 'ov') === 'ov') asRender();
+}
+const monthEnd = ym => { const [y, m] = ym.split('-').map(Number); return new Date(Date.UTC(y, m, 0)).toISOString().slice(0, 10); };
+function asSeries() {
+  const starts = [...data.trades.map(t => t.date), ...data.acctBal.map(b => b.date), ...data.acctTx.map(t => t.date)].filter(Boolean).sort();
+  if (!starts.length) return [];
+  const cur = today().slice(0, 7), months = [];
+  for (let m = starts[0].slice(0, 7); m <= cur; m = nextMonth(m)) months.push(m);
+  const fxNow = getFx().rate;
+  const priceAt = (st, ym) => {
+    const h = AS.hist.get(newsKey(st)); let p = null;
+    if (h) { for (let m = ym, i = 0; i < 36 && p == null; i++, m = prevMonthStr(m)) p = h.get(m); }
+    if (p == null) { const t = data.trades.filter(x => x.stockId === st.id && x.date <= monthEnd(ym)).sort((a, b) => a.date < b.date ? 1 : -1)[0]; p = t ? t.price : null; }
+    return p;
+  };
+  return months.map(ym => {
+    const last = ym === cur, end = last ? today() : monthEnd(ym), by = { tw: 0, us: 0, cash: 0, oth: 0, debt: 0 };
+    if (last) { const t = asTotals(); Object.assign(by, t.by); }
+    else {
+      const fx = (AS.fx && AS.fx.get(ym)) || fxNow;
+      data.stocks.forEach(st => {
+        if (st.parked) return;
+        const sh = sharesBefore(st, nextDay(end)); if (!(sh > 0)) return;
+        const p = priceAt(st, ym); if (p == null) return;
+        if (st.market === 'US') by.us += sh * p * fx; else by.tw += sh * p;
+      });
+      data.accounts.forEach(a => { const v = acctValue(a, end); by[acctCat(a)] += a.cur === 'USD' ? v * fx : v; });
+    }
+    const assets = by.tw + by.us + by.cash + by.oth;
+    return { ym, by, assets, net: assets - by.debt };
+  });
+}
+const nextMonth = m => { const [y, mo] = m.split('-').map(Number); return mo === 12 ? `${y + 1}-01` : `${y}-${String(mo + 1).padStart(2, '0')}`; };
+const nextDay = d => new Date(Date.parse(d + 'T00:00:00Z') + 864e5).toISOString().slice(0, 10);
+function asOverview() {
+  const t = asTotals(), tot = t.assets || 0;
+  if (!tot && !t.debt) return `<div class="steps"><b>還沒有資產資料</b><div style="margin-top:6px">在持有加入股票交易，或到「帳戶」新增現金、定存、基金等帳戶，這裡就會畫出比例和走勢。</div><div style="margin-top:10px"><button class="btn" data-act="as-tab" data-tab="acct">前往帳戶</button></div></div>`;
+  const pct = v => tot ? v / tot * 100 : 0;
+  // 分類：高的分段長條（四類以內），名稱放圖例
+  const parts = AS_CATS.filter(c => c[0] !== 'debt' && t.by[c[0]] > 0);
+  const seg = `<div class="as-seg" role="img" aria-label="${esc(parts.map(c => `${c[1]} ${pct(t.by[c[0]]).toFixed(1)}%`).join('，'))}">${parts.map(c => { const p = pct(t.by[c[0]]); return `<div class="as-seg-b" style="flex:${p} 0 0;background:${c[2]}" title="${esc(c[1])}：NT$${fmtMoney(t.by[c[0]], 'TWD')}（${p.toFixed(1)}%）">${p >= 9 ? `<span>${p.toFixed(0)}%</span>` : ''}</div>`; }).join('')}</div>
+    <div class="as-leg">${parts.map(c => `<span class="fk"><i style="background:${c[2]};height:8px;width:8px;border-radius:2px"></i>${c[1]}</span>`).join('')}</div>`;
+  const catRows = AS_CATS.filter(c => t.by[c[0]]).map(c => `<tr><td class="tl"><span class="as-sw" style="background:${c[2]}"></span>${c[1]}</td><td>${c[0] === 'debt' ? '−' : ''}NT$${fmtMoney(t.by[c[0]], 'TWD')}</td><td>${c[0] === 'debt' ? '—' : pct(t.by[c[0]]).toFixed(1) + '%'}</td></tr>`).join('');
+  // 各項：排名長條（同一個顏色），點股票看資訊和新聞
+  const top = t.hold.slice(0, 30), mx = top.length ? top[0].v : 1;
+  const hrows = top.map(h => {
+    const name = h.st ? `${esc(h.st.code)} ${esc(h.st.name || '')}` : esc(h.a.name), sub = h.st ? (h.st.market === 'US' ? '美股' : '台股') : ACCT_NAME[h.a.type];
+    const tag = h.st ? `data-act="as-stock" data-sid="${h.st.id}"` : `data-act="as-acct-go" data-id="${h.a.id}"`;
+    return `<button class="as-hr" ${tag}><span class="as-hn"><b>${name}</b><span class="faint small">${sub}</span></span><span class="as-hb"><i style="width:${(h.v / mx * 100).toFixed(1)}%"></i></span><span class="as-hv">${pct(h.v).toFixed(1)}%<span class="faint small">NT$${fmtMoney(h.v, 'TWD')}</span></span></button>`;
+  }).join('');
+  // 走勢
+  const S = asSeries(), rng = ui.asRange || 'all', mode = ui.asMode || 'net';
+  const cut = rng === '1y' ? 13 : rng === '3y' ? 37 : 1e9, ser = S.slice(-cut);
+  let trend = '';
+  if (ser.length >= 2) {
+    const cats = ser.map((p, i) => ({ label: p.ym === today().slice(0, 7) ? '今天' : p.ym.replace('-', ' 年 ') + ' 月底', short: p.ym.slice(5) === '01' || i === 0 ? p.ym.slice(2).replace('-', '/') : String(+p.ym.slice(5)) }));
+    const u = axisUnit(Math.max(...ser.map(p => Math.max(p.assets, p.by.debt, Math.abs(p.net)))), 'TWD'), fm = v => 'NT$' + fmtMoney(v, 'TWD');
+    const extra = [{ name: '總資產', v: ser.map(p => fm(p.assets)) }, ...(ser.some(p => p.debt) ? [{ name: '負債', v: ser.map(p => '−' + fm(p.by.debt)) }] : [])];
+    trend = mode === 'cat'
+      ? finChart({ key: 'as-cat:' + rng, kind: 'stack', title: '各類資產（每月底）', unit: u, cur: 'TWD', cats, fmt: fm, ratio: 0.3, minH: 150, maxH: 240,
+          stack: AS_CATS.filter(c => ser.some(p => p.by[c[0]])).map(c => ({ name: c[1], color: c[2], neg: c[0] === 'debt', v: ser.map(p => p.by[c[0]]) })), extra: [{ name: '淨資產', v: ser.map(p => fm(p.net)) }] })
+      : finChart({ key: 'as-net:' + rng, kind: 'lines', title: '淨資產（每月底）', unit: u, cur: 'TWD', cats, fmt: v => fmtBig(v, 'TWD'), ratio: 0.3, minH: 150, maxH: 240,
+          lines: [{ name: '淨資產', v: ser.map(p => p.net), color: 'var(--fc1)' }], extra });
+  }
+  const seg2 = (k, opts, v) => `<div class="seg2" role="group">${opts.map(([x, l]) => `<button type="button" class="${v === x ? 'on' : ''}" data-act="as-opt" data-k="${k}" data-v="${x}">${l}</button>`).join('')}</div>`;
+  const first = S[0], chg = first && S.length > 1 ? t.net - S[Math.max(0, S.length - 13)].net : null;
+  return `<div class="as-tiles">
+      <div class="as-tile hero"><span class="k">淨資產</span><span class="v">NT$${fmtMoney(t.net, 'TWD')}</span>${isNum(chg) && S.length > 12 ? `<span class="d ${cls(chg, 'TW')}">${fmtSigned(chg, 'TWD')}　近一年</span>` : ''}</div>
+      <div class="as-tile"><span class="k">總資產</span><span class="v">NT$${fmtMoney(t.assets, 'TWD')}</span></div>
+      <div class="as-tile"><span class="k">負債</span><span class="v">NT$${fmtMoney(t.debt, 'TWD')}</span></div>
+      <div class="as-tile"><span class="k">股票占總資產</span><span class="v">${pct(t.by.tw + t.by.us).toFixed(1)}%</span></div></div>
+    <div class="as-grid">
+      <div class="cosec as-card"><div class="as-h">資產配置</div>${seg}<table class="t small" style="margin-top:8px"><tbody>${catRows}</tbody></table></div>
+      <div class="cosec as-card"><div class="as-h">資產走勢<span class="sp"></span>${seg2('asMode', [['net', '淨資產'], ['cat', '分類']], mode)}${seg2('asRange', [['1y', '1 年'], ['3y', '3 年'], ['all', '全部']], rng)}</div>
+        ${trend || '<div class="faint small">資料超過一個月才畫得出走勢</div>'}
+        <div class="note">${AS.loading ? '正在抓歷史股價…' : '股票用每月收盤價、美股用當月匯率估算；帳戶用當時記下的餘額加進出。'}帳戶從第一筆紀錄開始算，想往前補可以在帳戶裡記下過去某天的餘額。</div></div>
+    </div>
+    <div class="cosec as-card"><div class="as-h">各項資產<span class="sp"></span><span class="faint small">占總資產，點股票看資訊和新聞</span></div><div class="as-hl">${hrows}</div></div>`;
+}
+/* ---- 點股票：資訊和新聞 ---- */
+function asStockPanel(st) {
+  const c = calc(st), cur = curOf(st), sym = curSym(cur), m = st.market;
+  const news = newsItems(st).filter(it => newsState(it.id) !== 'dismissed').slice(0, 8);
+  const notes = data.notes.filter(n => n.stockId === st.id && !isOld(n)).sort((a, b) => (b.date || '') < (a.date || '') ? -1 : 1).slice(0, 5);
+  const divY = data.dividends.filter(x => x.stockId === st.id && x.type === 'cash' && x.date.startsWith(String(new Date().getFullYear()))).reduce((s, x) => s + (+x.amount || 0) - (+x.deduct || 0), 0);
+  const kv = (k, v) => `<div><span class="faint">${k}</span><b>${v}</b></div>`;
+  return `<div class="as-dr-h"><b>${stockLabel(st)}</b><span class="sp"></span><button class="ibtn" data-act="as-stock-close" aria-label="關閉">${ic('x')}</button></div>
+    <div class="as-dr-b">
+      <div class="as-kv">${kv('股價', c.price != null ? fmtPrice(c.price) + (c.chgPct != null ? ` <span class="${cls(c.chg, m)}">${fmtPct(c.chgPct)}</span>` : '') : '—')}${kv('持股', c.sh > 0 ? fmtShares(c.sh, m) : '—')}${kv('市值', c.mv != null ? sym + fmtMoney(c.mv, cur) : '—')}${kv('未實現', c.unreal != null ? `<span class="${cls(c.unreal, m)}">${fmtSigned(c.unreal, cur)}</span>` : '—')}${kv('今年股利', divY ? sym + fmtMoney(divY, cur) : '—')}${kv('平均成本', c.avg != null ? fmtPrice(c.avg) : '—')}</div>
+      <div class="inl" style="flex-wrap:wrap;margin:10px 0"><button class="btn" data-act="as-co" data-sid="${st.id}">公司資料與財報</button><button class="btn" data-act="as-goto" data-sid="${st.id}">到這檔</button></div>
+      <div class="as-h">最新新聞</div>
+      ${news.length ? `<ul class="as-news">${news.map(it => `<li><a href="${esc(it.url || '#')}" target="_blank" rel="noopener">${esc(it.title)}</a><div class="faint small">${esc(it.src || '')}・${fmtNewsTime(it.at, st)}${it.kind === 'ann' ? '・公告' : ''}</div></li>`).join('')}</ul>` : `<div class="faint small">${data.settings.apiUrl && !GAS.needkey ? (NEWS.cache.has(newsKey(st)) ? '最近沒有新聞' : '載入中…') : '要先設定 Apps Script 的新聞收集'}</div>`}
+      <div class="as-h" style="margin-top:12px">最近的重點</div>
+      ${notes.length ? `<ul class="as-news">${notes.map(n => `<li><span>${esc(n.title)}</span><div class="faint small">${esc(n.date || '')}・${esc(n.topic)} › ${esc(n.sub || '')}</div></li>`).join('')}</ul>` : '<div class="faint small">還沒有重點</div>'}
+    </div>`;
+}
+
+/* ---- 資產畫面（總覽／帳戶／配息） ---- */
+const AS_TABS = [['ov', '總覽'], ['acct', '帳戶'], ['div', '配息']];
+function openAssets(tab) {
+  if (tab) ui.asTab = tab;
+  if (!ui.asTab) ui.asTab = 'ov';
+  saveUi();
+  const md = $('#as');
+  if (!md.open) { if (dlg.open) dlg.close(); md.showModal(); }
+  asRender();
+  if (ui.asTab === 'ov') asLoadHist();
+  if (ui.asTab === 'div') divBoot();
+}
+function asRender() {
+  const md = $('#as'); if (!md.open) return;
+  const tab = ui.asTab || 'ov';
+  const body = tab === 'acct' ? asAccounts() : tab === 'div' ? asDividends() : asOverview();
+  const st = ui.asSel && data.stocks.find(s => s.id === ui.asSel);
+  const sc = md.querySelector('.as-main') ? md.querySelector('.as-main').scrollTop : 0;
+  md.innerHTML = `<div class="mg-top"><b>資產</b><div class="seg2 as-tabs" role="tablist">${AS_TABS.map(([k, l]) => `<button type="button" role="tab" aria-selected="${tab === k}" class="${tab === k ? 'on' : ''}" data-act="as-tab" data-tab="${k}">${l}</button>`).join('')}</div><span class="sp"></span><button class="ibtn" type="button" data-act="as-close" aria-label="關閉">${ic('x')}</button></div>
+    <div class="as-wrap${st ? ' has-dr' : ''}"><div class="as-main">${body}</div>${st ? `<aside class="as-dr">${asStockPanel(st)}</aside>` : ''}</div>`;
+  if (sc) md.querySelector('.as-main').scrollTop = sc;
+}
+// 資產畫面裡的設定（配息扣除、存入帳戶）
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.dataset && el.dataset.asset) {
+    const k = el.dataset.asset, s = data.settings;
+    if (k === 'divNhi') s.divNhi = el.checked;
+    else if (k === 'cashAsk') s.cashAskOff = !el.checked;
+    else if (k === 'divFee') { const v = parseFloat(el.value); s.divFee = isNum(v) && v >= 0 ? v : 10; }
+    else if (k === 'usWht') { const v = parseFloat(el.value); s.usWht = isNum(v) && v >= 0 && v <= 100 ? v / 100 : 0.3; }
+    else s[k] = el.value || '';
+    // 設了股利存入帳戶：之前自動算的股利也一起存進去（記下餘額之前的會被餘額涵蓋，不會重複）
+    let n = 0;
+    if (/^divAcct/.test(k) && s[k]) {
+      const cur = k.slice(7);
+      data.dividends.forEach(x => { const st = data.stocks.find(v => v.id === x.stockId); if (x.auto && x.type === 'cash' && st && curOf(st) === cur && !txOf('d:' + x.id)) { cashLink(s[k], 'd:' + x.id, x.date, (+x.amount || 0) - (+x.deduct || 0), 'div', `${st.code} 股利（自動）`); n++; } });
+    }
+    commit(); divSync(); asRender(); toast(n ? `已更新，${n} 筆自動算的股利也存入帳戶` : '已更新');
+  } else if (el.dataset && el.dataset.asf) {
+    ui.asDivF = Object.assign({}, ui.asDivF, { [el.dataset.asf]: el.value }); saveUi(); asRender();
+  } else if (el.dataset && el.dataset.asui) { ui[el.dataset.asui] = el.checked; saveUi(); asRender(); }
+});
+function asAct(act, a) {
+  const id = a.dataset.id;
+  switch (act) {
+    case 'assets': openAssets(); return true;
+    case 'dividends': openAssets('div'); return true;
+    case 'as-close': $('#as').close(); return true;
+    case 'as-tab': ui.asTab = a.dataset.tab; ui.asSel = null; saveUi(); asRender(); if (ui.asTab === 'ov') asLoadHist(); if (ui.asTab === 'div') divBoot(); return true;
+    case 'as-opt': ui[a.dataset.k] = a.dataset.v; saveUi(); asRender(); return true;
+    case 'as-stock': { const st = data.stocks.find(s => s.id === a.dataset.sid); if (!st) return true; ui.asSel = st.id; asRender(); newsLoad([newsKey(st)]).then(() => { if (ui.asSel === st.id) asRender(); }).catch(() => {}); return true; }
+    case 'as-stock-close': ui.asSel = null; asRender(); return true;
+    case 'as-co': { const st = data.stocks.find(s => s.id === a.dataset.sid); if (st) { $('#as').close(); ui.sel = st.id; saveUi(); render(); openCompany(st); } return true; }
+    case 'as-goto': { const st = data.stocks.find(s => s.id === a.dataset.sid); if (st) { $('#as').close(); ui.sel = st.id; ui.view = 'detail'; ui.tab = isHeld(st, calc(st)) ? 'hold' : 'watch'; saveUi(); render(); } return true; }
+    case 'as-acct-go': ui.asTab = 'acct'; ui.asOpen = id; saveUi(); asRender(); return true;
+    case 'as-acct-new': openAcct(); return true;
+    case 'as-acct-toggle': ui.asOpen = ui.asOpen === id ? '' : id; saveUi(); asRender(); return true;
+    case 'as-acct-edit': { const x = acctById(id); if (x) openAcct(x); return true; }
+    case 'as-acct-del': {
+      const x = acctById(id); if (!x) return true;
+      const n = data.acctTx.filter(t => t.acct === id).length + data.acctBal.filter(b => b.acct === id).length;
+      if (!confirm(`確定刪除帳戶「${x.name}」？${n ? `\n它的 ${n} 筆紀錄也會一起刪除（和交易、股利的連動也會拿掉）。` : ''}\n如果只是不用了，可以改勾「已結清」保留紀錄。`)) return true;
+      const keep = { a: data.accounts, t: data.acctTx, b: data.acctBal };
+      data.accounts = data.accounts.filter(v => v.id !== id); data.acctTx = data.acctTx.filter(t => t.acct !== id); data.acctBal = data.acctBal.filter(b => b.acct !== id);
+      ['tradeAcctTWD', 'tradeAcctUSD', 'divAcctTWD', 'divAcctUSD', 'lastAcctTWD', 'lastAcctUSD'].forEach(k => { if (data.settings[k] === id) data.settings[k] = ''; });
+      if (dlg.open) dlg.close();
+      commit(); asRender();
+      toastAct(`已刪除帳戶「${x.name}」`, '復原', () => { data.accounts = keep.a; data.acctTx = keep.t; data.acctBal = keep.b; commit(); asRender(); });
+      return true;
+    }
+    case 'as-bal': { const x = acctById(id); if (x) openBal(x); return true; }
+    case 'as-bal-edit': { const b = data.acctBal.find(v => v.id === id), x = b && acctById(b.acct); if (x) openBal(x, b); return true; }
+    case 'as-bal-del': if (confirm('刪除這筆記下的餘額？')) { data.acctBal = data.acctBal.filter(v => v.id !== id); commit(); asRender(); } return true;
+    case 'as-tx': { const x = acctById(id); if (x) openTx(x); return true; }
+    case 'as-tx-edit': { const t = data.acctTx.find(v => v.id === id), x = t && acctById(t.acct); if (x) openTx(x, t); return true; }
+    case 'as-tx-del': {
+      const t = data.acctTx.find(v => v.id === id); if (!t) return true;
+      const linked = /^[td]:/.test(t.ref || ''), pair = /^x:/.test(t.ref || '');
+      if (!confirm(linked ? `這筆是跟著${t.ref[0] === 't' ? '股票交易' : '股利'}自動記的。刪掉後，${t.ref[0] === 't' ? '交易' : '股利'}還在，只是不再從帳戶扣款或存入。確定刪除？` : pair ? '這是一筆轉帳，兩個帳戶的紀錄會一起刪除。確定？' : '確定刪除這筆？')) return true;
+      data.acctTx = data.acctTx.filter(v => pair ? v.ref !== t.ref : v.id !== id); commit(); asRender(); return true;
+    }
+    case 'cash-never': data.settings.cashAskOff = true; if (dlg.open) dlg.close(); commit(); toast('之後不會再問。要改回來，到「資產 → 帳戶」勾選'); return true;
+    case 'as-div-edit': { const x = data.dividends.find(v => v.id === id), st = x && data.stocks.find(s => s.id === x.stockId); if (st) openDiv(st, x); return true; }
+  }
+  return false;
+}
+
+/* ---- 密碼保護：解鎖畫面、設定、自動上鎖 ---- */
+function lockEl() {
+  let el = $('#lock');
+  if (!el) { el = document.createElement('div'); el.id = 'lock'; el.className = 'lock'; document.body.appendChild(el); }
+  return el;
+}
+// 解鎖：hdr 是要打開的金鑰（這台的，或雲端備份的）；成功回傳資料金鑰的原始位元組
+function lockAsk(hdr, msg) {
+  return new Promise(resolve => {
+    const el = lockEl(); let rc = false;
+    const draw = () => {
+      el.innerHTML = `<form class="lock-box" autocomplete="on">
+        <div class="lock-ic"><svg viewBox="0 0 24 24" class="ic"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+        <h2>持股追蹤</h2><p class="faint">${msg || '資料已加密，輸入密碼解鎖'}</p>
+        <input type="text" name="username" value="持股追蹤" autocomplete="username" hidden>
+        ${rc ? '<input name="pw" class="lock-in" placeholder="救援碼（XXXXX-XXXXX-…）" autocomplete="off" autocapitalize="characters" spellcheck="false">'
+          : '<input name="pw" class="lock-in" type="password" placeholder="密碼" autocomplete="current-password">'}
+        <button class="btn pri lock-go" type="submit">解鎖</button>
+        <div class="err" id="lockErr"></div>
+        <button type="button" class="lnk faint small" id="lockRc">${rc ? '改用密碼' : '忘記密碼？用救援碼'}</button>
+        ${hdr === VAULT.hdr ? '<button type="button" class="lnk faint small" id="lockWipe">兩個都忘了：清除這台裝置的資料</button>' : '<button type="button" class="lnk faint small" id="lockCancel">先不要</button>'}
+      </form>`;
+      const f = el.querySelector('form'), inp = f.elements.pw;
+      setTimeout(() => inp.focus(), 50);
+      el.querySelector('#lockRc').onclick = () => { rc = !rc; draw(); };
+      const w = el.querySelector('#lockWipe');
+      if (w) w.onclick = () => { if (confirm('清除這台裝置上的所有資料？\n\nGitHub 上的資料還是加密的，沒有密碼或救援碼也打不開。只有自己匯出、沒加密的備份檔才拿得回來。')) { wipeLocal(); } };
+      const c = el.querySelector('#lockCancel');
+      if (c) c.onclick = () => { el.hidden = true; resolve(null); };
+      f.onsubmit = async e => {
+        e.preventDefault();
+        const v = inp.value; if (!v.trim()) return;
+        const b = f.querySelector('.lock-go'); b.disabled = true; b.textContent = '解鎖中…';
+        try { const raw = await unwrapDek(hdr, v, rc); el.hidden = true; resolve({ raw, rc }); }
+        catch (err) { b.disabled = false; b.textContent = '解鎖'; f.querySelector('#lockErr').textContent = rc ? '救援碼不對' : '密碼不對'; inp.select(); }
+      };
+    };
+    el.hidden = false; draw();
+  });
+}
+// 開啟網頁時：先解鎖，再讀資料
+async function vaultBoot() {
+  if (!VAULT.on) return;
+  document.documentElement.classList.add('locked');
+  let r = null;
+  while (!r) r = await lockAsk(VAULT.hdr);
+  VAULT.dek = await importDek(r.raw);
+  // 讀資料：IndexedDB 和 localStorage 都試，用比較新的
+  const cands = [await idbGet('data'), localStorage.getItem(LS.data)];
+  let best = null;
+  for (const t of cands) {
+    try { const o = typeof t === 'string' ? JSON.parse(t) : t; if (!o || !o.iv) continue; const d = JSON.parse(await vaultDec(o)); if (!best || (d.updatedAt || 0) > (best.updatedAt || 0)) best = d; } catch (e) { /* 這份壞了，用另一份 */ }
+  }
+  if (best) data = normalize(best);
+  try { const s = load('st.sec'); if (s && s.iv) Object.assign(conf, JSON.parse(await vaultDec(s))); } catch (e) { /* 略過 */ }
+  const q = await sGet('quotes'); if (q) quotes = Object.assign(quotes, q);
+  syncState = { status: conf.token ? 'idle' : 'off', msg: '', at: 0 };
+  document.documentElement.classList.remove('locked');
+  VAULT.last = Date.now();
+  if (r.rc) { VAULT.rawTmp = r.raw; setTimeout(() => { toast('用救援碼解鎖了，請設一個新密碼'); vaultChange(true); }, 400); }
+}
+// 存設定：token 和 repo 名稱加密，其他照舊
+function saveConfVault() {
+  const plain = Object.assign({}, conf); delete plain.token; delete plain.repo;
+  store(LS.conf, plain);
+  if (VAULT.dek) vaultEnc(JSON.stringify({ token: conf.token, repo: conf.repo })).then(e => store('st.sec', e));
+}
+function lockNow() {
+  if (!VAULT.on) return;
+  VAULT.pending.finally(() => location.reload());   // 等加密存檔寫完，重新載入（記憶體裡的資料會清掉）
+}
+// 自動上鎖：沒操作、或切到別的 App 超過設定的時間
+['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(ev => document.addEventListener(ev, () => { VAULT.last = Date.now(); }, { passive: true, capture: true }));
+document.addEventListener('visibilitychange', () => {
+  if (!VAULT.on || !VAULT.dek) return;
+  if (document.hidden) VAULT.hiddenAt = Date.now();
+  else if (conf.lockMin && VAULT.hiddenAt && Date.now() - VAULT.hiddenAt > conf.lockMin * 60e3) lockNow();
+});
+setInterval(() => { if (VAULT.on && VAULT.dek && conf.lockMin && Date.now() - VAULT.last > conf.lockMin * 60e3) lockNow(); }, 20e3);
+if (VAULT.on && conf.lockMin == null) conf.lockMin = 15;
+// 把目前的資料、快取全部改成加密（或解密）存放
+async function vaultMigrate(toOn) {
+  const keys = []; const db = await idb();
+  if (db) await new Promise(res => { try { const q = db.transaction('kv').objectStore('kv').getAllKeys(); q.onsuccess = () => { keys.push(...q.result); res(); }; q.onerror = () => res(); } catch (e) { res(); } });
+  const plainKeys = keys.filter(k => typeof k === 'string' && /^(news|fin|base):/.test(k));
+  if (toOn) {
+    for (const k of plainKeys) { const v = await idbGet(k); await sSet(k, v); await idbDel(k); }
+    for (const k of Object.keys(localStorage).filter(k => k.startsWith('st.h.'))) { await sSet(k, load(k)); localStorage.removeItem(k); }
+    await sSet('quotes', quotes); localStorage.removeItem(LS.quotes);
+  } else {
+    // 關掉：已加密的快取直接丟掉（之後會重新抓），只留資料本身
+    for (const k of keys.filter(k => typeof k === 'string' && k.startsWith('x:'))) await idbDel(k);
+  }
+}
+async function idbDel(k) { const db = await idb(); if (!db) return; await new Promise(res => { try { const t = db.transaction('kv', 'readwrite'); t.objectStore('kv').delete(k); t.oncomplete = res; t.onerror = res; } catch (e) { res(); } }); }
+function wipeLocal() {
+  Object.values(LS).forEach(k => localStorage.removeItem(k));
+  ['st.data.idb', 'st.vault', 'st.sec', 'st.layout'].forEach(k => localStorage.removeItem(k));
+  Object.keys(localStorage).filter(k => k.startsWith('st.h.')).forEach(k => localStorage.removeItem(k));
+  try { indexedDB.deleteDatabase('stock-tracker'); } catch (e) { /* 略過 */ }
+  setTimeout(() => location.reload(), 300);
+}
+// 設定密碼
+function vaultEnable() {
+  openDialog({
+    title: '設定密碼', okText: '下一步',
+    body: `<div class="note" style="margin:0 0 10px">設定後，這台裝置和 GitHub 上的資料都會加密；每次打開網頁要輸入密碼。其他裝置同步時也要輸入同一個密碼。</div>
+      <input type="text" name="username" value="持股追蹤" autocomplete="username" hidden>
+      ${fld('密碼', inp('p1', '', 'type="password" autocomplete="new-password"'), '至少 8 個字。建議用一句自己記得住的話，或存在密碼管理器裡。')}
+      ${fld('再輸入一次', inp('p2', '', 'type="password" autocomplete="new-password"'))}
+      ${fld('多久沒操作就自動上鎖', `<select name="lockMin">${[[5, '5 分鐘'], [15, '15 分鐘'], [30, '30 分鐘'], [60, '1 小時'], [0, '不自動上鎖']].map(([v, l]) => `<option value="${v}" ${v === 15 ? 'selected' : ''}>${l}</option>`).join('')}</select>`, '切到別的 App 或分頁也算')}`,
+    onOk: f => {
+      const p1 = normPw(f.elements.p1.value), p2 = normPw(f.elements.p2.value);
+      if (p1.length < 8) return '密碼至少要 8 個字';
+      if (p1 !== p2) return '兩次輸入的密碼不一樣';
+      const lockMin = +fv(f, 'lockMin');
+      setTimeout(() => vaultShowRc(newRc(), async rc => {
+        const raw = rndB(32), kid = b64e(rndB(9));
+        const hdr = { v: 1, kid, hv: Date.now(), p: await wrapPart(raw, p1, PBKDF2_IT, kid), r: await wrapPart(raw, normRc(rc), RC_IT, kid) };
+        VAULT.hdr = hdr; VAULT.dek = await importDek(raw); VAULT.on = true;
+        store('st.vault', hdr);
+        conf.lockMin = lockMin;
+        await vaultMigrate(true);
+        data.settings.vault = 'on';
+        saveConfVault();
+        commit();                 // 存成加密、並同步上去（雲端也加密）
+        conf.dirty = true; saveConf(); if (conf.token) sync();
+        renderVaultSet();
+        toast('已設定密碼，資料都加密了');
+      }), 30);
+    }
+  });
+}
+// 顯示救援碼：一定要確認存好了才繼續
+function vaultShowRc(rc, done, renew) {
+  openDialog({
+    title: '救援碼', okText: renew ? '換成這組' : '完成設定',
+    body: `<div class="note" style="margin:0 0 10px">忘記密碼時，用這組救援碼解鎖。<b>密碼和救援碼都忘了，資料就救不回來</b>（連 GitHub 上的也是加密的）。</div>
+      <code class="keyline rc">${rc}</code>
+      <div class="inl" style="margin:8px 0 12px"><button type="button" class="btn" id="rcCopy">複製</button><span class="faint small">抄在紙上，或存在密碼管理器的備註裡</span></div>
+      <label class="chk"><input type="checkbox" name="ok">我已經存好救援碼了</label>`,
+    onOpen: f => { f.querySelector('#rcCopy').onclick = () => copyText(rc).then(ok => toast(ok ? '已複製' : '沒辦法自動複製，請手動抄下')); },
+    onOk: async f => { if (!f.elements.ok.checked) return '請先存好救援碼，再勾選「我已經存好」'; await done(rc); }
+  });
+}
+// 換密碼（用救援碼解鎖後也會走這裡）
+function vaultChange(afterRc) {
+  openDialog({
+    title: afterRc ? '設一個新密碼' : '更換密碼',
+    body: `<input type="text" name="username" value="持股追蹤" autocomplete="username" hidden>
+      ${afterRc ? '' : fld('目前的密碼', inp('p0', '', 'type="password" autocomplete="current-password"'))}
+      ${fld('新密碼', inp('p1', '', 'type="password" autocomplete="new-password"'), '至少 8 個字')}
+      ${fld('再輸入一次', inp('p2', '', 'type="password" autocomplete="new-password"'))}
+      ${afterRc ? '<div class="note">救援碼還是原來那組。想換一組，設好密碼後到「設定 → 密碼保護」按「換一組救援碼」。</div>' : ''}`,
+    onOk: async f => {
+      const p1 = normPw(f.elements.p1.value), p2 = normPw(f.elements.p2.value);
+      if (p1.length < 8) return '密碼至少要 8 個字';
+      if (p1 !== p2) return '兩次輸入的密碼不一樣';
+      let raw;
+      if (afterRc) raw = VAULT.rawTmp;
+      else { try { raw = await unwrapDek(VAULT.hdr, f.elements.p0.value, false); } catch (e) { return '目前的密碼不對'; } }
+      if (!raw) return '請重新解鎖後再換密碼';
+      VAULT.hdr = Object.assign({}, VAULT.hdr, { hv: Date.now(), p: await wrapPart(raw, p1, PBKDF2_IT, VAULT.hdr.kid) });
+      VAULT.rawTmp = null;
+      store('st.vault', VAULT.hdr);
+      commit(); conf.dirty = true; saveConf(); if (conf.token) sync();     // 雲端的金鑰資訊也要更新
+      toast('已更換密碼。其他裝置下次同步後，要用新密碼解鎖');
+    }
+  });
+}
+function vaultNewRc() {
+  openDialog({
+    title: '換一組救援碼', okText: '下一步',
+    body: `<input type="text" name="username" value="持股追蹤" autocomplete="username" hidden>${fld('目前的密碼', inp('p0', '', 'type="password" autocomplete="current-password"'))}<div class="note">換了之後，舊的救援碼就不能用了。</div>`,
+    onOk: async f => {
+      let raw; try { raw = await unwrapDek(VAULT.hdr, f.elements.p0.value, false); } catch (e) { return '密碼不對'; }
+      setTimeout(() => vaultShowRc(newRc(), async rc => {
+        VAULT.hdr = Object.assign({}, VAULT.hdr, { hv: Date.now(), r: await wrapPart(raw, normRc(rc), RC_IT, VAULT.hdr.kid) });
+        store('st.vault', VAULT.hdr);
+        commit(); conf.dirty = true; saveConf(); if (conf.token) sync();
+        toast('已換成新的救援碼');
+      }, true), 30);
+    }
+  });
+}
+function vaultDisable() {
+  openDialog({
+    title: '取消密碼保護', okText: '取消密碼保護',
+    body: `<input type="text" name="username" value="持股追蹤" autocomplete="username" hidden>${fld('目前的密碼', inp('p0', '', 'type="password" autocomplete="current-password"'))}<div class="note">取消後，這台裝置和 GitHub 上的資料會改回不加密，打開網頁也不用密碼。其他裝置下次同步時也會跟著取消。</div>`,
+    onOk: async f => {
+      try { await unwrapDek(VAULT.hdr, f.elements.p0.value, false); } catch (e) { return '密碼不對'; }
+      await vaultTurnOff();
+      toast('已取消密碼保護');
+    }
+  });
+}
+async function vaultTurnOff() {
+  await vaultMigrate(false);
+  VAULT.prev = { kid: VAULT.hdr.kid, dek: VAULT.dek };
+  VAULT.on = false; VAULT.dek = null; VAULT.hdr = null;
+  localStorage.removeItem('st.vault'); localStorage.removeItem('st.sec');
+  data.settings.vault = 'off';
+  saveConf(); store(LS.quotes, quotes);
+  commit(); conf.dirty = true; saveConf(); if (conf.token) sync();
+  renderVaultSet();
+}
+// 同步時遇到雲端是加密的，但這台還沒有金鑰：請輸入密碼
+async function vaultAdoptRemote(env) {
+  const r = await lockAsk(env, '雲端的資料已經加密了，輸入密碼（或救援碼）才能同步到這台裝置');
+  if (!r) return false;
+  VAULT.hdr = { v: 1, kid: env.kid, hv: env.hv || 0, p: env.p, r: env.r }; VAULT.dek = await importDek(r.raw); VAULT.on = true;
+  store('st.vault', VAULT.hdr);
+  if (conf.lockMin == null) conf.lockMin = 15;
+  await vaultMigrate(true);
+  saveConfVault();
+  if (r.rc) { VAULT.rawTmp = r.raw; setTimeout(() => vaultChange(true), 400); }
+  renderVaultSet();
+  return true;
+}
+function vaultSetHtml() {
+  if (!VAULT.on) return `<div class="note" style="margin:0 0 8px">設定密碼後，這台裝置和 GitHub 上的資料都會加密，每次打開網頁要輸入密碼。忘記密碼時可以用救援碼解鎖。</div>
+    <div class="inl" style="margin-bottom:12px"><button type="button" class="btn" data-act="vault-on">設定密碼</button></div>`;
+  return `<div class="note" style="margin:0 0 8px"><b style="color:var(--tx)">已開啟</b>：這台裝置和 GitHub 上的資料都已加密。<br>GitHub 會保留舊版本，開啟密碼之前上傳的版本還是沒加密的。要完全清掉，到 GitHub 把資料 repo 刪掉、再建一個同名的私人 repo，網頁會自動上傳加密的版本。</div>
+    <div class="inl" style="margin-bottom:8px;flex-wrap:wrap"><label>自動上鎖 <select data-lockmin>${[[5, '5 分鐘'], [15, '15 分鐘'], [30, '30 分鐘'], [60, '1 小時'], [0, '不自動上鎖']].map(([v, l]) => `<option value="${v}" ${v === (conf.lockMin == null ? 15 : conf.lockMin) ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+      <button type="button" class="btn" data-act="vault-lock">現在上鎖</button></div>
+    <div class="inl" style="margin-bottom:12px;flex-wrap:wrap"><button type="button" class="btn" data-act="vault-change">更換密碼</button><button type="button" class="btn" data-act="vault-rc">換一組救援碼</button><button type="button" class="btn danger" data-act="vault-off">取消密碼保護</button></div>`;
+}
+function renderVaultSet() { const el = $('#vaultSet'); if (el) el.innerHTML = vaultSetHtml(); const b = $('#lockBtn'); if (b) b.hidden = !VAULT.on; }
+document.addEventListener('change', e => { if (e.target.matches && e.target.matches('[data-lockmin]')) { conf.lockMin = +e.target.value; saveConf(); toast('已更新'); } });
 /* ---- 設定檢查 ---- */
 // 存取密語：24 個字元，去掉容易看錯的 0/O、1/l/I
 function genKey() {
@@ -3998,6 +4940,7 @@ async function runCheck() {
       } catch (e) { add('err', 'GitHub 資料 repo', e.message, e.status === 404 ? '確認 repo 名稱，以及 token 有勾到這個 repo。' : ''); }
     }
     // 5. 這台裝置
+    add(VAULT.on ? 'ok' : 'info', '密碼保護', VAULT.on ? `已開啟，這台和 GitHub 上的資料都加密${conf.lockMin ? `，${conf.lockMin} 分鐘沒操作自動上鎖` : '（沒有設自動上鎖）'}` : '沒有設定密碼：拿到這台裝置的人打開網頁就看得到資料。', VAULT.on ? '' : '到上面「密碼保護」設定。');
     try {
       const est = navigator.storage && navigator.storage.estimate ? await navigator.storage.estimate() : null;
       const per = navigator.storage && navigator.storage.persisted ? await navigator.storage.persisted() : null;
@@ -4793,7 +5736,9 @@ function delStock(st) {
   const parts = [nT && `${nT} 筆交易`, nD && `${nD} 筆股利`, nN && `${nN} 條重點`, nS && `${nS} 條策略`].filter(Boolean);
   if (!confirm(`確定刪除 ${st.code} ${st.name || ''}？${parts.length ? `\n它的 ${parts.join('、')} 也會一起刪除。` : ''}\n刪除後可以在提示上按「復原」。`)) return;
   const keep = {}, idx = data.stocks.indexOf(st), sel = ui.sel;
-  ['trades', 'dividends', 'notes', 'strategies', 'trash'].forEach(k => { keep[k] = data[k]; });
+  ['trades', 'dividends', 'notes', 'strategies', 'trash', 'acctTx'].forEach(k => { keep[k] = data[k]; });
+  const refs = new Set([...data.trades.filter(t => t.stockId === st.id).map(t => 't:' + t.id), ...data.dividends.filter(x => x.stockId === st.id).map(x => 'd:' + x.id)]);
+  data.acctTx = data.acctTx.filter(t => !refs.has(t.ref));
   data.trades = data.trades.filter(t => t.stockId !== st.id);
   data.dividends = data.dividends.filter(x => x.stockId !== st.id);
   data.notes = data.notes.filter(x => x.stockId !== st.id);
@@ -4809,6 +5754,8 @@ function delStock(st) {
     // 只放回這一檔的資料，刪除之後其他標的的修改不受影響
     ['trades', 'dividends', 'notes', 'strategies'].forEach(k => { const have = new Set(data[k].map(x => x.id)); data[k] = data[k].concat(keep[k].filter(x => x.stockId === st.id && !have.has(x.id))); });
     data.trash = data.trash.concat(keep.trash.filter(x => x.item && x.item.stockId === st.id));
+    const haveTx = new Set(data.acctTx.map(t => t.id));
+    data.acctTx = data.acctTx.concat(keep.acctTx.filter(t => refs.has(t.ref) && !haveTx.has(t.id) && acctById(t.acct)));
     ui.sel = sel; saveUi(); commit(); fetchQuotes();
   }, 12000);
 }
@@ -4851,7 +5798,12 @@ function openTrade(st, tr, preset) {
       const left = calc(st).sh;
       if (left <= 0) delete st.parked;
       ui.tab = left > 0 && !st.parked ? 'hold' : 'watch';
+      const t = editing ? tr : data.trades[data.trades.length - 1];
+      // 現金帳戶：新交易問要不要扣款／存入；改了交易，連動的那筆跟著改
+      const synced = editing && cashSyncRef('t:' + t.id, tradeNet(t), t.date);
       saveUi(); commit();
+      if (!editing && !data.demo) cashAskTrade(st, t);
+      if (synced) setTimeout(() => toast('現金帳戶的那筆也一起更新了'), 50);
     }
   });
   function update(f) {
@@ -4873,7 +5825,7 @@ function openDiv(st, x) {
   x = x || { date: today(), type: 'cash', amount: '', deduct: '', shares: '', note: '' };
   openDialog({
     title: `${editing ? '編輯' : '新增'}股利　<span class="muted" style="font-size:14px">${stockLabel(st)}</span>`,
-    body: `${radio('type', [['cash', '現金股利'], ['stock', '股票股利（配股）']], x.type)}
+    body: `${editing && x.auto ? `<div class="note" style="margin:0 0 10px">這筆是自動算的：除息日 ${x.exDate}，每股 ${x.dps} × ${fmtShares(x.held, m)}。實際入帳不同就改成實際金額，改過之後不會再被自動覆蓋。</div>` : ''}${radio('type', [['cash', '現金股利'], ['stock', '股票股利（配股）']], x.type)}
       ${fld('日期（入帳日或除權息日）', inp('date', x.date, 'type="date"'))}
       <div id="cashF" class="r2">${fld(`股利總額（${cur === 'USD' ? '美元' : '元'}）`, numInp('amount', x.amount))}
       ${fld(`扣除額（${cur === 'USD' ? '美元' : '元'}）`, numInp('deduct', x.deduct, 'placeholder="0"'), m === 'TW' ? '二代健保補充保費、匯費等' : '預扣稅（一般 30%）等')}</div>
@@ -4894,9 +5846,13 @@ function openDiv(st, x) {
         rec.shares = fnum(f, 'shares');
         if (!(rec.shares > 0)) return '配發股數要大於 0';
       }
-      if (editing) Object.assign(x, rec);
+      if (editing) { if (x.auto && (x.amount !== rec.amount || x.deduct !== rec.deduct || x.date !== rec.date || x.type !== rec.type)) rec.edited = true; Object.assign(x, rec); }
       else data.dividends.push(Object.assign({ id: uid(), stockId: st.id, ts: Date.now() }, rec));
+      const d = editing ? x : data.dividends[data.dividends.length - 1];
+      if (editing) { if (d.type === 'cash') cashSyncRef('d:' + d.id, d.amount - d.deduct, d.date); else cashDropRef('d:' + d.id); }
       commit();
+      if ($('#as').open) asRender();
+      if (!editing && !data.demo) cashAskDiv(st, d);
     }
   });
   function update(f) {
@@ -4928,6 +5884,7 @@ function openSettings() {
         <div class="note" style="margin:0 0 8px">一次檢查報價、存取密語、Apps Script 版本、自動收集、各資料來源、GitHub 同步和這台裝置的儲存空間。</div>
         <div id="chk"></div>
         <div class="inl" style="margin-bottom:12px;flex-wrap:wrap"><button type="button" class="btn" data-act="run-check">開始檢查</button><button type="button" class="btn" data-act="copy-diag" disabled>複製診斷報告</button><span class="faint small">報告不含網址、密語、token 和你的持股</span></div></div>
+      <div class="gset"><span class="lbl">密碼保護</span><div id="vaultSet">${vaultSetHtml()}</div></div>
       <div class="gset"><span class="lbl">電腦和手機同步（GitHub 私人 repo）</span>
         ${fld('GitHub token', inp('token', conf.token, 'type="password" autocomplete="off" placeholder="github_pat_… 或 ghp_…"'), 'token 只存在這台裝置的瀏覽器裡，不會上傳。每台裝置各填一次。')}
         ${fld('資料 repo', inp('repo', conf.repo, 'autocomplete="off" autocapitalize="off" placeholder="stock-tracker-data"'), '放資料的私人 repo 名稱。留空就用 stock-tracker-data。')}
@@ -4981,7 +5938,7 @@ function openSettings() {
 /* ========== 同步（GitHub 私人 repo） ========== */
 // 資料存成私人 repo 裡的 data.json；每次儲存都是一個 commit，等於自動留下歷史版本。
 const DATA_PATH = 'data.json';
-let syncTimer = null, syncing = false, syncAgain = false, ghLogin = null, remoteSha = null, remoteTxt = "";
+let syncTimer = null, syncing = false, syncAgain = false, ghLogin = null, remoteSha = null, remoteTxt = "", remotePlain = true;
 function scheduleSync() { if (!conf.token) return; clearTimeout(syncTimer); syncTimer = setTimeout(sync, 1500); }
 async function gh(path, opt = {}, raw) {
   const headers = { 'Accept': raw ? 'application/vnd.github.raw+json' : 'application/vnd.github+json', 'Authorization': 'Bearer ' + conf.token };
@@ -5013,9 +5970,21 @@ async function readRemote(rp) {
   try {
     const f = await gh(`/repos/${rp}/contents/${DATA_PATH}`);
     remoteSha = f.sha;
-    const txt = f.content ? b64dec(f.content) : await gh(`/repos/${rp}/contents/${DATA_PATH}`, {}, true);
+    let txt = f.content ? b64dec(f.content) : await gh(`/repos/${rp}/contents/${DATA_PATH}`, {}, true);
+    let obj = JSON.parse(txt);
+    remotePlain = !isEnvelope(obj);
+    if (!remotePlain) {
+      // 雲端是加密的：這台沒有同一把金鑰的話，要先輸入密碼
+      const mine = VAULT.on && VAULT.dek && VAULT.hdr.kid === obj.kid;
+      const prev = !mine && VAULT.prev && VAULT.prev.kid === obj.kid ? VAULT.prev.dek : null;   // 這台剛取消密碼：用原本的金鑰讀最後一次
+      if (!mine && !prev) { const e = new Error('雲端資料已加密，需要密碼'); e.code = 'vault'; e.env = obj; throw e; }
+      txt = td(await aesDec(mine ? VAULT.dek : prev, obj, obj.kid));
+      // 別的裝置換了密碼或救援碼：資料金鑰一樣，更新這台記的包裝
+      if (mine && (obj.hv || 0) > (VAULT.hdr.hv || 0)) { VAULT.hdr = Object.assign({}, VAULT.hdr, { p: obj.p, r: obj.r, hv: obj.hv }); store('st.vault', VAULT.hdr); }
+      obj = JSON.parse(txt);
+    }
     remoteTxt = txt;
-    return JSON.parse(txt);
+    return obj;
   } catch (e) {
     if (e.status !== 404) throw e;
     await gh(`/repos/${rp}`);           // repo 本身存在嗎？不存在會在這裡丟出錯誤
@@ -5024,7 +5993,8 @@ async function readRemote(rp) {
   }
 }
 async function writeRemote(rp, text) {
-  const body = { message: '同步 ' + new Date().toISOString(), content: b64enc(text || payload()) };
+  text = text || payload();
+  const body = { message: '同步 ' + new Date().toISOString(), content: b64enc(VAULT.on && VAULT.dek ? await vaultEnvelope(text) : text) };
   if (remoteSha) body.sha = remoteSha;
   const r = await gh(`/repos/${rp}/contents/${DATA_PATH}`, { method: 'PUT', body: JSON.stringify(body) });
   remoteSha = r && r.content && r.content.sha;
@@ -5032,8 +6002,8 @@ async function writeRemote(rp, text) {
 /* ---- 三方合併 ----
    base：上次同步時雲端的版本（存在這台裝置）。和它比，就知道哪邊新增、修改、刪除了什麼。
    兩邊各自的修改都保留；同一筆兩邊都改了用這台的；一邊刪除、一邊只是修改時，以刪除為準。 */
-const baseGet = async rp => { const t = await idbGet('base:' + rp); return typeof t === 'string' ? (() => { try { return JSON.parse(t); } catch (e) { return null; } })() : null; };
-const baseSet = (rp, text) => idbSet('base:' + rp, text);
+const baseGet = async rp => { const t = await sGet('base:' + rp); return typeof t === 'string' ? (() => { try { return JSON.parse(t); } catch (e) { return null; } })() : null; };
+const baseSet = (rp, text) => sSet('base:' + rp, text);
 const MERGE_KEY = { trash: x => x && x.item ? x.kind + ':' + x.item.id : JSON.stringify(x), tombs: x => String(x), dupIgnore: x => typeof x === 'string' ? x : JSON.stringify(x) };
 function mergeArr(k, B, L, R) {
   const kf = MERGE_KEY[k] || (x => x && x.id != null ? 'i:' + x.id : 'j:' + JSON.stringify(x));
@@ -5070,6 +6040,10 @@ function merge3(B, L, R) {
   const ids = new Set(o.stocks.map(x => x.id));
   ['trades', 'dividends', 'notes', 'strategies'].forEach(k => { o[k] = o[k].filter(x => !x.stockId || ids.has(x.stockId)); });
   o.trash = o.trash.filter(x => !x.item || !x.item.stockId || ids.has(x.item.stockId));
+  // 帳戶被刪掉、或連動的交易／股利不在了：那筆進出也不留
+  const aIds = new Set(o.accounts.map(a => a.id)), tIds = new Set(o.trades.map(t => 't:' + t.id)), dIds = new Set(o.dividends.map(x => 'd:' + x.id));
+  o.acctTx = o.acctTx.filter(t => aIds.has(t.acct) && (!/^[td]:/.test(t.ref || '') || tIds.has(t.ref) || dIds.has(t.ref)));
+  o.acctBal = o.acctBal.filter(b => aIds.has(b.acct));
   o.updatedAt = Date.now();
   delete o.demo;
   return o;
@@ -5080,7 +6054,8 @@ async function sync() {
   if (syncing) { syncAgain = true; return; }
   syncing = true; syncState.status = 'busy'; renderStatus();
   // 寫上雲端，並記下雲端現在的版本（之後合併用）
-  const push = async rp => { const text = payload(), at = data.updatedAt; await writeRemote(rp, text); conf.syncedAt = at; baseSet(rp, text); };
+  let pushed = false;
+  const push = async rp => { const text = payload(), at = data.updatedAt; await writeRemote(rp, text); conf.syncedAt = at; baseSet(rp, text); pushed = true; };
   const adopt = (rp, remote) => { adoptRemote(remote); conf.syncedAt = data.updatedAt; baseSet(rp, remoteTxt); };
   try {
     const rp = await repoPath();
@@ -5106,6 +6081,9 @@ async function sync() {
         } else adopt(rp, remote);
       } else if (conf.dirty) await push(rp);
       else if (!(await baseGet(rp))) baseSet(rp, remoteTxt);   // 第一次用合併：先記下雲端目前的版本
+      // 密碼保護：別的裝置取消了，這台也取消；雲端還是沒加密的（例如舊版網頁寫的），重新傳一份加密的
+      if (VAULT.on && remotePlain && data.settings.vault === 'off') { syncing = false; await vaultTurnOff(); toast('其他裝置取消了密碼保護，這台也跟著取消'); return; }
+      if (VAULT.on && VAULT.dek && remotePlain && !pushed && conf.syncedAt === data.updatedAt) await push(rp);
     }
     // 同步途中又有修改：維持「未同步」，馬上再同步一次
     conf.dirty = data.updatedAt !== conf.syncedAt;
@@ -5115,6 +6093,12 @@ async function sync() {
   } catch (e) {
     syncState = { status: 'err', msg: e.message, at: 0 };
     if (e.status === 409 || e.status === 422) syncAgain = true;
+    if (e.code === 'vault') {
+      syncing = false; renderStatus();
+      if (await vaultAdoptRemote(e.env)) { conf.syncedAt = 0; saveConf(); sync(); }
+      else { syncState = { status: 'err', msg: '雲端資料已加密，按同步鈕輸入密碼', at: 0 }; renderStatus(); }
+      return;
+    }
   }
   syncing = false;
   renderStatus();
@@ -5129,11 +6113,14 @@ function adoptRemote(remote) {
 }
 
 /* ========== 備份 ========== */
-function exportData() {
-  const blob = new Blob([payload()], { type: 'application/json' });
+async function exportData() {
+  // 有設密碼：備份檔也加密（用同一個密碼或救援碼匯入）
+  const enc = VAULT.on && VAULT.dek;
+  const blob = new Blob([enc ? await vaultEnvelope(payload()) : payload()], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'stock-tracker-backup-' + today().replace(/-/g, '') + '.json';
+  a.download = 'stock-tracker-backup-' + today().replace(/-/g, '') + (enc ? '-encrypted' : '') + '.json';
+  if (enc) setTimeout(() => toast('備份檔已加密，匯入時要輸入密碼或救援碼'), 100);
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
@@ -5141,7 +6128,13 @@ $('#fileIn').addEventListener('change', async e => {
   const file = e.target.files[0]; e.target.value = '';
   if (!file) return;
   try {
-    const obj = JSON.parse(await file.text());
+    let obj = JSON.parse(await file.text());
+    if (isEnvelope(obj)) {
+      const r = await lockAsk(obj, '這個備份檔有加密，輸入當時的密碼或救援碼');
+      if (!r) return;
+      const k = await importDek(r.raw);
+      obj = JSON.parse(td(await aesDec(k, obj, obj.kid)));
+    }
     if (!obj || !Array.isArray(obj.stocks)) throw new Error('不是這個網頁匯出的備份檔');
     if (!confirm(`備份裡有 ${obj.stocks.length} 檔標的、${(obj.trades || []).length} 筆交易。\n要用它取代目前的資料嗎？`)) return;
     data = normalize(obj); delete data.demo; ui.sel = null;
@@ -5155,6 +6148,7 @@ document.addEventListener('click', e => {
   const a = e.target.closest('[data-act]');
   if (!a) return;
   const act = a.dataset.act, id = a.dataset.id, st = selStock();
+  if ((act.startsWith('as-') || act === 'assets' || act === 'dividends' || act === 'cash-never') && asAct(act, a)) return;
   switch (act) {
     case 'tab': ui.tab = a.dataset.tab; saveUi(); render(); break;
     case 'sel':
@@ -5170,23 +6164,28 @@ document.addEventListener('click', e => {
     case 'add-trade': if (st) openTrade(st); break;
     case 'edit-trade': { const t = data.trades.find(x => x.id === id); if (st && t) openTrade(st, t); break; }
     case 'del-trade':
-      if (confirm('確定刪除這筆交易？')) {
+      if (confirm('確定刪除這筆交易？' + (txOf('t:' + id) ? '\n現金帳戶裡連動的那筆也會一起刪除。' : ''))) {
         const before = data.trades;
         data.trades = data.trades.filter(x => x.id !== id);
         if (st && oversold(st)) { data.trades = before; alert('刪掉這筆買進後，之後的賣出股數會超過持股。請先刪除或修改之後的賣出交易。'); break; }
+        cashDropRef('t:' + id);
         commit();
       }
       break;
     case 'add-div': if (st) openDiv(st); break;
     case 'edit-div': { const x = data.dividends.find(v => v.id === id); if (st && x) openDiv(st, x); break; }
-    case 'del-div':
-      if (confirm('確定刪除這筆股利紀錄？')) {
+    case 'del-div': {
+      const x0 = data.dividends.find(v => v.id === id);
+      if (confirm('確定刪除這筆股利紀錄？' + (x0 && x0.auto ? '\n這筆是自動算的，刪掉後不會再自動加回來。' : '') + (txOf('d:' + id) ? '\n現金帳戶裡連動的那筆也會一起刪除。' : ''))) {
         const before = data.dividends;
         data.dividends = data.dividends.filter(v => v.id !== id);
         if (st && oversold(st)) { data.dividends = before; alert('刪掉這筆配股後，之後的賣出股數會超過持股。請先修改之後的賣出交易。'); break; }
+        if (x0 && x0.auto) data.divSkip.push(id);
+        cashDropRef('d:' + id);
         commit();
       }
       break;
+    }
     case 'settings': openSettings(); break;
     case 'kint': if (ui.kInt !== a.dataset.int) { ui.kInt = a.dataset.int; saveUi(); render(); kLoad(); } break;
     case 'ktog': ui[a.dataset.k] = ui[a.dataset.k] === false; saveUi(); render(); break;
@@ -5227,6 +6226,11 @@ document.addEventListener('click', e => {
     case 'news-older': if (st) { const mo = newsOlder(st)[0]; if (mo) newsLoad([newsKey(st)], { months: [mo], force: true }).then(() => renderNotes()); } break;
     case 'news-more': ui.newsPage = (ui.newsPage || 40) + 40; renderNotes(); break;
     case 'news-run': newsRun(); break;
+    case 'vault-on': vaultEnable(); break;
+    case 'vault-change': vaultChange(false); break;
+    case 'vault-rc': vaultNewRc(); break;
+    case 'vault-off': vaultDisable(); break;
+    case 'vault-lock': lockNow(); break;
     case 'fin-verify': { const s2 = data.stocks.find(x => x.id === a.dataset.sid); if (s2) finVerifyAll(s2); break; }
     case 'copy-proj': copyText(projectRules()).then(ok => { if (!ok) { toast('沒辦法自動複製'); return; } conf.gptProjHash = strHash(promptRules('all')); conf.gptProject = true; saveConf(); const f = a.closest('form'); const cb = f && f.querySelector('#gptProj'); if (cb) cb.checked = true; if (f && f._updPrompt) f._updPrompt(); toast('已複製專案指示，貼到 ChatGPT 專案的「指示」'); }); break;
     case 'fin-metric': { ui.finMetric = a.dataset.m; saveUi(); const w = a.closest('.fch-m'), s2 = w && data.stocks.find(x => x.id === w.dataset.sid); if (s2) w.parentElement.innerHTML = finQChart(s2, +w.dataset.n); break; }
@@ -5269,12 +6273,7 @@ document.addEventListener('click', e => {
     case 'export': exportData(); break;
     case 'import-backup': $('#fileIn').click(); break;
     case 'wipe':
-      if (confirm('清除這台裝置上的所有資料和設定（包括 token）？\nGitHub 上的資料不會被刪除，之後填回 token 就能拿回資料。')) {
-        Object.values(LS).forEach(k => localStorage.removeItem(k));
-        localStorage.removeItem('st.data.idb');
-        try { indexedDB.deleteDatabase('stock-tracker'); } catch (e) { /* 略過 */ }
-        setTimeout(() => location.reload(), 300);
-      }
+      if (confirm('清除這台裝置上的所有資料和設定（包括 token）？\nGitHub 上的資料不會被刪除，之後填回 token 就能拿回資料' + (VAULT.on ? '（要輸入密碼）' : '') + '。')) wipeLocal();
       break;
   }
 });
@@ -5354,6 +6353,8 @@ applyLayout();
 if (conf.theme !== 'dark') document.querySelector('meta[name="theme-color"]').content = '#FFFFFF';
 ui.view = 'list';
 (async () => {
+  await vaultBoot();
+  renderVaultSet();
   const fromDb = await idbLoadData();
   if (!ui.sel && data.stocks.length) ui.sel = data.stocks[0].id;
   render();
@@ -5361,6 +6362,7 @@ ui.view = 'list';
   if (conf.token) sync();
   schedulePoll();
   newsBoot();
+  setTimeout(() => divBoot(), 1500);
   setTimeout(() => autoReview(), 2500);
   // 加到主畫面：只在 https（GitHub Pages）上註冊；找不到 sw.js 也不影響使用
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
