@@ -459,6 +459,20 @@ a.nw-t:hover{color:var(--ac);text-decoration:underline}
 .fch-tr i.kl{width:10px;height:2px;border-radius:1px;display:inline-block}
 .fch-m{margin:0 0 8px}
 .fch-tr i.kb{width:8px;height:8px;border-radius:2px;display:inline-block}
+#sum .chip{cursor:pointer;border-radius:8px;padding:2px 6px;margin:-2px -6px}
+#sum .chip:hover,#sum .chip:focus-visible{background:var(--panel2);outline:none}
+.tipbox{position:fixed;z-index:60;max-width:340px;background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.55;color:var(--tx2);box-shadow:0 8px 24px var(--shade);pointer-events:none;font-variant-numeric:tabular-nums}
+.tipbox[hidden]{display:none}
+.tipbox .tt{color:var(--tx);font-weight:600;margin-bottom:2px}
+.tipbox .tf{color:var(--ac);font-size:12px}
+.tipbox .gap{height:4px}
+/* 中英對照 */
+.bi{display:block;font-size:10.5px;font-weight:400;color:var(--tx3);line-height:1.25;letter-spacing:0;white-space:nowrap;text-transform:none}
+.met .k .bi,.cosec summary .bi,.seg2 .bi,.fch-h .bi,.fk .bi{display:inline;margin-left:5px}
+.seg2 .bi{margin-left:4px;opacity:.85}
+th .bi{margin-top:1px}
+table.kv th .bi{font-size:10px}
+body.no-bi .bi{display:none!important}
 /* 解鎖畫面 */
 html.locked body>*:not(#lock):not(dialog){visibility:hidden}
 .lock{position:fixed;inset:0;z-index:1000;background:var(--bg);display:grid;place-items:center;padding:16px}
@@ -1094,6 +1108,20 @@ const ICON = {
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'
 };
 const ic = n => `<svg viewBox="0 0 24 24" class="ic" aria-hidden="true">${ICON[n]}</svg>`;
+// 財務名詞中英對照：中文旁邊放英文、英文縮寫旁邊放中文（設定裡可以關掉）
+const GLOSS = {
+  '持股': 'Shares held', '平均成本': 'Avg. cost', '總成本': 'Cost basis', '市值': 'Market value', '未實現損益': 'Unrealized P/L', '已實現損益': 'Realized P/L',
+  '累計股利（實收）': 'Dividends received', '總報酬': 'Total return', '目標價': 'Target price', '預期損益': 'P/L at target', '距目標價': 'To target',
+  '日期': 'Date', '買賣': 'Buy/Sell', '股數': 'Shares', '價格': 'Price', '手續費': 'Fee', '交易稅': 'Tax', '收付金額': 'Net amount', '內容': 'Type', '扣除': 'Deductions', '實收': 'Net received',
+  '本益比': 'P/E', '本益比（即時）': 'P/E (live)', '股價淨值比': 'P/B', '殖利率': 'Dividend yield', '近四季 EPS': 'TTM EPS・近四季每股盈餘', '預估本益比': 'Forward P/E',
+  '公司名稱': 'Company', '產業': 'Industry', '董事長': 'Chairman', '總經理': 'President', '成立日期': 'Founded', '上市日期': 'Listed', '上櫃日期': 'Listed (OTC)',
+  '實收資本額': 'Paid-in capital', '發行股數': 'Shares outstanding', '網址': 'Website', '除息日': 'Ex-dividend date', '每股股利': 'Dividend per share',
+  '季度': 'Quarter', '營收': 'Revenue', '年增': 'YoY', '月增': 'MoM', '累計年增': 'YTD YoY', '毛利率': 'Gross margin', '營益率': 'Operating margin', '淨利率': 'Net margin',
+  'EPS': '每股盈餘', '來源': 'Source', '月份': 'Month', '年度': 'Year', '重點': 'Note', '期間': 'Period', '結果': 'Result', '利潤率': 'Margins',
+  '估值': 'Valuation', '基本資料': 'Profile', '股利': 'Dividends', '季度財報': 'Quarterly results', '月營收': 'Monthly revenue', '年度財報': 'Annual results', '財報與重點對照': 'Notes vs. reports'
+};
+const bi = (zh, en) => { en = en || GLOSS[zh]; return en ? `${zh}<span class="bi">${esc(en)}</span>` : zh; };
+const th2 = (zh, c) => `<th${c ? ` class="${c}"` : ''}>${bi(zh)}</th>`;
 const isMobile = () => matchMedia('(max-width: 899px)').matches;
 function selStock() { return data.stocks.find(s => s.id === ui.sel) || null; }
 function stockLabel(st) { return `${esc(st.code)} ${esc(st.name || '')}`; }
@@ -1105,32 +1133,80 @@ function render() {
   renderSummary(C); renderStatus(); renderBanner();
   renderList(C); renderQuote(C); renderDetail(C); renderNotes(); renderMbar(C);
   document.body.dataset.view = ui.view === 'detail' && selStock() ? 'detail' : 'list';
+  document.body.classList.toggle('no-bi', data.settings.showBi === false);
   document.body.dataset.mtab = ui.mtab || 'quote';
   const th = $('#themeBtn'); th.innerHTML = ic(conf.theme === 'dark' ? 'sun' : 'moon');
   requestAnimationFrame(() => document.documentElement.style.setProperty('--toph', $('#top').offsetHeight + 'px'));
 }
 
 function renderSummary(C) {
-  const t = totals(C);
+  const t = totals(C), fx = t.fx.rate, tw = t.sub.TW, us = t.sub.US;
   const pct = t.cost > 0 ? t.unreal / t.cost : null;
   const dayPct = t.mv - t.day > 0 ? t.day / (t.mv - t.day) : null;
   const fxTxt = t.fx.approx ? '（匯率暫估 32）' : '';
-  // 台股、美股各自的總損益（未實現＋已實現＋股利），用各自的幣別和漲跌顏色
-  const mkt = m => {
-    const b = t.sub[m]; if (!b.n) return '';
-    const cur = m === 'US' ? 'USD' : 'TWD', tot = b.unreal + b.real + b.div;
-    const tip = `未實現 ${fmtSigned(b.unreal, cur)}｜已實現 ${fmtSigned(b.real, cur)}｜股利 ${fmtSigned(b.div, cur)}${b.cost > 0 ? `｜未實現報酬率 ${fmtPct(b.unreal / b.cost)}` : ''}`;
-    return `<div class="chip" title="${esc(tip)}"><span class="k">${m === 'US' ? '美股損益 US$' : '台股損益 NT$'}</span><span class="v ${cls(tot, m)}">${fmtSigned(tot, cur)}</span></div>`;
+  const N = (v, cur) => (cur === 'USD' ? 'US$' : 'NT$') + fmtMoney(v, cur), S = (v, cur) => fmtSigned(v, cur) + (cur === 'USD' ? ' 美元' : ' 元');
+  const has = m => t.sub[m].n > 0;
+  const tail = ['', '點一下打開「資產」，看配置和走勢'];
+  const twTot = tw.unreal + tw.real + tw.div, usTot = us.unreal + us.real + us.div;
+  // 每一格的說明：第一行是標題，之後每行一句；滑鼠移上去顯示
+  const tips = {
+    mv: ['總市值：用「目前股價」算，不是成本', '持有中的股票 × 現價的合計（美股換算成台幣）。',
+      ...(has('TW') ? [`台股　${N(tw.mv, 'TWD')}`] : []), ...(has('US') ? [`美股　${N(us.mv, 'USD')} × 匯率 ${fx.toFixed(2)} ＝ NT$${fmtMoney(us.mv * fx, 'TWD')}`] : []),
+      `總成本（含買進手續費）　NT$${fmtMoney(t.cost, 'TWD')}`,
+      ...(t.missing ? [`有 ${t.missing} 檔還沒拿到報價，暫時沒算進去。`] : []), ...(t.parked ? [`放在「觀察」的 ${t.parked} 檔持股不算在內。`] : []),
+      '不含現金、定存等其他資產（在「資產」裡）。', ...tail],
+    day: ['今日損益：今天股價變動造成的損益', '（現價 − 昨收）× 持股，美股換算成台幣。',
+      ...(has('TW') ? [`台股　${S(tw.day, 'TWD')}`] : []), ...(has('US') ? [`美股　${S(us.day, 'USD')}`] : []), '百分比是相對昨天收盤時的市值。', ...tail],
+    tw: ['台股損益：台股的總損益（新台幣）', '＝ 未實現 ＋ 已實現 ＋ 股利', `未實現　${S(tw.unreal, 'TWD')}${tw.cost > 0 ? `（${fmtPct(tw.unreal / tw.cost)}）` : ''}`, `已實現　${S(tw.real, 'TWD')}`, `股利　${S(tw.div, 'TWD')}`, '紅色是賺、綠色是賠（台股習慣）。', ...tail],
+    us: ['美股損益：美股的總損益（美元）', '＝ 未實現 ＋ 已實現 ＋ 股利', `未實現　${S(us.unreal, 'USD')}${us.cost > 0 ? `（${fmtPct(us.unreal / us.cost)}）` : ''}`, `已實現　${S(us.real, 'USD')}`, `股利（稅後）　${S(us.div, 'USD')}`, `約合台幣　${S(usTot * fx, 'TWD')}（匯率 ${fx.toFixed(2)}）`, '綠色是賺、紅色是賠（美股習慣）。', ...tail],
+    all: ['全部損益：台股＋美股（新台幣）', ...(has('TW') ? [`台股　${S(twTot, 'TWD')}`] : []), ...(has('US') ? [`美股　${S(usTot, 'USD')} × ${fx.toFixed(2)} ＝ ${S(usTot * fx, 'TWD')}`] : []), `合計　${S(t.unreal + t.realDiv, 'TWD')}`, '美股依目前匯率換算，所以匯率變動也會影響這個數字。', ...tail],
+    unreal: ['未實現損益：還沒賣的部分', '＝ 市值 − 成本，還沒真的入袋。', '已先扣掉賣出時預估的手續費和交易稅；成本含買進手續費。', `報酬率 ＝ 未實現 ÷ 總成本 NT$${fmtMoney(t.cost, 'TWD')}`, ...tail],
+    real: ['已實現＋股利：已經入袋的部分', '已實現：賣掉的股票實際賺賠（扣掉手續費和稅）。', '股利：已領的現金股利（含自動算的配息，扣掉二代健保、匯費或預扣稅）。', '美股換算成台幣。', ...tail],
+    fx: ['美元匯率：USD / TWD', '用來把美股的市值和損益換算成台幣。', t.fx.approx ? '目前抓不到匯率，暫時用 32 估算。' : '跟著報價一起更新。', ...tail]
   };
-  $('#sum').innerHTML = `
-    <div class="chip"><span class="k">總市值 NT$${fxTxt}</span><span class="v">${fmtMoney(t.mv, 'TWD')}</span></div>
-    <div class="chip"><span class="k">今日損益</span><span class="v ${cls(t.day, 'TW')}">${fmtSigned(t.day, 'TWD')}<small>${fmtPct(dayPct)}</small></span></div>
-    ${mkt('TW')}${mkt('US')}
-    <div class="chip" title="${esc(`未實現 ${fmtSigned(t.unreal, 'TWD')}｜已實現＋股利 ${fmtSigned(t.realDiv, 'TWD')}`)}"><span class="k">全部損益 NT$</span><span class="v ${cls(t.unreal + t.realDiv, 'TW')}">${fmtSigned(t.unreal + t.realDiv, 'TWD')}</span></div>
-    <div class="chip"><span class="k">未實現損益</span><span class="v ${cls(t.unreal, 'TW')}">${fmtSigned(t.unreal, 'TWD')}<small>${fmtPct(pct)}</small></span></div>
-    <div class="chip"><span class="k">已實現＋股利</span><span class="v ${cls(t.realDiv, 'TW')}">${fmtSigned(t.realDiv, 'TWD')}</span></div>
-    <div class="chip"><span class="k">美元匯率</span><span class="v">${t.fx.rate.toFixed(2)}</span></div>`;
+  const chip = (k, label, val, extra) => `<div class="chip" role="button" tabindex="0" data-act="assets" data-tip="${esc(JSON.stringify(tips[k]))}"${extra || ''}><span class="k">${label}</span><span class="v ${val.c || ''}">${val.h}</span></div>`;
+  const mkt = m => {
+    if (!has(m)) return '';
+    const cur = m === 'US' ? 'USD' : 'TWD', tot = m === 'US' ? usTot : twTot;
+    return chip(m === 'US' ? 'us' : 'tw', m === 'US' ? '美股損益 US$' : '台股損益 NT$', { c: cls(tot, m), h: fmtSigned(tot, cur) });
+  };
+  $('#sum').innerHTML = chip('mv', `總市值 NT$${fxTxt}`, { h: fmtMoney(t.mv, 'TWD') }) +
+    chip('day', '今日損益', { c: cls(t.day, 'TW'), h: `${fmtSigned(t.day, 'TWD')}<small>${fmtPct(dayPct)}</small>` }) +
+    mkt('TW') + mkt('US') +
+    chip('all', '全部損益 NT$', { c: cls(t.unreal + t.realDiv, 'TW'), h: fmtSigned(t.unreal + t.realDiv, 'TWD') }) +
+    chip('unreal', '未實現損益', { c: cls(t.unreal, 'TW'), h: `${fmtSigned(t.unreal, 'TWD')}<small>${fmtPct(pct)}</small>` }) +
+    chip('real', '已實現＋股利', { c: cls(t.realDiv, 'TW'), h: fmtSigned(t.realDiv, 'TWD') }) +
+    chip('fx', '美元匯率', { h: fx.toFixed(2) });
+  if (TIP.el && TIP.key) tipShow(document.querySelector(`#sum .chip[data-tip]:nth-child(${TIP.key})`));
 }
+// 上方總覽的說明框（滑鼠移上去、或用 Tab 鍵移到那一格）
+const TIP = { box: null, el: null, key: 0, t: 0 };
+function tipShow(el) {
+  if (!el || !el.dataset.tip) return;
+  let lines; try { lines = JSON.parse(el.dataset.tip); } catch (e) { return; }
+  const b = TIP.box || (TIP.box = Object.assign(document.createElement('div'), { className: 'tipbox', role: 'tooltip' }));
+  if (!b.isConnected) document.body.appendChild(b);
+  b.textContent = '';
+  lines.forEach((l, i) => { const d = document.createElement('div'); if (i === 0) d.className = 'tt'; else if (i === lines.length - 1 && /點一下/.test(l)) d.className = 'tf'; if (!l) d.className = 'gap'; d.textContent = l; b.appendChild(d); });
+  b.hidden = false;
+  const r = el.getBoundingClientRect(), w = b.offsetWidth;
+  b.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left)) + 'px';
+  b.style.top = (r.bottom + 6) + 'px';
+  TIP.el = el; TIP.key = [...el.parentElement.children].indexOf(el) + 1;
+}
+function tipHide() { clearTimeout(TIP.t); if (TIP.box) TIP.box.hidden = true; TIP.el = null; TIP.key = 0; }
+document.addEventListener('pointerover', e => {
+  if (e.pointerType === 'touch') return;
+  const el = e.target.closest && e.target.closest('#sum .chip[data-tip]');
+  if (!el) { if (TIP.el) tipHide(); return; }
+  if (el === TIP.el) return;
+  clearTimeout(TIP.t); TIP.t = setTimeout(() => tipShow(el), TIP.el ? 0 : 180);
+});
+document.addEventListener('focusin', e => { if (e.target.matches && e.target.matches('#sum .chip[data-tip]')) tipShow(e.target); });
+document.addEventListener('focusout', e => { if (e.target.matches && e.target.matches('#sum .chip[data-tip]')) tipHide(); });
+document.addEventListener('keydown', e => { const el = e.target.closest && e.target.closest('#sum .chip[data-act]'); if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); tipHide(); openAssets('ov'); } if (e.key === 'Escape') tipHide(); });
+document.addEventListener('scroll', tipHide, true);
+document.addEventListener('pointerdown', () => tipHide(), true);
 
 function renderStatus() {
   const tw = twOpen(), us = usOpen();
@@ -1350,7 +1426,7 @@ function renderDetail(C) {
   }
   el.dataset.tab = '';
   const c = C[st.id], m = st.market, cur = c.cur, sym = curSym(cur);
-  const met = (k, v, sub, colorV) => `<div class="met"><div class="k">${k}</div><div class="v ${colorV != null ? cls(colorV, m) : ''}">${v}${sub ? `<small>${sub}</small>` : ''}</div></div>`;
+  const met = (k, v, sub, colorV) => `<div class="met"><div class="k">${bi(k)}</div><div class="v ${colorV != null ? cls(colorV, m) : ''}">${v}${sub ? `<small>${sub}</small>` : ''}</div></div>`;
   let mets = '';
   if (c.sh > 0) {
     mets += met('持股', fmtShares(c.sh, m)) + met('平均成本', fmtPrice(c.avg)) + met('總成本', sym + fmtMoney(c.cost, cur)) + met('市值', sym + fmtMoney(c.mv, cur));
@@ -1384,9 +1460,9 @@ function renderDetail(C) {
       <div class="mets">${mets}</div>
       ${c.sh > 0 ? `<div class="note">未實現與預期損益已扣除預估的賣出手續費和交易稅；成本含買進手續費。金額單位：${cur === 'USD' ? '美元' : '新台幣'}。</div>` : (!c.events ? `<div class="note">新增第一筆買進交易後，這檔會移到「持有」。</div>` : '')}
       <div class="sec"><h3>交易紀錄</h3><span class="faint">${trades.length} 筆</span></div>
-      ${trades.length ? `<div class="tw"><table class="t small"><thead><tr><th>日期</th><th>買賣</th><th>股數</th><th class="hide-m">價格</th><th class="hide-m">手續費</th><th class="hide-m">交易稅</th><th>收付金額</th><th></th></tr></thead><tbody>${tRows}</tbody></table></div>` : `<div class="empty" style="padding:12px">還沒有交易紀錄</div>`}
+      ${trades.length ? `<div class="tw"><table class="t small"><thead><tr>${th2('日期')}${th2('買賣')}${th2('股數')}${th2('價格', 'hide-m')}${th2('手續費', 'hide-m')}${th2('交易稅', 'hide-m')}${th2('收付金額')}<th></th></tr></thead><tbody>${tRows}</tbody></table></div>` : `<div class="empty" style="padding:12px">還沒有交易紀錄</div>`}
       <div class="sec"><h3>股利紀錄</h3><span class="faint">${divs.length} 筆</span></div>
-      ${divs.length ? `<div class="tw"><table class="t small"><thead><tr><th>日期</th><th>內容</th><th class="hide-m">扣除</th><th>實收</th><th></th></tr></thead><tbody>${dRows}</tbody></table></div>` : `<div class="empty" style="padding:12px">還沒有股利紀錄</div>`}
+      ${divs.length ? `<div class="tw"><table class="t small"><thead><tr>${th2('日期')}${th2('內容')}${th2('扣除', 'hide-m')}${th2('實收')}<th></th></tr></thead><tbody>${dRows}</tbody></table></div>` : `<div class="empty" style="padding:12px">還沒有股利紀錄</div>`}
     </div>`;
 }
 
@@ -3634,10 +3710,10 @@ function fchDraw(el) {
     sv.forEach((v, i) => { if (isNum(v)) strip += `<path class="fs${i === hl ? ' hl' : ''}" data-i="${i}" fill="${v >= 0 ? sp.strip.up : sp.strip.dn}" d="${barPath(+(X(i) - sbw / 2).toFixed(1), +sbw.toFixed(1), SY(0), +SY(v).toFixed(1))}"/>`; });
   }
   // 標題列：名稱・單位・圖例（兩條線以上才有圖例）
-  const leg = isLine && sp.lines.length > 1 ? sp.lines.map(l => `<span class="fk"><i style="background:${l.color}"></i>${esc(l.name)}</span>`).join('')
+  const leg = isLine && sp.lines.length > 1 ? sp.lines.map(l => `<span class="fk"><i style="background:${l.color}"></i>${esc(l.name)}${l.en ? `<span class="bi">${esc(l.en)}</span>` : ''}</span>`).join('')
     : isStack ? sp.stack.map(l => `<span class="fk"><i style="background:${l.color};height:8px;width:8px;border-radius:2px"></i>${esc(l.name)}</span>`).join('') : '';
   const last = isLine ? ends.map(e => `${sp.lines[e.k].name} ${e.t}`).join('，') : `${sp.cats[hl] ? sp.cats[hl].label : ''} ${isNum(sp.v[hl]) ? sp.fmt(sp.v[hl]) : ''}`;
-  el.innerHTML = `<div class="fch-h"><span class="fch-t">${esc(sp.title)}</span>${unit.u && !sp.pct ? `<span class="fch-u">${esc(unit.u)}</span>` : ''}<span class="sp"></span>${leg}</div>
+  el.innerHTML = `<div class="fch-h"><span class="fch-t">${esc(sp.title)}${sp.en ? `<span class="bi">${esc(sp.en)}</span>` : ''}</span>${unit.u && !sp.pct ? `<span class="fch-u">${esc(unit.u)}</span>` : ''}<span class="sp"></span>${leg}</div>
     <svg width="${W}" height="${totH}" viewBox="0 0 ${W} ${totH}" role="img" tabindex="0" aria-label="${esc(sp.title + '。最新：' + last + '。完整數字在下方表格。')}">
       <rect class="fhb" x="0" y="${padT}" width="0" height="${H + (SH ? gap + SH : 0)}" rx="4"/>${g}<g>${marks}</g>${strip}<g class="fhv"></g>
     </svg><div class="fch-tip" hidden></div>`;
@@ -3710,7 +3786,7 @@ function coLinks(st) {
 }
 function coValuation(st, c) {
   const v = finValuation(st, c.price), R = finRows(st), pes = estPE(st, c.price);
-  const met = (k, val, sub) => `<div class="met"><div class="k">${k}</div><div class="v">${val}${sub ? `<small>${sub}</small>` : ''}</div></div>`;
+  const met = (k, val, sub) => `<div class="met"><div class="k">${k === '市值' ? bi('市值', 'Market cap') : bi(k)}</div><div class="v">${val}${sub ? `<small>${sub}</small>` : ''}</div></div>`;
   return `<div class="mets">
     ${met('本益比', isNum(v.pe) ? v.pe.toFixed(1) + ' 倍' : isNum(v.peTtm) ? v.peTtm.toFixed(1) + ' 倍' : '—', isNum(v.pe) ? '證交所' : isNum(v.peTtm) ? '近四季 EPS' : '')}
     ${isNum(v.pe) && isNum(v.peTtm) ? met('本益比（即時）', v.peTtm.toFixed(1) + ' 倍', '近四季 EPS') : ''}
@@ -3726,7 +3802,7 @@ function coProfile(st) {
   const rows = [['公司名稱', p.name], ['產業', p.industry], ['董事長', p.chairman], ['總經理', p.ceo], ['成立日期', p.founded], [exOf(st) === 'otc' ? '上櫃日期' : '上市日期', p.listed],
     ['實收資本額', isNum(p.capital) ? fmtBig(p.capital, 'TWD') : ''], ['發行股數', isNum(p.shares) ? nf(0).format(p.shares) + ' 股' : ''], ['網址', p.web ? `<a href="${esc(/^https?:/.test(p.web) ? p.web : 'https://' + p.web)}" target="_blank" rel="noopener">${esc(p.web)}</a>` : '']].filter(r => r[1]);
   if (!rows.length) return `<div class="faint" style="font-size:13px">${st.market === 'US' ? '美股的基本資料目前只有名稱和股數；更多資訊請看上面的外部連結。' : '還沒有基本資料。'}</div>`;
-  return `<table class="kv">${rows.map(([k, v]) => `<tr><th>${k}</th><td>${k === '網址' ? v : esc(v)}</td></tr>`).join('')}</table>`;
+  return `<table class="kv">${rows.map(([k, v]) => `<tr><th>${bi(k)}</th><td>${k === '網址' ? v : esc(v)}</td></tr>`).join('')}</table>`;
 }
 function coDividends(st) {
   const d = finData(st), list = (d && d.div) || [];
@@ -3734,22 +3810,22 @@ function coDividends(st) {
   const by = new Map(); list.forEach(x => by.set(x.d.slice(0, 4), (by.get(x.d.slice(0, 4)) || 0) + x.a));
   const ys = [...by.keys()].sort().slice(-8);
   const cur = st.market === 'US' ? 'US$' : '元', dfm = v => v.toFixed(v < 1 ? 3 : 2);
-  return finChart({ key: 'div:' + st.id, kind: 'bars', title: '每年現金股利', name: '股利', unit: { div: 1, u: cur, s: '' }, cats: ys.map(y => ({ label: y + ' 年' + (+y === new Date().getFullYear() ? '（今年到目前）' : ''), short: y })), v: ys.map(y => by.get(y)), fmt: dfm, ratio: 0.26, minH: 100, maxH: 150,
+  return finChart({ key: 'div:' + st.id, kind: 'bars', title: '每年現金股利', en: 'Cash dividends per year', name: '股利', unit: { div: 1, u: cur, s: '' }, cats: ys.map(y => ({ label: y + ' 年' + (+y === new Date().getFullYear() ? '（今年到目前）' : ''), short: y })), v: ys.map(y => by.get(y)), fmt: dfm, ratio: 0.26, minH: 100, maxH: 150,
     extra: [{ name: '次發放', v: ys.map(y => list.filter(x => x.d.startsWith(y)).length + ' 次') }] }) +
-    `<table class="t small"><thead><tr><th class="tl">除息日</th><th>每股股利</th></tr></thead><tbody>${list.slice(-8).reverse().map(x => `<tr><td class="tl">${x.d}</td><td>${x.a.toFixed(x.a < 1 ? 4 : 2)}</td></tr>`).join('')}</tbody></table>`;
+    `<table class="t small"><thead><tr>${th2('除息日', 'tl')}${th2('每股股利')}</tr></thead><tbody>${list.slice(-8).reverse().map(x => `<tr><td class="tl">${x.d}</td><td>${x.a.toFixed(x.a < 1 ? 4 : 2)}</td></tr>`).join('')}</tbody></table>`;
 }
 const FQM = [['rev', '營收'], ['eps', 'EPS'], ['mg', '利潤率']];
 function finQChart(st, n) {
   const R = finRows(st), ch = R.q.slice(0, n).reverse(), m = st.market, k = ui.finMetric || 'rev', cats = ch.map(r => ({ label: qLabel(r.key, st), short: qShort(r.key) }));
   const base = { key: `q:${st.id}:${k}:${n}`, cats, cur: R.cur };
-  const tabs = `<div class="seg2 fch-m" role="group" aria-label="季度圖表" data-sid="${st.id}" data-n="${n}">${FQM.map(([v, l]) => `<button type="button" class="${k === v ? 'on' : ''}" data-act="fin-metric" data-m="${v}">${l}</button>`).join('')}</div>`;
+  const tabs = `<div class="seg2 fch-m" role="group" aria-label="季度圖表" data-sid="${st.id}" data-n="${n}">${FQM.map(([v, l]) => `<button type="button" class="${k === v ? 'on' : ''}" data-act="fin-metric" data-m="${v}">${bi(l)}</button>`).join('')}</div>`;
   let c;
-  if (k === 'eps') c = finChart(Object.assign(base, { kind: 'bars', title: '每股盈餘（EPS）', name: 'EPS', unit: { div: 1, u: R.cur === 'USD' ? 'US$' : '元', s: '' }, v: ch.map(r => r.eps), fmt: v => v.toFixed(2),
+  if (k === 'eps') c = finChart(Object.assign(base, { kind: 'bars', title: '每股盈餘（EPS）', en: 'Earnings per share', name: 'EPS 每股盈餘', unit: { div: 1, u: R.cur === 'USD' ? 'US$' : '元', s: '' }, v: ch.map(r => r.eps), fmt: v => v.toFixed(2),
     extra: [{ name: '去年同季', v: ch.map(r => { const ly = R.q.find(x => x.key === lastYearKey(r.key)); return ly && isNum(ly.eps) ? ly.eps.toFixed(2) : ''; }) }] }));
-  else if (k === 'mg') c = finChart(Object.assign(base, { kind: 'lines', title: '三率', pct: true, unit: { div: 1, u: '%', s: '' }, fmt: v => v.toFixed(1) + '%',
-    lines: [{ name: '毛利率', v: ch.map(r => r.gm), color: 'var(--fc1)' }, { name: '營益率', v: ch.map(r => r.om), color: 'var(--fc2)' }, { name: '淨利率', v: ch.map(r => r.nm), color: 'var(--fc3)' }] }));
-  else { const u = axisUnit(Math.max(...ch.map(r => Math.abs(r.rev || 0))), R.cur); c = finChart(Object.assign(base, { kind: 'bars', title: '單季營收', name: '營收', unit: u, v: ch.map(r => r.rev), fmt: v => fmtBig(v, R.cur),
-    strip: Object.assign({ name: '年增率', v: ch.map(r => r.yoy) }, upDn(m)) })); }
+  else if (k === 'mg') c = finChart(Object.assign(base, { kind: 'lines', title: '三率', en: 'Margins', pct: true, unit: { div: 1, u: '%', s: '' }, fmt: v => v.toFixed(1) + '%',
+    lines: [{ name: '毛利率', en: 'Gross', v: ch.map(r => r.gm), color: 'var(--fc1)' }, { name: '營益率', en: 'Operating', v: ch.map(r => r.om), color: 'var(--fc2)' }, { name: '淨利率', en: 'Net', v: ch.map(r => r.nm), color: 'var(--fc3)' }] }));
+  else { const u = axisUnit(Math.max(...ch.map(r => Math.abs(r.rev || 0))), R.cur); c = finChart(Object.assign(base, { kind: 'bars', title: '單季營收', en: 'Quarterly revenue', name: '營收', unit: u, v: ch.map(r => r.rev), fmt: v => fmtBig(v, R.cur),
+    strip: Object.assign({ name: '年增率 YoY', v: ch.map(r => r.yoy) }, upDn(m)) })); }
   return tabs + c;
 }
 function finQuarterly(st, n) {
@@ -3757,13 +3833,13 @@ function finQuarterly(st, n) {
   const rows = R.q.slice(0, n), m = st.market;
   const ud = m === 'US' ? '綠色是成長、紅色是衰退' : '紅色是成長、綠色是衰退';
   return `<div class="fch-w">${finQChart(st, n)}</div>` +
-    `<div class="tw"><table class="t small"><thead><tr><th class="tl">季度</th><th>營收</th><th>年增</th><th>毛利率</th><th class="hide-m">營益率</th><th class="hide-m">淨利率</th><th>EPS</th><th class="hide-m">來源</th></tr></thead><tbody>
+    `<div class="tw"><table class="t small"><thead><tr>${th2('季度', 'tl')}${th2('營收')}${th2('年增')}${th2('毛利率')}${th2('營益率', 'hide-m')}${th2('淨利率', 'hide-m')}${th2('EPS')}${th2('來源', 'hide-m')}</tr></thead><tbody>
     ${rows.map(r => `<tr><td class="tl">${qLabel(r.key, st)}</td><td>${fmtBig(r.rev, R.cur)}</td><td class="${isNum(r.yoy) ? cls(r.yoy, m) : ''}">${fmtP(r.yoy)}</td><td>${fmtR(r.gm)}</td><td class="hide-m">${fmtR(r.om)}</td><td class="hide-m">${fmtR(r.nm)}</td><td>${isNum(r.eps) ? r.eps.toFixed(2) : '—'}</td><td class="hide-m faint">${r.src}</td></tr>`).join('')}</tbody></table></div>
     <div class="note">最新一季用深色。營收下方的小圖是和去年同季相比（${ud}）。官方財報是累計數，網站換算成單季。${st.market === 'US' ? '美股依會計季度的期末年月排列。' : ''}</div>`;
 }
 function finAnnual(st) {
   const R = finRows(st); if (!R || !R.a.length) return '<div class="faint" style="font-size:13px">還沒有年度資料</div>';
-  return `<div class="tw"><table class="t small"><thead><tr><th class="tl">年度</th><th>營收</th><th>年增</th><th>毛利率</th><th class="hide-m">營益率</th><th class="hide-m">淨利率</th><th>EPS</th></tr></thead><tbody>
+  return `<div class="tw"><table class="t small"><thead><tr>${th2('年度', 'tl')}${th2('營收')}${th2('年增')}${th2('毛利率')}${th2('營益率', 'hide-m')}${th2('淨利率', 'hide-m')}${th2('EPS')}</tr></thead><tbody>
     ${R.a.slice(0, 6).map(r => `<tr><td class="tl">${r.key.length === 4 ? r.key : '至 ' + r.key.replace('-', '/')}</td><td>${fmtBig(r.rev, R.cur)}</td><td class="${isNum(r.yoy) ? cls(r.yoy, st.market) : ''}">${fmtP(r.yoy)}</td><td>${fmtR(r.gm)}</td><td class="hide-m">${fmtR(r.om)}</td><td class="hide-m">${fmtR(r.nm)}</td><td>${isNum(r.eps) ? r.eps.toFixed(2) : '—'}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function finMonthly(st, nBars, nRows) {
@@ -3772,9 +3848,9 @@ function finMonthly(st, nBars, nRows) {
   if (!R || !R.m.length) return '<div class="faint" style="font-size:13px">還沒有月營收資料。官方每月公布一次，網站會每期存下來，之後就看得到趨勢。</div>';
   const m = st.market, bars = R.m.slice(0, nBars).reverse();
   const u = axisUnit(Math.max(...bars.map(r => Math.abs(r.v || 0))), 'TWD');
-  return finChart({ key: `m:${st.id}:${nBars}`, kind: 'bars', title: '月營收', name: '營收', unit: u, cur: 'TWD', cats: bars.map(r => ({ label: r.ym.replace('-', ' 年 ') + ' 月', short: +r.ym.slice(5) === 1 || r === bars[0] ? r.ym.slice(2).replace('-', '/') : String(+r.ym.slice(5)) })), v: bars.map(r => r.v), fmt: v => fmtBig(v, 'TWD'),
-    strip: Object.assign({ name: '年增率', v: bars.map(r => r.yoy) }, upDn(m)), extra: [{ name: '月增', v: bars.map(r => isNum(r.mom) ? fmtP(r.mom) : '') }] }) +
-    `<div class="tw"><table class="t small"><thead><tr><th class="tl">月份</th><th>營收</th><th>月增</th><th>年增</th><th class="hide-m">累計年增</th></tr></thead><tbody>
+  return finChart({ key: `m:${st.id}:${nBars}`, kind: 'bars', title: '月營收', en: 'Monthly revenue', name: '營收', unit: u, cur: 'TWD', cats: bars.map(r => ({ label: r.ym.replace('-', ' 年 ') + ' 月', short: +r.ym.slice(5) === 1 || r === bars[0] ? r.ym.slice(2).replace('-', '/') : String(+r.ym.slice(5)) })), v: bars.map(r => r.v), fmt: v => fmtBig(v, 'TWD'),
+    strip: Object.assign({ name: '年增率 YoY', v: bars.map(r => r.yoy) }, upDn(m)), extra: [{ name: '月增', v: bars.map(r => isNum(r.mom) ? fmtP(r.mom) : '') }] }) +
+    `<div class="tw"><table class="t small"><thead><tr>${th2('月份', 'tl')}${th2('營收')}${th2('月增')}${th2('年增')}${th2('累計年增', 'hide-m')}</tr></thead><tbody>
     ${R.m.slice(0, nRows).map(r => `<tr><td class="tl">${r.ym}</td><td>${fmtBig(r.v, 'TWD')}</td><td class="${isNum(r.mom) ? cls(r.mom, m) : ''}">${fmtP(r.mom)}</td><td class="${isNum(r.yoy) ? cls(r.yoy, m) : ''}">${fmtP(r.yoy)}</td><td class="hide-m ${isNum(r.cumYoy) ? cls(r.cumYoy, m) : ''}">${fmtP(r.cumYoy)}</td></tr>`).join('')}</tbody></table></div>
     <div class="note">最新一個月用深色；下方小圖是和去年同月相比（${m === 'US' ? '綠色是成長、紅色是衰退' : '紅色是成長、綠色是衰退'}）。${R.m.length < 13 ? `目前累積了 ${R.m.length} 個月，官方只提供最新一期，之後每月會自動存下來。` : ''}</div>`;
 }
@@ -3785,7 +3861,7 @@ function finChecks(st) {
   const rows = ns.map(n => ({ n, r: finCheck(n) })).sort((a, b) => (a.r ? (a.r.ok ? 1 : 0) : 2) - (b.r ? (b.r.ok ? 1 : 0) : 2));
   const todo = rows.filter(x => x.r && x.r.ok && x.n.verification_status !== 'verified').length;
   const bar = todo ? `<div class="inl" style="margin:0 0 8px;flex-wrap:wrap"><button type="button" class="btn" data-act="fin-verify" data-sid="${st.id}">${todo} 條和財報一致，標為已查證</button><span class="faint small">可以復原</span></div>` : '';
-  return `${bar}<table class="t small"><thead><tr><th class="tl">重點</th><th class="tl">期間</th><th class="tl">結果</th></tr></thead><tbody>${rows.map(({ n, r }) => `<tr><td class="tl">${esc(n.title)}${n.verification_status === 'verified' ? ' <span class="ctag ok">已查證</span>' : ''}</td><td class="tl">${esc(n.fiscal_period)}</td><td class="tl">${r ? (r.ok ? `<span class="ctag ok">一致</span> <span class="faint">${esc(r.label)} ${esc(r.off)}</span>` : `<span class="ctag warn">不同</span> 財報：${esc(r.label)} ${esc(r.off)}`) : '<span class="faint">沒有可比對的數字或財報</span>'}</td></tr>`).join('')}</tbody></table>`;
+  return `${bar}<table class="t small"><thead><tr>${th2('重點', 'tl')}${th2('期間', 'tl')}${th2('結果', 'tl')}</tr></thead><tbody>${rows.map(({ n, r }) => `<tr><td class="tl">${esc(n.title)}${n.verification_status === 'verified' ? ' <span class="ctag ok">已查證</span>' : ''}</td><td class="tl">${esc(n.fiscal_period)}</td><td class="tl">${r ? (r.ok ? `<span class="ctag ok">一致</span> <span class="faint">${esc(r.label)} ${esc(r.off)}</span>` : `<span class="ctag warn">不同</span> 財報：${esc(r.label)} ${esc(r.off)}`) : '<span class="faint">沒有可比對的數字或財報</span>'}</td></tr>`).join('')}</tbody></table>`;
 }
 // 「和財報一致」的重點一次標為已查證（可以復原）
 function finVerifyAll(st) {
@@ -3832,7 +3908,7 @@ function finSrcNote(st) {
   return `<div class="note">資料來源：${st.market === 'TW' ? (exOf(st) === 'otc' ? '櫃買中心' : '證交所') + '（官方）、' : ''}Yahoo。${d.demo ? '（示範資料）' : `更新於 ${fmtDT(d.at || d._got)}。`}${bad.length ? `<br><span class="r">這次有些來源沒抓到：${bad.map(([k, v]) => `${NAME[k] || k}（${esc(v.err)}）`).join('、')}</span>` : ''}${FIN.err ? `<br><span class="r">讀取失敗：${esc(FIN.err)}</span>` : ''}</div>`;
 }
 // 可以收起、展開的區塊
-const sec = (id, title, body, open = true) => { const o = ui.secOpen && id in ui.secOpen ? ui.secOpen[id] : open; return `<details class="cosec" data-sec="${id}" ${o ? 'open' : ''}><summary><span>${title}</span></summary><div class="cosec-b">${body}</div></details>`; };
+const sec = (id, title, body, open = true) => { const o = ui.secOpen && id in ui.secOpen ? ui.secOpen[id] : open; return `<details class="cosec" data-sec="${id}" ${o ? 'open' : ''}><summary><span>${bi(title)}</span></summary><div class="cosec-b">${body}</div></details>`; };
 document.addEventListener('toggle', e => { const d = e.target; if (d && d.matches && d.matches('details.cosec')) { ui.secOpen = ui.secOpen || {}; ui.secOpen[d.dataset.sec] = d.open; } }, true);
 function coGate(st) {
   if (!data.demo && !data.settings.apiUrl) return `<div class="steps"><b>公司資料與財報</b><div style="margin-top:6px">設定報價來源（Apps Script）後，就會自動收集這檔的基本資料、月營收、季度財報和股利。</div><div style="margin-top:10px"><button class="btn" data-act="settings">前往設定</button></div></div>`;
@@ -5950,7 +6026,8 @@ function openSettings() {
     title: '設定',
     body: `
       <div class="gset"><span class="lbl">列表</span>
-        <label class="chk"><input type="checkbox" name="groupByMarket" ${s.groupByMarket !== false ? 'checked' : ''}>台股、美股分開列（各自小計）。取消勾選就混在一起，用拖拉自由排序。</label></div>
+        <label class="chk"><input type="checkbox" name="groupByMarket" ${s.groupByMarket !== false ? 'checked' : ''}>台股、美股分開列（各自小計）。取消勾選就混在一起，用拖拉自由排序。</label>
+        <label class="chk"><input type="checkbox" name="showBi" ${s.showBi !== false ? 'checked' : ''}>財務名詞中英對照（例如「EPS 每股盈餘」「毛利率 Gross margin」）</label></div>
       <div class="gset"><span class="lbl">報價來源（Google Apps Script）</span>
         ${fld('網頁應用程式網址', inp('apiUrl', s.apiUrl, 'placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off"'), '照 README 部署後，把結尾是 /exec 的網址貼在這裡。會跟著同步到其他裝置。')}
         <div class="r2">${fld('存取密語', `<div class="inl">${inp('apiKey', s.apiKey, 'autocomplete="off" spellcheck="false"')}<button type="button" class="btn" data-act="gen-key">產生</button></div>`, '要和 Code.gs 裡的 ACCESS_KEY 一樣。新聞、財報一定要設。')}
@@ -5993,7 +6070,7 @@ function openSettings() {
       }
       if (nums.twFeeDiscount > 1 || nums.twFeeDiscount <= 0) return '手續費折扣要介於 0 和 1 之間（2.8 折填 0.28）';
       const ns = Object.assign({}, data.settings, {
-        apiUrl: url, apiKey: fv(f, 'apiKey'), refreshSec: Math.max(5, nums.refreshSec || 10), groupByMarket: !!f.elements.groupByMarket.checked,
+        apiUrl: url, apiKey: fv(f, 'apiKey'), refreshSec: Math.max(5, nums.refreshSec || 10), groupByMarket: !!f.elements.groupByMarket.checked, showBi: !!f.elements.showBi.checked,
         twFeeRate: nums.twFeeRate / 100, twFeeDiscount: nums.twFeeDiscount, twFeeMin: nums.twFeeMin, twFeeMinOdd: nums.twFeeMinOdd,
         twTaxStock: nums.twTaxStock / 100, twTaxEtf: nums.twTaxEtf / 100, usFee: nums.usFee, usSellRate: nums.usSellRate / 100
       });
@@ -6229,6 +6306,7 @@ document.addEventListener('click', e => {
   if (!a) return;
   const act = a.dataset.act, id = a.dataset.id, st = selStock();
   if (act === 'pcol') { pcolToggle(a.dataset.k); return; }
+  if (act === 'assets' && a.closest('#sum')) { tipHide(); ui.asTab = 'ov'; }
   if ((act.startsWith('as-') || act === 'assets' || act === 'dividends' || act === 'cash-never') && asAct(act, a)) return;
   switch (act) {
     case 'tab': ui.tab = a.dataset.tab; saveUi(); render(); break;
