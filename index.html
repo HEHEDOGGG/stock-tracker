@@ -78,6 +78,26 @@ h3{font-size:16px;font-weight:500;margin:0}
 .split:hover::after{opacity:1}
 .split.on::after{opacity:1;background:var(--ac)}
 body.resizing,body.resizing *{user-select:none;-webkit-user-select:none}
+/* 收起／展開視窗 */
+.pcol{flex:none;margin-left:auto;width:28px;height:28px;border:0;background:transparent;color:var(--tx3);border-radius:7px;display:inline-grid;place-items:center;cursor:pointer;padding:0}
+.pcol:hover{background:var(--panel2);color:var(--tx)}
+.pcol:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+.pcol .ic{width:16px;height:16px}
+.pcol .pcol-t{display:none}
+.panel.collapsed>:not(.ph){display:none!important}
+.panel.collapsed{flex:none!important;height:auto!important;min-height:0!important}
+.panel.collapsed>.ph{border-bottom:0}
+.panel.collapsed .pcol{color:var(--tx2)}
+#colL.c-bot>#p-list,#colR.c-bot>#p-quote{flex:1;height:auto}
+.col.c-top>.split.h,.col.c-bot>.split.h,.col.strip>.split.h,#grid.sl>.split.v,#grid.sr>.split.v{pointer-events:none;cursor:default}
+.col.c-top>.split.h::after,.col.c-bot>.split.h::after,.col.strip>.split.h::after,#grid.sl>.split.v::after,#grid.sr>.split.v::after{display:none}
+.col.strip{width:46px!important;min-width:46px!important;flex:none!important}
+#grid.sr>#colL{flex:1;width:auto}
+.col.strip>.panel{flex:none}
+.col.strip .ph{padding:4px;min-height:0;justify-content:center;border:0;flex-wrap:nowrap}
+.col.strip .ph>:not(.pcol){display:none!important}
+.col.strip .pcol{width:36px;height:auto;margin:0;padding:10px 0;display:flex;flex-direction:column;align-items:center;gap:8px}
+.col.strip .pcol .pcol-t{display:block;writing-mode:vertical-rl;font-size:13px;font-weight:500;color:var(--tx);letter-spacing:.12em}
 body.resizing.rv *{cursor:col-resize!important}
 body.resizing.rh *{cursor:row-resize!important}
 .panel{container-type:inline-size}
@@ -517,6 +537,7 @@ dialog.co{background:var(--bg)}
   .col{display:block;width:auto!important;min-width:0!important}
   #p-list,#p-quote,#p-detail,#p-notes{height:auto!important;min-height:0}
   .split{display:none}
+  .pcol{display:none!important}
   .panel{margin-bottom:8px;overflow:visible}
   .pb{overflow:visible}
   .t th{position:static}
@@ -1058,6 +1079,7 @@ const ICON = {
   tag: '<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.3"/>',
   list: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17"/>',
   expand: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
+  cup: '<path d="M6 15l6-6 6 6"/>', cdown: '<path d="M6 9l6 6 6-6"/>', cright: '<path d="M9 6l6 6-6 6"/>', cleft: '<path d="M15 6l-6 6 6 6"/>',
   latest: '<path d="M5 12h11M12 7l5 5-5 5M20 5v14"/>',
   brain: '<path d="M12 5a3 3 0 0 0-5.6-1.5A3 3 0 0 0 4 8a3 3 0 0 0 0 6 3 3 0 0 0 3 4 3 3 0 0 0 5 1z"/><path d="M12 5a3 3 0 0 1 5.6-1.5A3 3 0 0 1 20 8a3 3 0 0 1 0 6 3 3 0 0 1-3 4 3 3 0 0 1-5 1z"/><path d="M12 5v14"/>',
   moon: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
@@ -6148,6 +6170,7 @@ document.addEventListener('click', e => {
   const a = e.target.closest('[data-act]');
   if (!a) return;
   const act = a.dataset.act, id = a.dataset.id, st = selStock();
+  if (act === 'pcol') { pcolToggle(a.dataset.k); return; }
   if ((act.startsWith('as-') || act === 'assets' || act === 'dividends' || act === 'cash-never') && asAct(act, a)) return;
   switch (act) {
     case 'tab': ui.tab = a.dataset.tab; saveUi(); render(); break;
@@ -6311,7 +6334,7 @@ document.addEventListener('visibilitychange', () => {
   fetchQuotes();
   if (conf.token) sync();
 });
-matchMedia('(max-width: 899px)').addEventListener('change', () => render());
+matchMedia('(max-width: 899px)').addEventListener('change', () => { render(); applyCollapse(); });
 
 /* ========== 可調整大小的版面 ========== */
 const LAYOUT_DEF = { cl: 51, lt: 55, rt: 55, ms: 380 };
@@ -6348,8 +6371,57 @@ document.addEventListener('dblclick', e => {
   layout[sp.dataset.split] = LAYOUT_DEF[sp.dataset.split]; applyLayout(); store('st.layout', layout);
 });
 
+/* ---- 收起／展開視窗（電腦版） ----
+   同一欄收起一個，另一個長滿整欄；同一欄兩個都收起，這欄變成窄條，另一欄長滿整個寬度。至少留一個視窗。 */
+const PANELS = [['p-list', 'list', '持有／觀察', 'colL'], ['p-detail', 'detail', '交易與損益', 'colL'], ['p-quote', 'quote', '報價與 K 線', 'colR'], ['p-notes', 'notes', '重點與新聞', 'colR']];
+function applyCollapse() {
+  const cc = layout.cc || {}, mob = isMobile(), on = k => !mob && !!cc[k];
+  const L = on('list') && on('detail'), R = on('quote') && on('notes');
+  PANELS.forEach(([id, k]) => $('#' + id).classList.toggle('collapsed', on(k)));
+  const cl = $('#colL'), cr = $('#colR'), g = $('#grid');
+  cl.classList.toggle('strip', L); cr.classList.toggle('strip', R);
+  cl.classList.toggle('c-top', !L && on('list')); cl.classList.toggle('c-bot', !L && on('detail'));
+  cr.classList.toggle('c-top', !R && on('quote')); cr.classList.toggle('c-bot', !R && on('notes'));
+  g.classList.toggle('sl', L); g.classList.toggle('sr', R);
+  PANELS.forEach(([id]) => pcolEnsure($('#' + id)));
+}
+function pcolEnsure(el) {
+  const ph = el.querySelector(':scope > .ph'); if (!ph) return;
+  const [, k, title, col] = PANELS.find(p => p[0] === el.id);
+  const c = !isMobile() && !!(layout.cc || {})[k], strip = $('#' + col).classList.contains('strip');
+  let b = ph.querySelector(':scope > .pcol');
+  if (!b) { b = document.createElement('button'); b.type = 'button'; b.className = 'pcol'; b.dataset.act = 'pcol'; b.dataset.k = k; ph.appendChild(b); }
+  else if (b !== ph.lastElementChild) ph.appendChild(b);
+  const icon = !c ? 'cup' : strip ? (col === 'colL' ? 'cright' : 'cleft') : 'cdown', sig = icon + title;
+  if (b.dataset.sig !== sig) { b.innerHTML = `${ic(icon)}<span class="pcol-t">${title}</span>`; b.dataset.sig = sig; }
+  const lab = (c ? '展開「' : '收起「') + title + '」';
+  b.title = lab; b.setAttribute('aria-label', lab); b.setAttribute('aria-expanded', String(!c));
+}
+function pcolToggle(k) {
+  const cc = Object.assign({}, layout.cc || {});
+  if (!cc[k] && PANELS.filter(p => p[1] !== k).every(p => cc[p[1]])) { toast('至少要留一個視窗'); return; }
+  cc[k] = !cc[k];
+  layout.cc = cc; store('st.layout', layout); applyCollapse();
+}
+// 各區塊重畫時，把收起鈕放回標題列
+// （有的區塊只重畫標題列本身，所以也要看標題列裡面的變化）
+const pcolMO = new MutationObserver(ms => {
+  const seen = new Set();
+  ms.forEach(m => {
+    const t = m.target, el = t.classList && t.classList.contains('panel') ? t : t.parentElement && t.parentElement.classList.contains('panel') && t.classList.contains('ph') ? t.parentElement : null;
+    if (el && !seen.has(el)) { seen.add(el); pcolEnsure(el); }
+  });
+});
+PANELS.forEach(([id]) => pcolMO.observe($('#' + id), { childList: true, subtree: true }));
+// 收起時雙擊標題列空白處也能展開
+document.addEventListener('dblclick', e => {
+  const ph = e.target.closest('.panel.collapsed > .ph'); if (!ph || e.target.closest('button, a, input, select, .tabs')) return;
+  const p = PANELS.find(x => x[0] === ph.parentElement.id); if (p) pcolToggle(p[1]);
+});
+
 /* ========== 啟動 ========== */
 applyLayout();
+applyCollapse();
 if (conf.theme !== 'dark') document.querySelector('meta[name="theme-color"]').content = '#FFFFFF';
 ui.view = 'list';
 (async () => {
