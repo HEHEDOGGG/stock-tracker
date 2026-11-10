@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 不要被搜尋引擎收錄；點外部連結時不告訴對方是從這個網站來的 -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
 <title>持股追蹤</title>
 <meta name="theme-color" content="#0E1117">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -278,8 +281,8 @@ span.rel{color:var(--tx2);cursor:default}
 .fld{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;min-width:0}
 .fld label,.lbl{font-size:12px;color:var(--tx2)}
 .fld .hint{font-size:12px;color:var(--tx3)}
-.fld input,.fld select,.fld textarea{background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:7px 10px;width:100%;min-width:0}
-.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--ac)}
+.fld input,.fld select,.fld textarea,.sim-c input,.sim-c select{background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:7px 10px;width:100%;min-width:0;color:var(--tx)}
+.fld input:focus,.fld select:focus,.fld textarea:focus,.sim-c input:focus,.sim-c select:focus{outline:none;border-color:var(--ac)}
 .fld input[readonly]{color:var(--tx2)}
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .inl{display:flex;gap:6px}
@@ -459,6 +462,46 @@ a.nw-t:hover{color:var(--ac);text-decoration:underline}
 .fch-tr i.kl{width:10px;height:2px;border-radius:1px;display:inline-block}
 .fch-m{margin:0 0 8px}
 .fch-tr i.kb{width:8px;height:8px;border-radius:2px;display:inline-block}
+/* 均價試算 */
+.sim-kv{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;background:var(--panel2);border-radius:10px;padding:10px 12px}
+.sim-kv div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.sim-kv span{font-size:12px;color:var(--tx2)}.sim-kv b{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.sim-kv small{font-size:11px}
+.sim-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 0;border-top:1px solid var(--line)}
+.sim-row>*{min-width:0}
+.sim-row:first-child{border-top:0;padding-top:0}
+.sim-c label{display:block;font-size:12px;color:var(--tx2);margin-bottom:4px}
+.sim-c .inl{gap:6px;flex-wrap:nowrap}.sim-c input{flex:1}.sim-c select{width:auto;flex:none;padding-right:4px}
+.sim-q{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;min-height:16px}
+.chipb{border:1px solid var(--line2);background:transparent;color:var(--tx2);border-radius:999px;padding:1px 9px;font-size:12px;cursor:pointer}
+.chipb:hover{color:var(--tx);border-color:var(--tx3)}
+.sim-x{display:flex;gap:4px;padding-top:21px;align-items:center}
+.sim-x .btn{padding:5px 10px;font-size:12.5px}
+#simAdd{margin-top:6px}
+.sim-res{margin-top:14px}
+.sim-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sim-big{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.sim-big span{font-size:12px;color:var(--tx2)}.sim-big b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sim-big small{font-size:11.5px;color:var(--tx3)}
+.sim-big.hl{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 8%,transparent)}.sim-big.hl b{font-size:20px;color:var(--ac)}
+.sim-lad{position:relative;height:74px;margin:14px 8px 4px}
+.sim-axis{position:absolute;left:0;right:0;top:37px;height:2px;background:var(--line2);border-radius:1px}
+.sim-mk{position:absolute;top:0;bottom:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+.sim-mk i{position:absolute;top:31px;width:12px;height:12px;border-radius:50%;border:2px solid var(--panel);background:var(--tx3)}
+.sim-mk span{position:absolute;font-size:11px;color:var(--tx2);white-space:nowrap;display:flex;gap:4px}
+.sim-mk span b{font-weight:600;color:var(--tx);font-variant-numeric:tabular-nums}
+.sim-mk.up span{top:0}.sim-mk.dn span{top:50px}
+.sim-mk.now i{background:var(--tx)}.sim-mk.new i{background:var(--ac)}.sim-mk.new span b{color:var(--ac)}
+.sim-mk.old i{background:var(--tx3)}.sim-mk.be i{background:var(--warn)}.sim-mk.tgt i{background:transparent;border-color:var(--tx2)}
+.sim-tgt{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.sim-tgt summary{cursor:pointer;font-size:13px;color:var(--tx)}
+.sim-tgt-r{margin-top:4px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.sim-tgt-a{font-size:13.5px;line-height:1.6}
+.sim-warn{font-size:13px;color:var(--warn)}
+@media (max-width:899px){
+  .sim-kv{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sim-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.sim-x{grid-column:1/-1;padding-top:0;justify-content:flex-end}
+  .sim-grid{grid-template-columns:1fr 1fr}
+}
 #sum .chip{cursor:pointer;border-radius:8px;padding:2px 6px;margin:-2px -6px}
 #sum .chip:hover,#sum .chip:focus-visible{background:var(--panel2);outline:none}
 .tipbox{position:fixed;z-index:60;max-width:340px;background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.55;color:var(--tx2);box-shadow:0 8px 24px var(--shade);pointer-events:none;font-variant-numeric:tabular-nums}
@@ -568,7 +611,7 @@ dialog.co{background:var(--bg)}
   span.hide-m{display:none}
   .t.small td,.t.small th{padding:6px 4px}
   .t.small td{font-size:12.5px}
-  .fld input,.fld select,.fld textarea{font-size:16px}
+  .fld input,.fld select,.fld textarea,.sim-c input,.sim-c select{font-size:16px}
   .mbar{position:sticky;top:var(--toph,96px);z-index:4;background:var(--bg);padding:8px 8px 0;align-items:center;gap:8px}
   body[data-view="detail"] .mbar{display:flex;flex-wrap:wrap}
   body[data-view="list"] #p-detail,body[data-view="list"] #p-quote,body[data-view="list"] #p-notes{display:none}
@@ -654,7 +697,7 @@ dialog.co{background:var(--bg)}
 'use strict';
 
 /* ========== 基本資料與儲存 ========== */
-const APP_VERSION = '2026.11.07';
+const APP_VERSION = '2026.11.10';
 const LS = { data: 'st.data', conf: 'st.conf', quotes: 'st.quotes', ui: 'st.ui' };
 const $ = s => document.querySelector(s);
 
@@ -693,7 +736,8 @@ function normalize(d) {
 // 資料主要存在瀏覽器的資料庫（IndexedDB，容量大）；localStorage 放得下時也存一份，開啟時比較快
 let data = normalize(load(LS.data));
 const DATA0 = data;
-const DIV = { timer: 0, busy: false };   // 配息自動計算的狀態（commit 會用到，所以放前面）
+const DIV = { timer: 0, busy: false };
+const SIM = { f: null, st: null, rows: new Map() };   // 均價試算：開著的視窗、每檔上次的試算（這次開著網頁時保留）   // 配息自動計算的狀態（commit 會用到，所以放前面）
 let conf = Object.assign({ theme: 'dark', token: '', repo: '', dirty: false, syncedAt: 0 }, load(LS.conf) || {});
 let quotes = Object.assign({ tw: {}, us: {}, fx: null, time: 0 }, load(LS.quotes) || {});
 let ui = Object.assign({ tab: 'hold', sel: null, kInt: '1d', kTrades: true, kNotes: true, noteTopic: '', memFold: false, memSpin: false, hiWin: 250, statRange: 0 }, load(LS.ui) || {});
@@ -1134,6 +1178,7 @@ function render() {
   renderList(C); renderQuote(C); renderDetail(C); renderNotes(); renderMbar(C);
   document.body.dataset.view = ui.view === 'detail' && selStock() ? 'detail' : 'list';
   document.body.classList.toggle('no-bi', data.settings.showBi === false);
+  if (SIM.f && dlg.open) setTimeout(simUpdate, 0);     // 盤中價格更新時，試算跟著更新
   document.body.dataset.mtab = ui.mtab || 'quote';
   const th = $('#themeBtn'); th.innerHTML = ic(conf.theme === 'dark' ? 'sun' : 'moon');
   requestAnimationFrame(() => document.documentElement.style.setProperty('--toph', $('#top').offsetHeight + 'px'));
@@ -1454,7 +1499,7 @@ function renderDetail(C) {
   }).join('');
 
   el.innerHTML = `<div class="ph">${tabs}<span class="sp"></span>
-      <button class="btn" data-act="add-trade">${ic('plus')}交易</button><button class="btn" data-act="add-div">${ic('plus')}股利</button></div>
+      <button class="btn" data-act="sim" title="用盤中價格試算加碼後的均價">均價試算</button><button class="btn" data-act="add-trade">${ic('plus')}交易</button><button class="btn" data-act="add-div">${ic('plus')}股利</button></div>
     <div class="pb">
       ${st.parked && c.sh > 0 ? `<div class="banner warn" style="border-radius:8px;margin-bottom:10px;border:0"><span>這檔放在「觀察」，持股的市值和損益不列入頂部總覽。</span><span class="sp"></span><button class="btn" data-act="unpark">移回持有</button></div>` : ''}
       <div class="mets">${mets}</div>
@@ -5001,6 +5046,153 @@ function vaultSetHtml() {
 }
 function renderVaultSet() { const el = $('#vaultSet'); if (el) el.innerHTML = vaultSetHtml(); const b = $('#lockBtn'); if (b) b.hidden = !VAULT.on; }
 document.addEventListener('change', e => { if (e.target.matches && e.target.matches('[data-lockmin]')) { conf.lockMin = +e.target.value; saveConf(); toast('已更新'); } });
+/* ========== 均價試算：用盤中價格試算加碼後的均價 ========== */
+// 台股的升降單位（股票和 ETF 不同）；美股 0.01
+function tickOf(st, p) {
+  if (st.market !== 'TW') return 0.01;
+  if (isEtf(st)) return p < 50 ? 0.01 : 0.05;
+  return p < 10 ? 0.01 : p < 50 ? 0.05 : p < 100 ? 0.1 : p < 500 ? 0.5 : p < 1000 ? 1 : 5;
+}
+const roundTick = (st, p) => { const t = tickOf(st, p); return Math.round(Math.floor(p / t + 1e-9) * t * 100) / 100; };
+// 含賣出手續費和交易稅的損益兩平價
+function breakEven(st, sh, cost) {
+  if (!(sh > 0)) return null;
+  let p = cost / sh;
+  for (let i = 0; i < 6; i++) { const e = estSell(st, sh, p); p = (cost + e.fee + e.tax) / sh; }
+  return p;
+}
+function simPrice(st) { const c = calc(st); return isNum(c.price) ? c.price : null; }
+function openSim(st) {
+  const m = st.market, cur = curOf(st), tw = m === 'TW';
+  const saved = SIM.rows.get(st.id) || [{ p: '', q: tw ? '1' : '10', u: tw ? 'lot' : 'sh' }];
+  const unitOpts = tw ? [['lot', '張'], ['sh', '股'], ['amt', '元']] : [['sh', '股'], ['amt', '美元']];
+  const rowHtml = (r, i) => `<div class="sim-row" data-i="${i}">
+      <div class="sim-c"><label>價格</label><div class="inl">${numInp('p' + i, r.p, `placeholder="現價" class="sim-p"`)}</div>
+        <div class="sim-q">${[['', '現價'], [0.03, '−3%'], [0.05, '−5%'], [0.1, '−10%']].map(([d, l]) => `<button type="button" class="chipb" data-simp="${d}" data-i="${i}">${l}</button>`).join('')}</div></div>
+      <div class="sim-c"><label>數量</label><div class="inl">${numInp('q' + i, r.q)}<select name="u${i}">${unitOpts.map(([v, l]) => `<option value="${v}" ${v === r.u ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+        <div class="sim-q faint small" id="simAmt${i}"></div></div>
+      <div class="sim-x"><button type="button" class="btn" data-simrec="${i}" title="照這筆的價格和股數，新增一筆買進交易">記成交易</button><button type="button" class="ibtn sm" data-simdel="${i}" title="刪掉這筆" aria-label="刪掉這筆">${ic('x')}</button></div>
+    </div>`;
+  const f = openDialog({
+    title: `均價試算　<span class="muted" style="font-size:14px">${stockLabel(st)}</span>`, wide: true, okText: '完成',
+    body: `<div class="sim-now" id="simNow"></div>
+      <div class="lbl" style="margin:10px 0 6px">試算加碼<span class="faint small" style="font-weight:400">　價格留空＝跟著盤中價格即時更新</span></div>
+      <div id="simRows">${saved.map(rowHtml).join('')}</div>
+      <button type="button" class="btn" id="simAdd">${ic('plus')}再加一筆</button>
+      <div class="sim-res" id="simRes"></div>
+      <details class="sim-tgt"${SIM.tgtOpen ? ' open' : ''}><summary>想把均價壓到多少？反推要買多少</summary>
+        <div class="r2" style="margin-top:8px">${fld(`目標均價（${cur === 'USD' ? '美元' : '元'}）`, numInp('tgt', ''))}${fld('用這個價格買', numInp('tgtP', '', 'placeholder="現價"'))}</div>
+        <div id="simTgt" class="sim-tgt-r"></div></details>`,
+    onOpen: f => {
+      SIM.f = f; SIM.st = st;
+      f.querySelector('#simAdd').onclick = () => { const n = f.querySelectorAll('.sim-row').length; const i = Math.max(-1, ...[...f.querySelectorAll('.sim-row')].map(r => +r.dataset.i)) + 1; f.querySelector('#simRows').insertAdjacentHTML('beforeend', rowHtml({ p: '', q: tw ? '1' : '10', u: tw ? 'lot' : 'sh' }, i)); simUpdate(); if (n >= 0) f.querySelector(`[name="q${i}"]`).focus(); };
+      f.addEventListener('click', e => {
+        const b = e.target.closest('[data-simp],[data-simdel],[data-simrec],[data-simtgt]'); if (!b) return;
+        const i = b.dataset.i;
+        if (b.dataset.simp !== undefined) { const p0 = simPrice(st); f.elements['p' + i].value = b.dataset.simp === '' || p0 == null ? '' : roundTick(st, p0 * (1 - +b.dataset.simp)); }
+        else if (b.dataset.simdel !== undefined) { const row = b.closest('.sim-row'); if (f.querySelectorAll('.sim-row').length > 1) row.remove(); else { f.elements['q' + row.dataset.i].value = ''; } }
+        else if (b.dataset.simrec !== undefined) { const r = simRow(f, st, b.dataset.simrec); if (!r || !(r.sh > 0)) return; dlg.close(); setTimeout(() => openTrade(st, null, { side: 'buy', shares: r.sh, price: r.p }), 30); return; }
+        else if (b.dataset.simtgt !== undefined) { const i2 = Math.max(-1, ...[...f.querySelectorAll('.sim-row')].map(r => +r.dataset.i)) + 1; f.querySelector('#simRows').insertAdjacentHTML('beforeend', rowHtml({ p: b.dataset.p, q: b.dataset.q, u: 'sh' }, i2)); }
+        simUpdate();
+      });
+      // 在輸入框按 Enter 不要關掉視窗
+      f.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('input')) { e.preventDefault(); e.target.blur(); } });
+      f.querySelector('.sim-tgt').addEventListener('toggle', e => { SIM.tgtOpen = e.target.open; });
+      simUpdate();
+    },
+    onInput: () => simUpdate(),
+    onOk: () => { simSave(); }
+  });
+  dlg.addEventListener('close', () => { simSave(); SIM.f = null; }, { once: true });
+}
+function simSave() { const f = SIM.f, st = SIM.st; if (!f || !st) return; SIM.rows.set(st.id, [...f.querySelectorAll('.sim-row')].map(r => { const i = r.dataset.i; return { p: fv(f, 'p' + i), q: fv(f, 'q' + i), u: fv(f, 'u' + i) }; })); }
+// 一列的內容：價格（空的用現價）、股數、金額、手續費
+function simRow(f, st, i) {
+  const p0 = simPrice(st), pTxt = fv(f, 'p' + i), p = pTxt === '' ? p0 : fnum(f, 'p' + i), q = fnum(f, 'q' + i), u = fv(f, 'u' + i);
+  if (!(p > 0) || !(q > 0)) return { p, sh: 0, live: pTxt === '' };
+  let sh = u === 'lot' ? q * 1000 : u === 'sh' ? q : null;
+  if (u === 'amt') {
+    // 用金額換算股數（扣掉手續費後買得起的；台股整張買不起就用零股）
+    sh = st.market === 'TW' ? Math.floor(q / p) : Math.floor(q / p * 1e4) / 1e4;
+    while (sh > 0 && sh * p + autoFee(st, 'buy', sh, p).fee > q) sh = st.market === 'TW' ? sh - 1 : Math.floor((sh - 0.0001) * 1e4) / 1e4;
+  }
+  if (st.market === 'TW') sh = Math.floor(sh);
+  const fee = autoFee(st, 'buy', sh, p).fee;
+  return { p, sh, fee, amt: sh * p, live: pTxt === '' };
+}
+// 內容一樣就不重畫（避免正要按的按鈕被換掉）
+const setHtml = (el, h) => { if (el && el._h !== h) { el.innerHTML = h; el._h = h; } };
+function simUpdate() {
+  const f = SIM.f, st = SIM.st; if (!f || !f.isConnected || !st) return;
+  const c = calc(st), m = st.market, cur = curOf(st), sym = curSym(cur), p0 = simPrice(st);
+  const money = v => sym + fmtMoney(v, cur), pr = v => isNum(v) ? fmtPrice(v) : '—';
+  const be0 = breakEven(st, c.sh, c.cost);
+  setHtml(f.querySelector('#simNow'), `<div class="sim-kv">
+      <div><span>現價</span><b class="${cls(c.chg, m)}">${pr(p0)}</b>${isNum(c.chgPct) ? `<small class="${cls(c.chg, m)}">${fmtPct(c.chgPct)}</small>` : ''}</div>
+      <div><span>目前持股</span><b>${c.sh > 0 ? fmtShares(c.sh, m) : '—'}</b></div>
+      <div><span>目前均價</span><b>${c.sh > 0 ? pr(c.avg) : '—'}</b></div>
+      <div><span>總成本</span><b>${c.sh > 0 ? money(c.cost) : '—'}</b></div>
+      <div><span>未實現</span><b class="${c.sh > 0 ? cls(c.unreal, m) : ''}">${c.sh > 0 ? fmtPct(c.unrealPct) : '—'}</b></div></div>`);
+  // 每一列
+  let sh = c.sh, cost = c.cost, need = 0, n = 0;
+  f.querySelectorAll('.sim-row').forEach(row => {
+    const i = row.dataset.i, r = simRow(f, st, i), el = f.querySelector('#simAmt' + i);
+    const pin = f.elements['p' + i]; if (pin) pin.placeholder = p0 != null ? `現價 ${fmtPrice(p0)}` : '現價';
+    if (r.sh > 0) { sh += r.sh; cost += r.amt + r.fee; need += r.amt + r.fee; n++; }
+    if (el) el.textContent = r.sh > 0 ? `${fmtShares(r.sh, m)}・${money(r.amt)}＋手續費 ${fmtMoney(r.fee, cur)}` : (r.p > 0 ? '' : '還沒有價格');
+  });
+  const avg1 = sh > 0 ? cost / sh : null, be1 = breakEven(st, sh, cost);
+  const unreal1 = isNum(p0) && sh > 0 ? (() => { const e = estSell(st, sh, p0); return sh * p0 - e.fee - e.tax - cost; })() : null;
+  const dAvg = c.sh > 0 && isNum(avg1) ? avg1 / c.avg - 1 : null;
+  const res = f.querySelector('#simRes');
+  if (!n) { setHtml(res, `<div class="faint small" style="margin-top:10px">填上價格和數量，就會算出加碼後的均價。</div>`); }
+  else {
+    const kv = (k, v, sub, extra) => `<div class="sim-big${extra || ''}"><span>${k}</span><b>${v}</b>${sub ? `<small>${sub}</small>` : ''}</div>`;
+    setHtml(res, `<div class="sim-grid">
+        ${kv('加碼後均價', pr(avg1), c.sh > 0 && isNum(dAvg) ? `原本 ${pr(c.avg)}　${dAvg <= 0 ? '降' : '升'} ${Math.abs(dAvg * 100).toFixed(2)}%` : '第一次買進', ' hl')}
+        ${kv('加碼後持股', fmtShares(sh, m), c.sh > 0 ? `原本 ${fmtShares(c.sh, m)}` : '')}
+        ${kv('需要資金', money(need), `含手續費・${n} 筆`)}
+        ${kv('加碼後總成本', money(cost))}
+        ${kv('以現價算的未實現', isNum(unreal1) ? `<span class="${cls(unreal1, m)}">${fmtSigned(unreal1, cur)}</span>` : '—', isNum(unreal1) && cost > 0 ? `<span class="${cls(unreal1, m)}">${fmtPct(unreal1 / cost)}</span>${c.sh > 0 ? `　原本 ${fmtPct(c.unrealPct)}` : ''}` : '')}
+        ${kv('損益兩平價', pr(be1), `含賣出手續費${m === 'TW' ? '和交易稅' : ''}${isNum(p0) && isNum(be1) ? `・現價${p0 >= be1 ? '已高於' : '還要漲'} ${Math.abs((be1 / p0 - 1) * 100).toFixed(2)}%` : ''}`)}
+      </div>${simLadder(st, [['現價', p0, 'now'], ['原均價', c.sh > 0 ? c.avg : null, 'old'], ['新均價', avg1, 'new'], ['兩平價', be1, 'be'], ['目標價', st.target || null, 'tgt']])}`);
+  }
+  // 反推
+  const tg = f.querySelector('#simTgt');
+  if (tg) {
+    const T = fnum(f, 'tgt'), P = fv(f, 'tgtP') === '' ? p0 : fnum(f, 'tgtP');
+    if (f.elements.tgtP) f.elements.tgtP.placeholder = p0 != null ? `現價 ${fmtPrice(p0)}` : '現價';
+    if (!(T > 0) || !(P > 0)) setHtml(tg, `<div class="faint small">${c.sh > 0 ? `目前均價 ${pr(c.avg)}。填一個比較低的目標均價，算出要用多少錢、買幾股。` : '還沒有持股，先用上面的試算。'}</div>`);
+    else if (!(c.sh > 0)) setHtml(tg, '<div class="faint small">還沒有持股，先用上面的試算。</div>');
+    else if (T >= c.avg) setHtml(tg, `<div class="faint small">目標均價要比目前的均價 ${pr(c.avg)} 低。</div>`);
+    else {
+      const rate = m === 'TW' ? data.settings.twFeeRate * data.settings.twFeeDiscount : 0;
+      const per = P * (1 + rate) + (m === 'US' ? 0 : 0);
+      if (per >= T) setHtml(tg, `<div class="sim-warn">用 ${pr(P)} 買（含手續費約 ${pr(per)}），均價不可能壓到 ${pr(T)}。價格要低於目標均價才行。</div>`);
+      else {
+        // 先用公式估，再用實際手續費（含最低手續費）往上調到真的達標
+        let s = Math.ceil((c.cost - T * c.sh) / (T - per));
+        if (m === 'US') s = Math.ceil((c.cost + (+data.settings.usFee || 0) - T * c.sh) / (T - P) * 1e4) / 1e4;
+        for (let k = 0; k < 200 && s > 0 && (c.cost + s * P + autoFee(st, 'buy', s, P).fee) / (c.sh + s) > T; k++) s = m === 'TW' ? s + Math.max(1, Math.ceil(s * 0.001)) : Math.round((s + Math.max(0.0001, s * 0.001)) * 1e4) / 1e4;
+        const fee = autoFee(st, 'buy', s, P).fee, money2 = s * P + fee;
+        const lots = m === 'TW' ? Math.ceil(s / 1000) : null;
+        setHtml(tg, `<div class="sim-tgt-a">用 <b>${pr(P)}</b> 買 <b>${fmtShares(s, m)}</b>${m === 'TW' && s % 1000 ? `（整張要 ${lots} 張）` : ''}，需要 <b>${money(money2)}</b>，均價會到 <b>${pr((c.cost + s * P + fee) / (c.sh + s))}</b>。</div>
+          <button type="button" class="btn" data-simtgt="1" data-p="${P}" data-q="${s}">放進上面的試算</button>`);
+      }
+    }
+  }
+}
+// 價格位置圖：現價、原均價、新均價、兩平價、目標價在同一條軸上
+function simLadder(st, pts) {
+  pts = pts.filter(x => isNum(x[1]) && x[1] > 0);
+  if (pts.length < 2) return '';
+  const vs = pts.map(x => x[1]), lo = Math.min(...vs), hi = Math.max(...vs), pad = (hi - lo) * 0.12 || hi * 0.02;
+  const a = lo - pad, b = hi + pad, X = v => ((v - a) / (b - a) * 100).toFixed(2);
+  const sorted = pts.slice().sort((x, y) => x[1] - y[1]);
+  // 標籤上下交錯，避免重疊
+  return `<div class="sim-lad" role="img" aria-label="${esc(sorted.map(x => `${x[0]} ${fmtPrice(x[1])}`).join('、'))}"><div class="sim-axis"></div>
+    ${sorted.map((x, i) => `<div class="sim-mk ${x[2]} ${i % 2 ? 'dn' : 'up'}" style="left:${X(x[1])}%"><i></i><span>${x[0]}<b>${fmtPrice(x[1])}</b></span></div>`).join('')}</div>`;
+}
 /* ---- 設定檢查 ---- */
 // 存取密語：24 個字元，去掉容易看錯的 0/O、1/l/I
 function genKey() {
@@ -6385,6 +6577,7 @@ document.addEventListener('click', e => {
     case 'news-older': if (st) { const mo = newsOlder(st)[0]; if (mo) newsLoad([newsKey(st)], { months: [mo], force: true }).then(() => renderNotes()); } break;
     case 'news-more': ui.newsPage = (ui.newsPage || 40) + 40; renderNotes(); break;
     case 'news-run': newsRun(); break;
+    case 'sim': if (st) openSim(st); break;
     case 'news-keep': newsKeep(id, false); break;
     case 'news-keep-forever': newsKeep(id, true); break;
     case 'news-read-all': { const s2 = selStock(); if (s2) { const ids = newsItems(s2).map(x => x.id); newsMarkRead(ids, true); renderNotes(); toast('已全部標為已讀'); } break; }
