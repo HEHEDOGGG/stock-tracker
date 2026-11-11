@@ -257,6 +257,15 @@ dialog.mem[open]{display:flex;flex-direction:column}
 .mem-stance{display:flex;gap:14px;font-size:13px}
 .mem-it{display:block;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px dashed var(--line);padding:7px 2px;cursor:pointer;font-size:13px;color:var(--tx)}
 .mem-it:hover{background:var(--panel2)}
+.mem-shp{display:inline-block;margin-left:6px;padding:0 6px;border:1px solid var(--line);border-radius:999px;font-size:11px;color:var(--tx2);line-height:16px;vertical-align:1px}
+.mem-why{font-size:12.5px;line-height:1.6;background:var(--panel2);border-radius:8px;padding:8px 10px;margin:0 0 10px}
+.mem-why .faint{margin-top:2px}
+.mem-key{margin:12px 0 4px;font-size:12.5px;line-height:1.6}
+.mem-key summary{cursor:pointer;color:var(--tx2);padding:4px 0}
+.mem-key ul{margin:4px 0 8px;padding-left:18px}
+.mem-key li{margin:2px 0}
+.mem-key .lbl{margin:6px 0 2px}
+.mem-key .chk{margin:6px 0}
 .mem-back{margin-bottom:8px}
 .mem-time{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line);background:var(--panel);flex:none;padding-bottom:max(10px,env(safe-area-inset-bottom))}
 .mem-time input{flex:1;accent-color:var(--ac);min-width:0}
@@ -697,7 +706,7 @@ dialog.co{background:var(--bg)}
 'use strict';
 
 /* ========== 基本資料與儲存 ========== */
-const APP_VERSION = '2026.11.10';
+const APP_VERSION = '2026.11.11';
 const LS = { data: 'st.data', conf: 'st.conf', quotes: 'st.quotes', ui: 'st.ui' };
 const $ = s => document.querySelector(s);
 
@@ -3057,7 +3066,7 @@ function renderQuote(C) {
   kOverlay(st, c);
 }
 
-/* ========== Memory：銀河系 ========== */
+/* ========== Memory：星系團 ========== */
 // 主題顏色（避開紅綠，紅綠留給偏多偏空）
 const TOPIC_COLOR_MAP = { '產品業務': '#A78BFA', '營收財報': '#22D3EE', '營運狀況': '#38BDF8', '管理層': '#FBBF24', '新聞事件': '#F472B6', '產業與競爭': '#FB923C',
   '資金籌碼': '#818CF8', '市場數據': '#94A3B8', '估值': '#FDE047', '分析師看法': '#C084FC', '風險': '#D6B98C', 'AI research': '#E879F9' };
@@ -3069,7 +3078,6 @@ function topicColor(topic) {
 }
 const MEM = { st: null, nodes: [], links: [], dust: [], stars: [], bg: null, R: null, pan: { x: 0, y: 0 }, tpan: null, par: { x: 0, y: 0 }, frame: 0, zoom: 1, spin: false,
   sel: null, hover: null, panel: null, open: new Set(), stance: '', t0: 0, raf: 0, ptrs: new Map(), moved: false, pinch: null, w: 0, h: 0, cv: null, ctx: null, ro: null };
-const ARM_B = 1.15;                                     // 旋臂捲曲程度
 const MEM_STAR_BUDGET = 900;                           // 重點星星的總數上限（資料很多時保持流暢）
 // 星星的光暈：每種顏色先畫好一張，之後直接貼上（比每顆星星都重畫漸層快很多）
 const GLOW = new Map();
@@ -3083,63 +3091,251 @@ function glowSprite(color) {
   }
   return c;
 }
-const spiral = (a0, r) => a0 + ARM_B * Math.log(r / 55);
-const onDisk = (r, a, y) => [r * Math.cos(a), y, r * Math.sin(a)];
+
+// ---- 星系團：每個主題是一個小星系，繞著中間的標的 ----
+// 方向：每個主題固定在同一個方向（每檔標的都一樣）；距離：最近有沒有動（越活躍越近）
+// 大小：重點多少；形態：看主題的狀態，或內容本身就有形狀的主題用固定造型
+const MEM_FIXED = { '新聞事件': 'comet', '營收財報': 'timeline', '風險': 'ring' };
+const MEM_SHAPE = { spiral: '螺旋', ellip: '橢圓', bar: '棒旋', irr: '不規則', comet: '彗星', timeline: '時間軸', ring: '環' };
+const MEM_SHAPE_TIP = {
+  spiral: '還在長：最近有新增，每個子主題是一條旋臂，越新越外面',
+  ellip: '穩定了：兩個多月沒有新東西，或重點還很少',
+  bar: '集中在一件事：一個子主題就佔了大半，它就是中間那根棒子',
+  irr: '有爭議：偏多和偏空的意見都不少',
+  comet: '頭是最新的，尾巴是比較舊的；尾巴分岔＝多空分歧',
+  timeline: '一顆珠子一季，大顆的是第四季；空格＝那一季沒記到；每個子主題一條線，同一季越多疊越高',
+  ring: '環越粗，風險越多；越亮越新',
+};
+const MEM_HALF = 30;                                   // 活躍度：幾天權重減半
+const memFixedOn = () => Array.isArray(data.settings.memFixed) ? data.settings.memFixed : Object.keys(MEM_FIXED);
+const hashStr = s => { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+function memRng(key) {
+  let s = (hashStr(key) % 2147483646) + 1;
+  const rnd = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
+  const gauss = () => Math.sqrt(-2 * Math.log(rnd() + 1e-9)) * Math.cos(2 * Math.PI * rnd());
+  return { rnd, gauss };
+}
+const noteAgeDays = (n, now) => { const d = Date.parse(n.date || ''); return isFinite(d) ? Math.max(0, (now - d) / 864e5) : 365; };
+const V3 = {
+  add: (a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]], mul: (a, k) => [a[0] * k, a[1] * k, a[2] * k],
+  norm: a => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; },
+  cross: (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]],
+};
+// 依狀態決定形態（子主題已依數量由多到少排好）
+function memState(g) {
+  if (g.n < 4 || (g.subs.length === 1 && g.n < 6)) return 'ellip';
+  if (g.lastAge > 75) return 'ellip';                                  // 兩個多月沒新東西：穩定了
+  if (g.contested) return 'irr';                                       // 最近的看法分歧
+  if (g.n >= 6 && g.subs[0].count / g.n >= 0.55) return 'bar';
+  return 'spiral';
+}
+// 最近 120 天的重點裡，偏多、偏空都不少（中性很多的話不算）
+function memContested(list, now) {
+  let b = 0, r = 0, n = 0;
+  list.forEach(x => { if (noteAgeDays(x, now) > 120) return; n++; if (x.stance === 'bull') b++; else if (x.stance === 'bear') r++; });
+  const m = Math.min(b, r);
+  return b + r >= 4 && m / (b + r) >= 0.4 && m / n >= 0.2;
+}
+// 各形態在小星系自己的平面上的位置：x、y 是平面，z 是厚度
+function memShape(shape, g, R, rng) {
+  const { rnd, gauss } = rng, out = { sub: new Map(), note: new Map(), dust: [] };
+  const all = g.shown, N = all.length, tr = new Map(all.map((x, i) => [x.id, N > 1 ? i / (N - 1) : 1]));  // 時間順序 0（最舊）→ 1（最新）
+  const S = g.subs.length, dustN = Math.round(50 + R * 3.2);
+  if (shape === 'spiral') {
+    // 每個子主題一條旋臂，越新越外面
+    const K = Math.max(2, Math.min(4, S)), base = rnd() * 6.283, curl = 2.5;
+    const at = (t, a) => { const r = R * (0.16 + 0.84 * t), ang = a + curl * t; return [r * Math.cos(ang), r * Math.sin(ang)]; };
+    g.subs.forEach((s, j) => {
+      const a = base + (j % K) * 6.283 / K + Math.floor(j / K) * 0.24 * (j % 2 ? -1 : 1);
+      const ts = s.notes.map(x => tr.get(x.id)).sort((p, q) => p - q), tm = Math.max(0.22, Math.min(0.8, ts.length ? ts[ts.length >> 1] : 0.4));
+      const [x, y] = at(tm, a); out.sub.set(s.sub, [x, y, gauss() * R * 0.03]);
+      s.notes.forEach(n => { const t = tr.get(n.id), [x2, y2] = at(t, a + gauss() * 0.06 * (1 + t)); out.note.set(n.id, [x2, y2, gauss() * R * 0.04]); });
+    });
+    for (let k = 0; k < dustN; k++) {
+      if (k < dustN * 0.18) { out.dust.push([gauss() * R * 0.13, gauss() * R * 0.13, gauss() * R * 0.06, 1]); continue; }
+      const t = Math.pow(rnd(), 0.85), a = base + (k % K) * 6.283 / K + curl * t + gauss() * 0.17 * (0.5 + t), r = R * (0.1 + 0.95 * t);
+      out.dust.push([r * Math.cos(a), r * Math.sin(a), gauss() * R * 0.04, 1 - 0.5 * t]);
+    }
+  } else if (shape === 'ellip') {
+    // 橢圓：子主題各佔一塊，越新越外面
+    let acc = 0;
+    g.subs.forEach(s => {
+      const share = s.count / g.n, mid = (acc + share / 2) * 6.283; acc += share;
+      out.sub.set(s.sub, [R * 0.36 * Math.cos(mid), R * 0.36 * 0.62 * Math.sin(mid), 0]);
+      s.notes.forEach(n => { const t = tr.get(n.id), r = R * (0.14 + 0.62 * t) * (0.85 + 0.3 * rnd()), a = mid + gauss() * Math.max(0.25, share * 2.2); out.note.set(n.id, [r * Math.cos(a), r * 0.62 * Math.sin(a), gauss() * R * 0.06]); });
+    });
+    for (let k = 0; k < dustN; k++) out.dust.push([gauss() * R * 0.46, gauss() * R * 0.3, gauss() * R * 0.1, 1]);
+  } else if (shape === 'bar') {
+    // 棒旋：最大的子主題是中間的棒子（越新越往兩端），其他子主題從棒子兩端長出旋臂
+    const D = g.subs[0];
+    out.sub.set(D.sub, [R * 0.3, R * 0.08, 0]);
+    D.notes.forEach((n, i) => { const t = tr.get(n.id), e = i % 2 ? 1 : -1; out.note.set(n.id, [e * R * (0.1 + 0.9 * t), gauss() * R * 0.05, gauss() * R * 0.03]); });
+    g.subs.slice(1).forEach((s, j) => {
+      const e = j % 2 ? -1 : 1, sc = 0.92 + 0.14 * Math.floor(j / 2);
+      const at = t => { const a = t * 1.7; return [e * R * sc * Math.cos(a), e * R * sc * Math.sin(a) * 0.95]; };
+      const [x, y] = at(0.12); out.sub.set(s.sub, [x, y, 0]);
+      s.notes.forEach(n => { const [x2, y2] = at(0.2 + 0.8 * tr.get(n.id) + gauss() * 0.03); out.note.set(n.id, [x2, y2, gauss() * R * 0.03]); });
+    });
+    for (let k = 0; k < dustN; k++) {
+      if (k % 3) out.dust.push([(rnd() * 2 - 1) * R * 1.02, gauss() * R * 0.06, gauss() * R * 0.03, 0.9]);
+      else { const e = k % 2 ? 1 : -1, a = rnd() * 1.7; out.dust.push([e * R * Math.cos(a) + gauss() * 2, e * R * Math.sin(a) * 0.95 + gauss() * 2, gauss() * R * 0.03, 0.55]); }
+    }
+  } else if (shape === 'irr') {
+    // 不規則：每個子主題是一團，散在各處
+    const cl = g.subs.map((s, j) => { const a = rnd() * 6.283, r = j ? R * (0.35 + 0.45 * rnd()) : R * 0.12 * rnd(); return { s, c: [r * Math.cos(a), r * Math.sin(a) * 0.85], w: R * (0.1 + 0.16 * Math.sqrt(s.count / g.n)) }; });
+    cl.forEach(({ s, c, w }) => {
+      out.sub.set(s.sub, [c[0], c[1], gauss() * R * 0.05]);
+      s.notes.forEach(n => out.note.set(n.id, [c[0] + gauss() * w, c[1] + gauss() * w, gauss() * w * 0.6]));
+    });
+    for (let k = 0; k < dustN; k++) { const q = cl[k % cl.length]; out.dust.push([q.c[0] + gauss() * q.w * 1.3, q.c[1] + gauss() * q.w * 1.3, gauss() * q.w * 0.7, 0.85]); }
+  } else if (shape === 'ring') {
+    // 環：子主題各佔一段弧，弧上照時間排；重點越多環越粗
+    const th = Math.min(0.17, 0.035 + 0.012 * Math.sqrt(g.n));
+    let acc = rnd();
+    g.subs.forEach(s => {
+      const share = s.count / g.n, a0 = acc * 6.283, span = share * 6.283, ns = s.notes; acc += share;
+      out.sub.set(s.sub, [R * 0.78 * Math.cos(a0 + span / 2), R * 0.78 * Math.sin(a0 + span / 2), 0]);
+      ns.forEach((n, i) => { const a = a0 + span * (ns.length > 1 ? 0.08 + 0.84 * i / (ns.length - 1) : 0.5), r = R * (1 + gauss() * th * 0.6); out.note.set(n.id, [r * Math.cos(a), r * Math.sin(a), gauss() * R * th * 0.4]); });
+    });
+    for (let k = 0; k < dustN; k++) { const a = rnd() * 6.283, r = R * (1 + gauss() * th); out.dust.push([r * Math.cos(a), r * Math.sin(a), gauss() * R * th * 0.5, 0.9]); }
+    for (let k = 0; k < 14; k++) out.dust.push([gauss() * R * 0.07, gauss() * R * 0.07, 0, 0.8]);
+  } else if (shape === 'comet') {
+    // 彗星：x 是尾巴方向（背對中心）。頭是最新的，越舊越往後拖；多空分歧時，偏多、偏空各拖一條
+    const L = R * (1.5 + 0.9 * Math.min(1, g.n / 40));
+    const fork = g.contested;
+    g.subs.forEach((s, j) => { const a = j / Math.max(1, S) * 6.283 + 0.4; out.sub.set(s.sub, [-R * 0.04, R * 0.38 * Math.cos(a), R * 0.3 * Math.sin(a)]); });
+    all.forEach(n => {
+      const s = 1 - tr.get(n.id), w = 2 + s * R * 0.32, side = fork ? (n.stance === 'bull' ? 1 : n.stance === 'bear' ? -1 : 0) : 0;
+      out.note.set(n.id, [L * Math.pow(s, 0.9) + gauss() * 1.5, side * s * R * 0.5 + gauss() * w * 0.45, gauss() * w * 0.3]);
+    });
+    for (let k = 0; k < dustN * 1.3; k++) {
+      if (k < dustN * 0.2) { out.dust.push([gauss() * R * 0.1, gauss() * R * 0.12, gauss() * R * 0.12, 1]); continue; }
+      const s = Math.pow(rnd(), 0.75), w = 1.5 + s * R * 0.3, side = fork ? [0, 1, -1][k % 3] : 0;
+      out.dust.push([L * s, side * s * R * 0.5 + gauss() * w * 0.5, gauss() * w * 0.3, 1 - 0.75 * s]);
+    }
+    out.L = L; out.fork = fork;
+  } else if (shape === 'timeline') {
+    // 時間軸：x 是時間（一季一格，最多 24 季），每個子主題一條線，同一季的重點疊起來
+    const qOf = n => { const m = /^(\d{4})-(\d{2})/.exec(n.date || ''); return m ? +m[1] * 4 + Math.floor((+m[2] - 1) / 3) : null; };
+    const qs = all.map(qOf).filter(q => q != null);
+    const qMax = qs.length ? Math.max(...qs) : 0, qMin = qs.length ? Math.max(Math.min(...qs), qMax - 23) : 0, Q = qMax - qMin + 1;
+    const Lb = Math.min(R * 2.8, Math.max(R * 1.4, (Q - 1) * 13)), xq = q => -Lb / 2 + (Q > 1 ? (Math.max(qMin, q) - qMin) / (Q - 1) : 0.5) * Lb;
+    const gap = Math.min(15, R * 1.1 / Math.max(1, S)), lane = j => (j - (S - 1) / 2) * gap;
+    g.subs.forEach((s, j) => {
+      out.sub.set(s.sub, [-Lb / 2 - 12, lane(j), 0]);
+      const cnt = new Map();
+      s.notes.forEach(n => { const q = qOf(n) == null ? qMin : Math.max(qMin, qOf(n)), k = cnt.get(q) || 0; cnt.set(q, k + 1); out.note.set(n.id, [xq(q) + ((k % 3) - 1) * 2, lane(j) - Math.floor(k / 3) * 2.4 + gauss() * 0.4, gauss() * 0.6]); });
+    });
+    for (let q = qMin; q <= qMax; q++) { const x = xq(q), big = q % 4 === 3; for (let k = 0; k < (big ? 10 : 5); k++) out.dust.push([x + gauss() * 0.8, gauss() * (big ? 2.2 : 1.2), gauss(), big ? 1 : 0.75]); }
+    for (let k = 0; k < dustN * 0.6; k++) out.dust.push([(rnd() - 0.5) * Lb * 1.05, gauss() * (S * gap * 0.5 + 2), gauss() * 1.2, 0.45]);
+    for (let e = -1; e <= 1; e += 2) for (let k = 0; k < 24; k++) { const a = rnd() * 1.5, r = R * 0.5; out.dust.push([e * (Lb / 2 + r * Math.sin(a)), e * r * (1 - Math.cos(a)) * 1.2 + gauss(), gauss(), 0.4]); }
+    out.Lb = Lb; out.q = [qMin, qMax];
+  }
+  return out;
+}
 
 function memBuild(st) {
+  const now = Date.now();
   const notes = data.notes.filter(n => n.stockId === st.id && !isOld(n));      // 已過時的不放進星系
   const tree = topicTree(st, false, notes);
-  let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-  const gauss = () => Math.sqrt(-2 * Math.log(rnd() + 1e-9)) * Math.cos(2 * Math.PI * rnd());
-  const nodes = [], links = [];
+  const nodes = [], links = [], dust = [];
   const root = { id: 'root', kind: 'root', label: `${st.code} ${st.name || ''}`, r: 20, pos: [0, 0, 0] };
   nodes.push(root);
-  const T = tree.length, subN = tree.reduce((a, t) => a + t.subs.length, 0);
+  const subN = tree.reduce((a, t) => a + t.subs.length, 0);
   const cap = Math.max(12, Math.floor(MEM_STAR_BUDGET / Math.max(1, subN)));   // 每個子主題最多畫幾顆重點星星（最新的優先）
   MEM.capped = 0;
-  tree.forEach((t, i) => {
-    const a0 = (2 * Math.PI * i) / Math.max(1, T), color = topicColor(t.topic);
-    const rt = 132 + (i % 2) * 18;
-    const tn = { id: 't:' + t.topic, kind: 'topic', label: t.topic, topic: t.topic, color, r: 8 + Math.sqrt(t.count) * 2.6, pos: onDisk(rt, spiral(a0, rt), (rnd() - 0.5) * 10), parent: root, count: t.count };
+  const fixedOn = memFixedOn(), byTopic = new Map();
+  notes.forEach(n => { let a = byTopic.get(n.topic); if (!a) byTopic.set(n.topic, a = []); a.push(n); });
+  const dateAsc = (a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
+  // 1. 每個主題的狀態：活躍度、多空、子主題
+  const gal = tree.map(t => {
+    const list = byTopic.get(t.topic) || [];
+    let A = 0, lastAge = Infinity, bull = 0, bear = 0, recent = 0;
+    list.forEach(n => { const age = noteAgeDays(n, now); A += Math.pow(0.5, age / MEM_HALF); lastAge = Math.min(lastAge, age); if (age <= 30) recent++; if (n.stance === 'bull') bull++; else if (n.stance === 'bear') bear++; });
+    const subs = t.subs.map(s => {
+      let ns = list.filter(n => n.sub === s.sub).sort(dateAsc), hidden = null;
+      if (ns.length > cap) { MEM.capped += ns.length - cap; hidden = ns.slice(0, ns.length - cap); ns = ns.slice(-cap); }
+      return { sub: s.sub, count: s.count, notes: ns, hidden };
+    });
+    const g = { topic: t.topic, n: t.count, subs, A, lastAge, bull, bear, recent, contested: memContested(list, now) };
+    g.shown = subs.flatMap(s => s.notes).sort(dateAsc);
+    g.fixed = (fixedOn.includes(t.topic) && MEM_FIXED[t.topic]) || null;
+    g.shape = g.fixed || memState(g);
+    return g;
+  });
+  // 2. 方向、距離、大小、形態
+  const Amax = Math.max(1e-6, ...gal.map(g => g.A));
+  const sumR = gal.reduce((a, g) => a + 26 + 58 * Math.sqrt(Math.min(g.n, 150) / 60), 0), far = 230 + 170 * Math.min(1, sumR / 650);   // 重點少的時候整體收小一點
+  gal.forEach(g => {
+    const rng = memRng(g.topic), { rnd } = rng, slot = DEFAULT_TOPICS.indexOf(g.topic);
+    g.th = slot >= 0 ? slot / DEFAULT_TOPICS.length * 6.283 + (rnd() - 0.5) * 0.14 : rnd() * 6.283;
+    g.y0 = (rnd() - 0.5) * 36; g.al = 0.25 + 0.8 * rnd(); g.rot = rnd() * 6.283;
+    g.act = 0.5 * g.A / (g.A + 2) + 0.5 * g.A / Amax;                      // 一半看絕對（最近幾則），一半和這檔最活躍的主題比
+    g.R = 26 + 58 * Math.sqrt(Math.min(g.n, 150) / 60);
+    g.loc = memShape(g.shape, g, g.R, rng);
+    const comet = g.shape === 'comet';
+    g.rad = comet ? g.loc.L / 2 + g.R * 0.3 : g.shape === 'timeline' ? g.loc.Lb / 2 + 14 : g.shape === 'ring' ? g.R * 1.12 : g.R;
+    const dMin = 100 + (comet ? g.R * 0.45 : g.rad), dMax = Math.max(dMin + 50, far - (comet ? g.loc.L : 0));
+    g.d = dMin + (1 - g.act) * (dMax - dMin);
+  });
+  // 3. 撞在一起的話，比較不活躍的往外推（只動遠近，方向不變）。彗星當成一條有寬度的線來算
+  const pts = g => { const c = Math.cos(g.th), sn = Math.sin(g.th), L = g.shape === 'comet' ? g.loc.L : 0, out = [];
+    for (let i = 0; i <= (L ? 6 : 0); i++) { const k = g.d + (L ? L * i / 6 : 0); out.push([c * k, sn * k]); } return out; };
+  const bodyR = g => g.shape === 'comet' ? g.R * (g.loc.fork ? 0.55 : 0.4) : g.rad;
+  const near = (a, b) => { const A = pts(a), B = pts(b), lim = bodyR(a) + bodyR(b) + 10; return A.some(p => B.some(q => Math.hypot(p[0] - q[0], p[1] - q[1]) < lim)); };
+  const placed = [];
+  gal.slice().sort((a, b) => b.act - a.act).forEach(g => {
+    for (let it = 0; it < 90 && placed.some(p => near(g, p)); it++) g.d += 6;
+    placed.push(g);
+  });
+  // 4. 放進 3D：每個小星系有自己的傾斜角度
+  let ext = 1;
+  const up = [0, 1, 0], R0 = memInitR(), cam = [R0[6], R0[7], R0[8]], camX = [R0[0], R0[1], R0[2]];   // 一開始看過去的方向、畫面的右邊
+  gal.forEach(g => {
+    const color = topicColor(g.topic), u = [Math.cos(g.th), 0, Math.sin(g.th)], v = [-Math.sin(g.th), 0, Math.cos(g.th)];
+    let e1, e2, rot = 0;
+    if (g.shape === 'comet') { e1 = V3.norm(V3.add(u, V3.mul(up, 0.1))); e2 = v; }
+    else if (g.shape === 'timeline') { e1 = camX; e2 = V3.norm(V3.cross(cam, e1)); }       // 時間軸：正對一開始的視角，左舊右新
+    else {
+      // 其他形態：大致面向一開始的視角，再各自歪一點，所以不會剛好側躺成一條線
+      const nrm = V3.norm(V3.add(V3.mul(cam, 0.8), V3.mul(V3.add(V3.mul(u, Math.cos(g.al * 6)), V3.mul(v, Math.sin(g.al * 6))), 0.62)));
+      e1 = V3.norm(V3.cross(up, nrm)); e2 = V3.cross(nrm, e1); rot = g.rot;
+    }
+    const e3 = V3.cross(e1, e2), C = [u[0] * g.d, g.y0, u[2] * g.d], cr = Math.cos(rot), sr = Math.sin(rot);
+    const W = ([x, y, z]) => { const X = x * cr - y * sr, Y = x * sr + y * cr; return [C[0] + X * e1[0] + Y * e2[0] + z * e3[0], C[1] + X * e1[1] + Y * e2[1] + z * e3[1], C[2] + X * e1[2] + Y * e2[2] + z * e3[2]]; };
+    Object.assign(g, { C, color, u });
+    ext = Math.max(ext, g.d + (g.shape === 'comet' ? g.loc.L : g.rad));
+    const tn = { id: 't:' + g.topic, kind: 'topic', label: g.topic, topic: g.topic, color, r: (6 + Math.sqrt(g.n) * 1.1) * (g.shape === 'comet' ? 0.7 + 0.6 * g.act : 1), pos: C, parent: root, count: g.n, gal: g, lum: 0.7 + 0.3 * g.act };
     nodes.push(tn); links.push([root, tn]);
-    const m = t.subs.length;
-    t.subs.forEach((s, j) => {
-      const off = m > 1 ? (j / (m - 1) - 0.5) * Math.min(0.95, 0.24 * m) : 0;
-      const rs = 212 + (j % 3) * 18;
-      const sn = { id: 's:' + t.topic + '||' + s.sub, kind: 'sub', label: s.sub, topic: t.topic, sub: s.sub, color, r: 5.5 + Math.sqrt(s.count) * 1.8, pos: onDisk(rs, spiral(a0, rs) + off, (rnd() - 0.5) * 16), parent: tn, count: s.count, off, a0, rs };
+    g.subs.forEach(s => {
+      const sn = { id: 's:' + g.topic + '||' + s.sub, kind: 'sub', label: s.sub, topic: g.topic, sub: s.sub, color, r: 3.2 + Math.sqrt(s.count) * 0.8, pos: W(g.loc.sub.get(s.sub) || [0, 0, 0]), parent: tn, count: s.count, lum: 0.6 + 0.4 * g.act };
+      if (s.hidden) sn.hidden = s.hidden;
       nodes.push(sn); links.push([tn, sn]);
-      let ns = notes.filter(n => n.topic === t.topic && n.sub === s.sub).sort((a, b) => a.date < b.date ? -1 : 1);
-      if (ns.length > cap) { MEM.capped += ns.length - cap; sn.hidden = ns.slice(0, ns.length - cap); ns = ns.slice(-cap); }
-      const p = ns.length;
-      ns.forEach((n, k) => {
-        const rn = rs + 52 + (k % 3) * 15;
-        const o2 = p > 1 ? (k / (p - 1) - 0.5) * Math.min(0.55, 0.1 * p) : 0;
-        const nn = { id: 'n:' + n.id, kind: 'note', label: n.title, note: n, color: stanceColor(n.stance, st.market), r: 3, pos: onDisk(rn, spiral(a0, rn) + off + o2, (rnd() - 0.5) * 20), parent: sn, tw: rnd() * 6.28 };
+      s.notes.forEach(n => {
+        const nn = { id: 'n:' + n.id, kind: 'note', label: n.title, note: n, color: stanceColor(n.stance, st.market), r: 3, pos: W(g.loc.note.get(n.id) || [0, 0, 0]), parent: sn, tw: (hashStr(n.id) % 628) / 100, lum: 0.5 + 0.5 * Math.pow(0.5, noteAgeDays(n, now) / 45) };
         nodes.push(nn); links.push([sn, nn]);
       });
     });
+    const { rnd } = memRng('dust|' + g.topic), k = 0.75 + 0.25 * g.act;
+    g.loc.dust.forEach(([x, y, z, f]) => {
+      const c = rnd() < 0.62 ? color : rnd() < 0.6 ? '#D6E2FF' : '#FFFFFF';
+      dust.push({ p: W([x, y, z]), c, s: 0.6 + rnd() * 1.3, a: (0.22 + rnd() * 0.5) * f * k });
+    });
   });
-  // 星塵：沿著旋臂分布，中心是暖色的核球
-  const A = Math.max(3, T), dust = [];
-  for (let k = 0; k < 2800; k++) {
-    const a0 = (2 * Math.PI * (k % A)) / A, r = 28 + Math.pow(rnd(), 0.75) * 390;
-    const a = spiral(a0, r) + gauss() * 0.19 * (0.5 + r / 420);
-    const c = r < 85 ? '#FFE3B3' : rnd() < 0.1 ? '#FF9FDC' : rnd() < 0.3 ? '#CDBBFF' : '#9EC6FF';
-    dust.push({ p: onDisk(r, a, gauss() * (5 + 9 * (1 - r / 420))), c, s: 0.6 + rnd() * 1.5, a: 0.3 + rnd() * 0.65 });
-  }
-  for (let k = 0; k < 320; k++) {
-    const r = Math.abs(gauss()) * 42, a = rnd() * Math.PI * 2;
-    dust.push({ p: onDisk(r, a, gauss() * 14), c: '#FFE9C2', s: 0.6 + rnd() * 1.2, a: 0.35 + rnd() * 0.55 });
-  }
+  // 中間的核球＋星系之間淡淡的星雲
+  const { rnd, gauss } = memRng('core|' + st.code);
+  for (let k = 0; k < 300; k++) { const r = Math.abs(gauss()) * 40, a = rnd() * Math.PI * 2; dust.push({ p: [r * Math.cos(a), gauss() * 12, r * Math.sin(a)], c: '#FFE9C2', s: 0.6 + rnd() * 1.2, a: 0.35 + rnd() * 0.55 }); }
+  for (let k = 0; k < 420; k++) { const r = 55 + Math.abs(gauss()) * 170, a = rnd() * Math.PI * 2; dust.push({ p: [r * Math.cos(a), gauss() * 45, r * Math.sin(a)], c: rnd() < 0.15 ? '#FF9FDC' : rnd() < 0.45 ? '#CDBBFF' : '#9EC6FF', s: 0.5 + rnd() * 1.1, a: 0.1 + rnd() * 0.26 }); }
   const stars = [];
   for (let k = 0; k < 360; k++) stars.push({ x: rnd(), y: rnd(), s: 0.4 + rnd() * 1.3, a: 0.25 + rnd() * 0.7, ph: rnd() * 6.28, sp: 0.6 + rnd() * 2.2 });
   links.forEach(([a, b]) => (a.kids || (a.kids = [])).push(b));
-  MEM.nodes = nodes; MEM.links = links; MEM.dust = dust; MEM.stars = stars;
+  MEM.nodes = nodes; MEM.links = links; MEM.dust = dust; MEM.stars = stars; MEM.gal = gal;
+  MEM.fit = 1; memFit();
 }
 
 function openMemory(st) {
   if (dlg.open) dlg.close();
-  Object.assign(MEM, { st, sel: null, hover: null, panel: null, zoom: 1, R: memInitR(), pan: { x: 0, y: 0 }, tpan: null, par: { x: 0, y: 0 }, frame: 0, spin: !!ui.memSpin, open: new Set(), stance: '' });
+  Object.assign(MEM, { st, sel: null, hover: null, panel: null, zoom: 1, R: memInitR(), pan: { x: 0, y: 0 }, home: null, tpan: null, par: { x: 0, y: 0 }, frame: 0, spin: !!ui.memSpin, open: new Set(), stance: '' });
   memBuild(st);
   const md = $('#mem');
   const nNotes = MEM.nodes.filter(x => x.kind === 'note').length;
@@ -3174,12 +3370,29 @@ function openMemory(st) {
   cancelAnimationFrame(MEM.raf);
   MEM.raf = requestAnimationFrame(memLoop);
 }
+// 一開始的視角下，整個星系團剛好放得進畫面（留邊給文字和按鈕），並且置中
+function memFit() {
+  const W = MEM.w, H = MEM.h; if (!W || !H || !MEM.nodes.length) return;
+  const M = memInitR(), D = 900, F = Math.min(W, H) * 1.18;
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  for (const n of MEM.nodes) {
+    const [x, y, z] = n.pos, s = F / Math.max(60, D + M[6] * x + M[7] * y + M[8] * z);
+    const ox = (M[0] * x + M[1] * y + M[2] * z) * s, oy = (M[3] * x + M[4] * y + M[5] * z) * s;
+    x0 = Math.min(x0, ox - 44); x1 = Math.max(x1, ox + 44); y0 = Math.min(y0, oy - 26); y1 = Math.max(y1, oy + 12);
+  }
+  const top = 30, bot = 62, k = Math.max(0.35, Math.min(1.6, (W - 24) / (x1 - x0), (H - top - bot) / (y1 - y0)));
+  const c = memCenter(), home = { x: -k * (x0 + x1) / 2, y: (top + H - bot) / 2 - c.y - k * (y0 + y1) / 2 };
+  const atHome = !MEM.home || (Math.abs(MEM.pan.x - MEM.home.x) < 1 && Math.abs(MEM.pan.y - MEM.home.y) < 1 && MEM.zoom === 1);
+  MEM.fit = k; MEM.home = home;
+  if (atHome) { MEM.pan = { x: home.x, y: home.y }; MEM.tpan = null; }
+}
 function memResize() {
   const r = MEM.cv.parentElement.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
   MEM.w = r.width; MEM.h = r.height;
   if (!r.width || !r.height) return;
   MEM.cv.width = Math.round(r.width * dpr); MEM.cv.height = Math.round(r.height * dpr);
   MEM.cv.style.width = r.width + 'px'; MEM.cv.style.height = r.height + 'px';
+  memFit();
   MEM.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   // 背景（深空與星雲）先畫好放著，每一格直接貼上
   const bg = document.createElement('canvas'); bg.width = MEM.cv.width; bg.height = MEM.cv.height;
@@ -3210,7 +3423,7 @@ function memDraw(now) {
   const e = 1 - Math.pow(1 - Math.min(1, t / 1.5), 3);               // 展開進度
   const swirl = (1 - e) * 1.6;                                        // 展開時順著旋臂轉進來
   const M = swirl ? mmul(MEM.R, rotY(swirl)) : MEM.R;
-  const D = 900, F = Math.min(W, H) * 1.18 * MEM.zoom, cx = W / 2 + MEM.pan.x, cy = H / 2 + H * 0.02 + MEM.pan.y;
+  const D = 900, F = Math.min(W, H) * 1.18 * MEM.zoom * (MEM.fit || 1), cx = W / 2 + MEM.pan.x, cy = H / 2 + H * 0.02 + MEM.pan.y;
   const proj = (p, k = 1) => {
     const x = p[0] * k, y = p[1] * k, z = p[2] * k;
     const x1 = M[0] * x + M[1] * y + M[2] * z, y2 = M[3] * x + M[4] * y + M[5] * z, z2 = M[6] * x + M[7] * y + M[8] * z;
@@ -3296,11 +3509,11 @@ function memDraw(now) {
   // 星星（節點）：遠的先畫
   const order = MEM.nodes.filter(n => n.kind !== 'root').sort((a, b) => b.q.z - a.q.z);
   // 先一次畫完所有光暈（加亮混色和順序無關），再由遠到近畫星星本體；不用每顆星星切換混色模式
-  const alphaOf = n => fade(n.q.z) * (rel && !rel.has(n) ? 0.3 : 1) * (memOff(n) ? 0.12 : 1) * Math.min(1, e * 1.3);
+  const alphaOf = n => fade(n.q.z) * (n.lum || 1) * (rel && !rel.has(n) ? 0.3 : 1) * (memOff(n) ? 0.12 : 1) * Math.min(1, e * 1.3);
   ctx.globalCompositeOperation = 'lighter';
   for (const n of order) {
     const twinkle = n.kind === 'note' ? 0.8 + 0.2 * Math.sin(t * 2.4 + n.tw) : 1;
-    const hr = n.rr * (n.kind === 'note' ? 4.2 : 3.2);
+    const hr = n.rr * (n.kind === 'note' ? 4.2 : 2.6);
     ctx.globalAlpha = alphaOf(n) * 0.55 * twinkle; ctx.drawImage(glowSprite(n.color), n.q.x - hr, n.q.y - hr, hr * 2, hr * 2);
   }
   ctx.globalCompositeOperation = 'source-over';
@@ -3368,7 +3581,7 @@ function memFocus(n) {
   const c = memCenter();
   MEM.tpan = { x: MEM.pan.x + (c.x - n.q.x), y: MEM.pan.y + (c.y - n.q.y) };
 }
-function memReset() { MEM.R = memInitR(); MEM.pan = { x: 0, y: 0 }; MEM.tpan = null; MEM.zoom = 1; MEM.sel = null; MEM.panel = null; memSide(); }
+function memReset() { MEM.R = memInitR(); MEM.pan = MEM.home ? { x: MEM.home.x, y: MEM.home.y } : { x: 0, y: 0 }; MEM.tpan = null; MEM.zoom = 1; MEM.sel = null; MEM.panel = null; memSide(); }
 function memLoop(now) {
   if (!$('#mem').open) return;
   if (MEM.tpan && !MEM.ptrs.size) {
@@ -3461,6 +3674,43 @@ function memHit(x, y) {
   }
   return best;
 }
+// 形態說明：為什麼長這樣
+function memWhy(g) {
+  if (!g) return '';
+  const last = isFinite(g.lastAge) ? (g.lastAge < 1 ? '今天' : Math.round(g.lastAge) + ' 天前') : '—';
+  const facts = [`最近 30 天新增 ${g.recent} 條`, `最新一條：${last}`];
+  if (g.shape === 'bar') facts.push(`「${g.subs[0].sub}」佔 ${Math.round(g.subs[0].count / g.n * 100)}%`);
+  if (g.shape === 'irr' || (g.shape === 'comet' && g.contested)) facts.push('最近偏多、偏空的意見都不少');
+  if (g.shape === 'timeline' && g.loc.q) { const [a, b] = g.loc.q, ql = q => `${Math.floor(q / 4)} Q${q % 4 + 1}`; facts.push(`${ql(a)} 到 ${ql(b)}`); }
+  return `<div class="mem-why"><b>${MEM_SHAPE[g.shape]}</b>${g.fixed ? '<span class="faint">（固定造型）</span>' : ''}：${esc(MEM_SHAPE_TIP[g.shape])}<div class="faint">${facts.join('・')}</div></div>`;
+}
+// 怎麼看這張圖＋固定造型開關
+function memKey() {
+  const on = memFixedOn(), row = k => `<li><b>${MEM_SHAPE[k]}</b>　${esc(MEM_SHAPE_TIP[k])}</li>`;
+  return `<details class="mem-key"${ui.memKey ? ' open' : ''}><summary>怎麼看這張圖</summary>
+    <ul><li><b>方向</b>　每個主題固定在同一個方向，每檔標的都一樣</li><li><b>遠近</b>　越近越活躍（最近有新增的重點）；冷掉的會漂到外圍、變暗</li><li><b>大小</b>　重點越多越大</li><li><b>亮度</b>　越新的重點越亮</li></ul>
+    <div class="lbl">看狀態的形態</div><ul>${['spiral', 'ellip', 'bar', 'irr'].map(row).join('')}</ul>
+    <div class="lbl">固定造型（取消勾選就改成看狀態）</div>
+    ${Object.entries(MEM_FIXED).map(([t, k]) => `<label class="chk"><input type="checkbox" data-mem-fx="${esc(t)}" ${on.includes(t) ? 'checked' : ''}><span>${esc(t)} 用<b>${MEM_SHAPE[k]}</b>　<span class="faint">${esc(MEM_SHAPE_TIP[k])}</span></span></label>`).join('')}
+  </details>`;
+}
+function memSetFixed(list) {
+  data.settings = Object.assign({}, data.settings, { memFixed: list });
+  commit();
+  if ($('#mem').open && MEM.st) {
+    const sel = MEM.sel && MEM.sel.id, pan = MEM.panel && MEM.panel.id;
+    memBuild(MEM.st);
+    MEM.sel = sel ? MEM.nodes.find(n => n.id === sel) || null : null;
+    MEM.panel = pan ? MEM.nodes.find(n => n.id === pan) || null : null;
+    memSide();
+  }
+}
+document.addEventListener('change', e => {
+  const x = e.target.closest('#memSide [data-mem-fx]'); if (!x) return;
+  const on = new Set(memFixedOn()); x.checked ? on.add(x.dataset.memFx) : on.delete(x.dataset.memFx);
+  memSetFixed(Object.keys(MEM_FIXED).filter(t => on.has(t)));
+});
+document.addEventListener('toggle', e => { if (e.target.classList && e.target.classList.contains('mem-key')) { ui.memKey = e.target.open; } }, true);
 // 側欄：主題、子主題底下直接列出重點內容
 function memCard(x, showSub) {
   const m = MEM.st.market, on = MEM.sel && MEM.sel.note === x, fold = ui.memFold && !MEM.open.has(x.id);
@@ -3487,13 +3737,15 @@ function memSide() {
     el.innerHTML = `<div class="mem-h">${stockLabel(st)}</div>
       ${statBlock(all, m, '整檔多空')}
       <div class="lbl" style="margin:12px 0 4px">主題（點一下看裡面所有重點；右邊是多空比）</div>
-      ${tops.map(t => `<button type="button" class="mem-it" data-mem="${esc(t.id)}"><i class="dotc" style="background:${t.color}"></i>${esc(t.topic)} <span class="faint">${t.count}</span>${statMini(all.filter(x => x.topic === t.topic), m)}</button>`).join('') || '<div class="faint">還沒有重點</div>'}
+      ${tops.map(t => `<button type="button" class="mem-it" data-mem="${esc(t.id)}"><i class="dotc" style="background:${t.color}"></i>${esc(t.topic)} <span class="faint">${t.count}</span><span class="mem-shp" title="${esc(MEM_SHAPE_TIP[t.gal.shape])}">${MEM_SHAPE[t.gal.shape]}</span>${statMini(all.filter(x => x.topic === t.topic), m)}</button>`).join('') || '<div class="faint">還沒有重點</div>'}
+      ${tops.length ? memKey() : ''}
       ${latest.length ? `<div class="lbl" style="margin:14px 0 6px">最新重點</div>${latest.map(x => memCard(x, true)).join('')}` : ''}`;
   } else if (P.kind === 'topic') {
     const subs = MEM.nodes.filter(x => x.kind === 'sub' && x.parent === P);
     const tn = subs.flatMap(notesOf);
     el.innerHTML = `<div class="mem-bar"><button type="button" class="btn" data-mem="">← 全部</button>${foldBtn}</div>
       <div class="mem-h"><i class="dotc" style="background:${P.color}"></i>${esc(P.topic)}</div><div class="faint" style="margin-bottom:8px">${P.count} 條重點・${subs.length} 個子主題</div>
+      ${memWhy(P.gal)}
       ${statBlock(tn, m, '主題多空')}${P.topic === '分析師看法' ? analystBlock(tn, m) : ''}
       <div style="margin:4px 0 2px">${stanceSeg(MEM.stance, tn, 'data-mem-stance')}</div>
       ${subs.map(s => { const ns = notesOf(s), shown = ns.filter(pass); return `<div class="ms-h" data-mem="${esc(s.id)}"><i class="dotc" style="background:${s.color}"></i>${esc(s.sub)} <span class="faint">${MEM.stance ? shown.length + ' / ' : ''}${s.count}</span><span class="sp"></span>${statMini(ns, m)}</div>${shown.slice(0, SUB_CARDS).map(x => memCard(x, false)).join('')}${shown.length > SUB_CARDS ? `<button type="button" class="btn" data-mem="${esc(s.id)}" style="margin-bottom:8px">看全部 ${shown.length} 條</button>` : ''}`; }).join('')}`;
@@ -6220,6 +6472,9 @@ function openSettings() {
       <div class="gset"><span class="lbl">列表</span>
         <label class="chk"><input type="checkbox" name="groupByMarket" ${s.groupByMarket !== false ? 'checked' : ''}>台股、美股分開列（各自小計）。取消勾選就混在一起，用拖拉自由排序。</label>
         <label class="chk"><input type="checkbox" name="showBi" ${s.showBi !== false ? 'checked' : ''}>財務名詞中英對照（例如「EPS 每股盈餘」「毛利率 Gross margin」）</label></div>
+      <div class="gset"><span class="lbl">Memory 星系：固定造型</span>
+        <div class="note" style="margin:-2px 0 8px">內容本身就有形狀的主題用固定造型；取消勾選就和其他主題一樣，依狀態長成螺旋、橢圓、棒旋或不規則。</div>
+        ${Object.entries(MEM_FIXED).map(([t, k]) => `<label class="chk"><input type="checkbox" name="memFx" value="${esc(t)}" ${memFixedOn().includes(t) ? 'checked' : ''}><span>${esc(t)} 用${MEM_SHAPE[k]}</span></label>`).join('')}</div>
       <div class="gset"><span class="lbl">報價來源（Google Apps Script）</span>
         ${fld('網頁應用程式網址', inp('apiUrl', s.apiUrl, 'placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off"'), '照 README 部署後，把結尾是 /exec 的網址貼在這裡。會跟著同步到其他裝置。')}
         <div class="r2">${fld('存取密語', `<div class="inl">${inp('apiKey', s.apiKey, 'autocomplete="off" spellcheck="false"')}<button type="button" class="btn" data-act="gen-key">產生</button></div>`, '要和 Code.gs 裡的 ACCESS_KEY 一樣。新聞、財報一定要設。')}
@@ -6262,7 +6517,7 @@ function openSettings() {
       }
       if (nums.twFeeDiscount > 1 || nums.twFeeDiscount <= 0) return '手續費折扣要介於 0 和 1 之間（2.8 折填 0.28）';
       const ns = Object.assign({}, data.settings, {
-        apiUrl: url, apiKey: fv(f, 'apiKey'), refreshSec: Math.max(5, nums.refreshSec || 10), groupByMarket: !!f.elements.groupByMarket.checked, showBi: !!f.elements.showBi.checked,
+        apiUrl: url, apiKey: fv(f, 'apiKey'), refreshSec: Math.max(5, nums.refreshSec || 10), groupByMarket: !!f.elements.groupByMarket.checked, showBi: !!f.elements.showBi.checked, memFixed: [...f.querySelectorAll('[name=memFx]:checked')].map(x => x.value),
         twFeeRate: nums.twFeeRate / 100, twFeeDiscount: nums.twFeeDiscount, twFeeMin: nums.twFeeMin, twFeeMinOdd: nums.twFeeMinOdd,
         twTaxStock: nums.twTaxStock / 100, twTaxEtf: nums.twTaxEtf / 100, usFee: nums.usFee, usSellRate: nums.usSellRate / 100
       });
