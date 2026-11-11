@@ -2905,7 +2905,7 @@ function renderNewsTab(st, el, head, keep) {
       ${it.sum ? `<div class="nt-body">${esc(it.sum)}</div>` : ''}
       ${cl.list.length > 1 ? `<details class="nw-more"><summary>${cl.list.length} 則相關報導</summary>${cl.list.map(x => `<div>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.src || '來源')}：${esc(x.title)}</a>` : esc(x.title)} <span class="faint">${fmtNewsTime(x.at, st)}</span></div>`).join('')}</details>` : ''}
       ${stale ? `<div class="nw-stale"><span>這則放了超過 ${rd} 天，還需要嗎？</span><span class="sp"></span><button class="btn" data-act="news-skip" data-id="${it.id}" title="移到「已略過」，之後還可以恢復">刪除</button><button class="btn" data-act="news-keep" data-id="${it.id}" title="${rd} 天後再提醒一次">還需要</button><button class="btn" data-act="news-keep-forever" data-id="${it.id}" title="不會再提醒">永久有效</button></div>` : ''}
-      <div class="nw-act">${cl.state !== 'added' ? `<button class="btn" data-act="news-add" data-id="${it.id}">${ic('plus')}加入重點</button>` : ''}${cl.state === 'new' && !stale ? `<button class="btn" data-act="news-skip" data-id="${it.id}">略過</button>` : ''}${cl.state === 'dismissed' ? `<button class="btn" data-act="news-undo" data-id="${it.id}">恢復未處理</button>` : ''}</div></div>`;
+      <div class="nw-act">${cl.state !== 'added' ? `<button class="btn" data-act="news-add" data-id="${it.id}">${ic('plus')}加入重點</button>` : ''}${cl.state === 'new' && !stale ? `<button class="btn" data-act="news-skip" data-id="${it.id}">略過</button>` : ''}${cl.state === 'dismissed' ? `<button class="btn" data-act="news-undo" data-id="${it.id}">恢復未處理</button>` : ''}${it.kind !== 'ann' && it.src && !NEWS_GENERIC.includes(it.src) ? `<span class="sp"></span><button type="button" class="lnk" data-act="news-block-src" data-src="${esc(it.src)}" title="以後不顯示「${esc(it.src)}」的新聞">不要這個來源</button>` : ''}</div></div>`;
   }).join('');
   const older = newsOlder(st);
   const foot = (shown.length > lim ? `<div class="empty" style="padding:10px"><button class="btn" data-act="news-more">再顯示 ${Math.min(40, shown.length - lim)} 則</button></div>` : '') +
@@ -2915,6 +2915,7 @@ function renderNewsTab(st, el, head, keep) {
   box(`<div class="nfil"><div class="seg2" role="group" aria-label="狀態">${seg}</div>
       <label class="chk" style="margin:0;font-size:12px"><input type="checkbox" data-nwann ${F.ann ? 'checked' : ''}>只看公告</label>
       ${noiseN ? `<label class="chk" style="margin:0;font-size:12px"><input type="checkbox" data-nwnoise ${F.noise ? 'checked' : ''}>顯示可能的雜訊 ${noiseN}</label>` : ''}
+      ${items.blocked ? `<span class="faint" style="font-size:12px" title="${esc('不要的來源：' + newsBlockList().join('、'))}">已隱藏 ${items.blocked} 則不要的來源 <button type="button" class="lnk" data-act="news-block">管理</button></span>` : ''}
       <span class="sp"></span>${unreadN ? `<button type="button" class="btn sm" data-act="news-read-all">全部標為已讀</button>` : ''}
       <label class="faint" style="font-size:12px" title="未處理的新聞放超過這個天數，框會變黃，提醒你看看還要不要">提醒檢視 <select data-nwrmd>${NEWS_RMD.map(([v, l]) => `<option value="${v}" ${v === rd ? 'selected' : ''}>${l}</option>`).join('')}</select></label></div>
     <div class="note" style="margin:0 0 8px">新聞先放在這裡，按「加入重點」確認後才會變成重點。股價漲跌、盤勢排行、標題沒提到這家公司的，先當成可能的雜訊收起來。${NEWS.err ? `<span class="r">　更新失敗：${esc(NEWS.err)}</span>` : ''}</div>
@@ -4380,11 +4381,44 @@ async function newsLoad(keys, opt = {}) {
     });
   }
 }
-function newsItems(st) {
+// 不要的新聞來源：來源名稱、網址、標題或摘要含有這些字就不顯示（官方公告不受影響）
+const NEWS_BLOCK0 = ['CMoney'];
+const NEWS_GENERIC = ['Google 新聞', 'Yahoo 股市', 'Yahoo Finance', 'SEC'];      // 這些只是「從哪裡抓到的」，不是原始來源
+const newsBlockList = () => (Array.isArray(data.settings.newsBlock) ? data.settings.newsBlock : NEWS_BLOCK0).map(x => String(x).trim()).filter(Boolean);
+function newsBlocked(it, list = newsBlockList()) {
+  if (it.kind === 'ann' || !list.length) return '';
+  let host = ''; try { host = it.url ? new URL(it.url).hostname : ''; } catch (e) { /* 不是網址 */ }
+  const hay = [it.src, it.title, it.sum, host].join(' ').toLowerCase();
+  return list.find(w => hay.includes(w.toLowerCase())) || '';
+}
+function newsSetBlock(list, msg) {
+  const prev = newsBlockList();
+  data.settings = Object.assign({}, data.settings, { newsBlock: [...new Set(list.map(x => String(x).trim()).filter(Boolean))] });
+  commit();
+  if (msg) toastAct(msg, '復原', () => { data.settings = Object.assign({}, data.settings, { newsBlock: prev }); commit(); toast('已復原'); });
+}
+function openNewsBlock() {
+  openDialog({
+    title: '不要的新聞來源',
+    body: `<div class="note" style="margin:0 0 10px">一行一個。新聞的來源名稱、網址、標題或摘要含有這些字，就不會出現在新聞、資產畫面和 ChatGPT 整理裡。大小寫不分；公開資訊觀測站和 SEC 的官方公告不受影響。</div>
+      <textarea name="blk" rows="6" style="width:100%" placeholder="例如：CMoney">${esc(newsBlockList().join('\n'))}</textarea>
+      <div class="faint small" style="margin-top:6px">也可以在每則新聞下面按「不要這個來源」。已經收集到的不會刪掉，拿掉這裡的字就會再出現。</div>`,
+    okText: '儲存',
+    onOk: f => { newsSetBlock(String(f.elements.blk.value || '').split(/[\n,，、]+/)); toast('已更新'); },
+  });
+}
+function newsItems(st, opt = {}) {
   const c = NEWS.cache.get(newsKey(st)); if (!c) return [];
-  const seen = new Set(), out = [];
-  Object.values(c.months).forEach(x => (x.items || []).forEach(it => { if (!seen.has(it.id)) { seen.add(it.id); out.push(it); } }));
-  return out.sort((a, b) => (b.at || 0) - (a.at || 0));
+  const seen = new Set(), out = [], list = opt.all ? [] : newsBlockList();
+  let blocked = 0;
+  Object.values(c.months).forEach(x => (x.items || []).forEach(it => {
+    if (seen.has(it.id)) return; seen.add(it.id);
+    if (list.length && newsBlocked(it, list)) { blocked++; return; }
+    out.push(it);
+  }));
+  out.sort((a, b) => (b.at || 0) - (a.at || 0));
+  out.blocked = blocked;
+  return out;
 }
 function newsOlder(st) {     // 還沒載入的更早月份
   const c = NEWS.cache.get(newsKey(st)); if (!c) return [];
@@ -6482,7 +6516,8 @@ function openSettings() {
       </div>
       <div class="gset"><span class="lbl">新聞收集（Apps Script → 你的 Google 雲端硬碟）</span>
         <div id="newsStat" class="note" style="margin:0 0 10px">讀取中…</div>
-        <div class="inl" style="margin-bottom:12px;flex-wrap:wrap"><button type="button" class="btn" data-act="news-run">立即收集一次</button><button type="button" class="btn" data-act="news-watch">重新傳送追蹤清單</button></div></div>
+        <div class="inl" style="margin-bottom:12px;flex-wrap:wrap"><button type="button" class="btn" data-act="news-run">立即收集一次</button><button type="button" class="btn" data-act="news-watch">重新傳送追蹤清單</button></div>
+        ${fld('不要的新聞來源', `<textarea name="newsBlock" rows="3" placeholder="例如：CMoney">${esc(newsBlockList().join('\n'))}</textarea>`, '一行一個。來源名稱、網址、標題或摘要含有這些字的新聞就不顯示；官方公告不受影響。')}</div>
       <div class="gset"><span class="lbl">設定檢查</span>
         <div class="note" style="margin:0 0 8px">一次檢查報價、存取密語、Apps Script 版本、自動收集、各資料來源、GitHub 同步和這台裝置的儲存空間。</div>
         <div id="chk"></div>
@@ -6517,7 +6552,7 @@ function openSettings() {
       }
       if (nums.twFeeDiscount > 1 || nums.twFeeDiscount <= 0) return '手續費折扣要介於 0 和 1 之間（2.8 折填 0.28）';
       const ns = Object.assign({}, data.settings, {
-        apiUrl: url, apiKey: fv(f, 'apiKey'), refreshSec: Math.max(5, nums.refreshSec || 10), groupByMarket: !!f.elements.groupByMarket.checked, showBi: !!f.elements.showBi.checked, memFixed: [...f.querySelectorAll('[name=memFx]:checked')].map(x => x.value),
+        apiUrl: url, apiKey: fv(f, 'apiKey'), refreshSec: Math.max(5, nums.refreshSec || 10), groupByMarket: !!f.elements.groupByMarket.checked, showBi: !!f.elements.showBi.checked, newsBlock: [...new Set(String(f.elements.newsBlock.value || '').split(/[\n,，、]+/).map(x => x.trim()).filter(Boolean))], memFixed: [...f.querySelectorAll('[name=memFx]:checked')].map(x => x.value),
         twFeeRate: nums.twFeeRate / 100, twFeeDiscount: nums.twFeeDiscount, twFeeMin: nums.twFeeMin, twFeeMinOdd: nums.twFeeMinOdd,
         twTaxStock: nums.twTaxStock / 100, twTaxEtf: nums.twTaxEtf / 100, usFee: nums.usFee, usSellRate: nums.usSellRate / 100
       });
@@ -6820,6 +6855,8 @@ document.addEventListener('click', e => {
     case 'ntab': ui.noteTab = a.dataset.tab; renderNotes(); break;
     case 'note-more': ui.notePage = (ui.notePage || NOTE_PAGE) + NOTE_PAGE; renderNotes(); break;
     case 'news-add': { const cl = NEWS.cl && NEWS.cl.get(id); if (st && cl) newsToNote(st, cl); break; }
+    case 'news-block': openNewsBlock(); break;
+    case 'news-block-src': { const src = a.dataset.src; if (src) newsSetBlock([...newsBlockList(), src], `以後不顯示「${src}」的新聞`); break; }
     case 'news-skip': { const cl = NEWS.cl && NEWS.cl.get(id); if (cl) newsSetAct(cl.list.map(x => x.id), 'd', '已略過 1 則'); break; }
     case 'news-undo': { const cl = NEWS.cl && NEWS.cl.get(id); if (cl) newsSetAct(cl.list.map(x => x.id), null); break; }
     case 'news-skip-sel': {
